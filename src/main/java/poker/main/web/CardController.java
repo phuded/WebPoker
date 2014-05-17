@@ -38,9 +38,9 @@ public class CardController {
         output.append("<br>--------------------------------");
         output.append("<br>"+repository.findBySuit(Suit.HEARTS));
 
-        output.append("<br>Cards found with findByValue('6'):");
+        output.append("<br>Cards found with findByValue('3'):");
         output.append("<br>--------------------------------");
-        for (Card customer : repository.findByCardValue(CardValue.SIX)) {
+        for (Card customer : repository.findByCardValue(CardValue.THREE)) {
             output.append("<br>"+customer);
         }
 
