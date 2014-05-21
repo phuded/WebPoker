@@ -1,6 +1,7 @@
-package poker.util
+package poker.service
 
-import poker.main.domain.card.Card
+import org.springframework.stereotype.Service
+import poker.card.Card
 import poker.player.Player
 import poker.hand.HandType
 
@@ -11,9 +12,11 @@ import poker.hand.HandType
  * Time: 11:49
  * To change this template use File | Settings | File Templates.
  */
+
+@Service
 class RoundWinnerDetector {
 
-    static detectWinners(List<Player> players){
+    public List<Player> detectWinners(List<Player> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
@@ -36,7 +39,7 @@ class RoundWinnerDetector {
     }
 
     //Get winners based on cards in hand
-    static getWinnersOfBestHandType(List<Player> potentialWinners){
+    public List<Player> getWinnersOfBestHandType(List<Player> potentialWinners){
 
        List<Player> losers = []
        int handSize = potentialWinners.first().bestHand.cards.size()
@@ -71,7 +74,7 @@ class RoundWinnerDetector {
     }
 
     //Filter winners based on kicker cards
-    static getWinnersOfBestSecondaryCards(List<Player> potentialWinners){
+    public List<Player> getWinnersOfBestSecondaryCards(List<Player> potentialWinners){
 
         List<Player> losers = []
         int secondaryCardSize = potentialWinners.first().bestHand.secondaryCards.size()

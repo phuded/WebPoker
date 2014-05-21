@@ -1,6 +1,6 @@
 package poker.hand
 
-import poker.main.domain.card.Card
+import poker.card.Card
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +10,10 @@ import poker.main.domain.card.Card
  * To change this template use File | Settings | File Templates.
  */
 class Hand {
+
+    //@Id
+    String id;
+
     HandType handType
     List<Card> cards
     //Cards not included in hand

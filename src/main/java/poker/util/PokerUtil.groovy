@@ -1,7 +1,7 @@
 package poker.util
 
-import poker.main.domain.card.Card
-import poker.main.domain.card.CardValue
+import poker.card.Card
+import poker.card.CardValue
 import poker.hand.Hand
 
 /**

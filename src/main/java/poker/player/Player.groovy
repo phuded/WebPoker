@@ -1,9 +1,11 @@
 package poker.player
 
-import poker.main.domain.card.Card
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.data.annotation.Id
+import poker.Application
+import poker.card.Card
 import poker.hand.Hand
-import poker.main.Main
-import poker.util.HandDetector
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +14,14 @@ import poker.util.HandDetector
  * Time: 18:11
  * To change this template use File | Settings | File Templates.
  */
+
 class Player {
+
+    private static final Logger logger = LoggerFactory.getLogger(Player.class);
+
+    @Id
+    String id
+
     String name
     // First 2 cards
     List<Card> initialCards = []
@@ -30,47 +39,41 @@ class Player {
     int amountBet
 
 
-    def Player(String playerName, int startingFunds){
-        name = playerName
-        funds = startingFunds
-        hasFolded = false
-        amountBet = 0
-    }
+    Player(String name, Integer funds){
+        this.name = name
 
-    def Player(String playerName){
-        name = playerName
-        funds = Main.startingPlayerFunds
-        hasFolded = false
-        amountBet = 0
+        if(funds) {
+            this.funds = funds
+        }
+        else{
+            this.funds = Application.startingPlayerFunds
+        }
+
+        this.hasFolded = false
+        this.amountBet = 0
     }
 
     //Get dealt card
     def receiveCard(Card card){
-        initialCards.push(card)
+        this.initialCards.push(card)
         //Add to all players possible cards too
-        allCards.push(card)
+        this.allCards.push(card)
     }
 
     // Reference card from the round
     def addGameCards(Card card){
-        allCards.add(card)
+        this.allCards.add(card)
     }
 
     def addGameCards(List <Card> cards){
-        allCards.addAll(cards)
+        this.allCards.addAll(cards)
     }
 
     //Bet
     def makeBet(int newCurrentBet){
-        int amountToCall = newCurrentBet - amountBet
-        funds -= amountToCall
-        amountBet = newCurrentBet
-    }
-
-    //Get hand
-    def detectHand(){
-        hands = HandDetector.detect(allCards)
-        bestHand = hands.last()
+        int amountToCall = newCurrentBet - this.amountBet
+        this.funds -= amountToCall
+        this.amountBet = newCurrentBet
     }
 
     //Reset player between Poker Rounds
@@ -90,7 +93,7 @@ class Player {
 
     @Override
     String toString(){
-        this.name
+        this.name + " - " + this.allCards
     }
 
 }

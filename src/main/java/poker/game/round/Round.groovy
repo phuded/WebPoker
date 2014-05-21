@@ -1,7 +1,8 @@
 package poker.game.round
 
-import poker.main.domain.card.Card
-import poker.main.domain.card.Deck
+import org.springframework.data.annotation.Id
+import poker.card.Card
+import poker.card.Deck
 import poker.game.Game
 import poker.game.bettinground.BettingRound
 import poker.game.bettinground.FirstRound
@@ -10,7 +11,7 @@ import poker.game.bettinground.RiverCardRound
 import poker.game.bettinground.TurnCardRound
 import poker.player.Player
 
-import poker.util.RoundWinnerDetector
+import poker.service.RoundWinnerDetector
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,10 @@ import poker.util.RoundWinnerDetector
  * To change this template use File | Settings | File Templates.
  */
 class Round {
+
+    @Id
+    String id;
+
     //Parent parentGame
     Game parentGame
 
@@ -106,6 +111,7 @@ class Round {
 
             //Detect hands...
             roundPlayers.each{ Player player ->
+                //TODO: Fix!
                 player.detectHand()
                 // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
                 println "MAIN: "+ player.name + " - Best hand: " + player.bestHand

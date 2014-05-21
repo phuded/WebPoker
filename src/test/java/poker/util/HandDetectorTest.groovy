@@ -1,9 +1,10 @@
 package poker.util
 
-import poker.main.domain.card.Card
-import poker.main.domain.card.CardValue
-import poker.main.domain.card.Suit
+import poker.card.Card
+import poker.card.CardValue
+import poker.card.Suit
 import poker.hand.HandType
+import poker.service.HandDetectorImpl
 
 class HandDetectorTest extends GroovyTestCase {
 
@@ -20,7 +21,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testPair cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testPair results: " + results
 
@@ -41,7 +42,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testThreeOfAKind cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testThreeOfAKind results: " + results
 
@@ -60,7 +61,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testTwoPair cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testTwoPair results: " + results
 
@@ -80,7 +81,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testBestTwoPair cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testBestTwoPair results: " + results
 
@@ -101,7 +102,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testStraight cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testStraight results: " + results
 
@@ -122,7 +123,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testLowStraight cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testLowStraight results: " + results
 
@@ -143,7 +144,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testFlush cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testFlush results: " + results
 
@@ -164,7 +165,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testFourOfAKind cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testFourOfAKind results: " + results
 
@@ -185,7 +186,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testFullHouse cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testFullHouse results: " + results
 
@@ -206,7 +207,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testStraightFlush cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testStraightFlush results: " + results
 
@@ -227,7 +228,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testMismatchedStraightFlush cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testMismatchedStraightFlush results: " + results
 
@@ -248,7 +249,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testMismatchedLowStraightFlush cards: " + cards
 
-        def results = HandDetector.detect(cards)
+        def results = HandDetectorImpl.detect(cards)
 
         println "testMismatchedLowStraightFlush results: " + results
 
@@ -269,7 +270,7 @@ class HandDetectorTest extends GroovyTestCase {
 
       println "testRoyalFlush cards: " + cards
 
-      def results = HandDetector.detect(cards)
+      def results = HandDetectorImpl.detect(cards)
 
       println "testRoyalFlush results: " + results
 

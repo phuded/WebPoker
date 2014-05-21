@@ -1,6 +1,7 @@
 package poker.game
 
-import poker.main.domain.card.Deck
+import org.springframework.data.annotation.Id
+import poker.card.Deck
 import poker.game.round.Round
 import poker.player.Player
 
@@ -12,6 +13,10 @@ import poker.player.Player
  * To change this template use File | Settings | File Templates.
  */
 class Game {
+
+    @Id
+    String id;
+
     Deck deck
     List<Player> players
     List<Round> rounds

@@ -1,4 +1,4 @@
-package poker.main.domain.card
+package poker.card
 
 import org.springframework.data.annotation.Id
 
@@ -12,9 +12,9 @@ import org.springframework.data.annotation.Id
 class Card {
 
     @Id
-    String id;
-    Suit suit;
-    CardValue cardValue;
+    String id
+    Suit suit
+    CardValue cardValue
 
     def Card(CardValue cardValue,Suit suit){
         this.cardValue = cardValue

@@ -1,4 +1,4 @@
-package poker.main;
+package poker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 @ComponentScan
 public class Application{
+
+    public static int startingPlayerFunds = 100;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

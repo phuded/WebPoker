@@ -1,10 +1,13 @@
-package poker.util
+package poker.service
 
-import poker.main.domain.card.Card
-import poker.main.domain.card.CardValue
-import poker.main.domain.card.Suit
+import org.springframework.stereotype.Service
+import poker.card.Card
+import poker.card.CardValue
+import poker.card.Suit
 import poker.hand.HandType
 import poker.hand.Hand
+import poker.player.Player
+import poker.util.PokerUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,9 +16,16 @@ import poker.hand.Hand
  * Time: 15:44
  * To change this template use File | Settings | File Templates.
  */
-class HandDetector {
 
-    static detect (List<Card> cards){
+@Service
+class HandDetectorImpl implements HandDetector{
+
+    public detectHand(Player player){
+        player.hands = detect(player.allCards)
+        player.bestHand = player.hands.last()
+    }
+
+    public List<Hand> detect(List<Card> cards){
         //Sorting cards here
         PokerUtil.sortCards(cards)
 
@@ -45,7 +55,7 @@ class HandDetector {
         return hands
     }
 
-    static detectSameCard(List<Card> cards,List<Hand> hands){
+    public void detectSameCard(List<Card> cards,List<Hand> hands){
         cards.each {
             CardValue currentCardValue = it.cardValue
 
@@ -79,7 +89,7 @@ class HandDetector {
         }
     }
 
-    static detectStraight(List <Card> cards, List<Hand> hands){
+    public void detectStraight(List <Card> cards, List<Hand> hands){
         boolean straight = false
 
         //Number of found cards
@@ -122,7 +132,7 @@ class HandDetector {
        }
     }
 
-    static detectAceLowStraight(List<Card> cards, List<Hand> hands){
+    public void detectAceLowStraight(List<Card> cards, List<Hand> hands){
         if(!hands.find{it.handType == HandType.STRAIGHT}){
             //Reorder cards
             PokerUtil.convertAce(cards,true)
@@ -133,7 +143,7 @@ class HandDetector {
         }
     }
 
-    static detectFlush(List <Card> cards,List<Hand> hands){
+    public void detectFlush(List <Card> cards,List<Hand> hands){
 
         for(Card card : cards){
             Suit currentCardSuit = card.suit
@@ -149,7 +159,7 @@ class HandDetector {
         }
     }
 
-    static detectFullHouse(List<Hand> hands){
+    public void detectFullHouse(List<Hand> hands){
         List <Hand> threes = hands.findAll{
             it.handType == HandType.THREE_OF_A_KIND
         }
@@ -181,7 +191,7 @@ class HandDetector {
         }
     }
 
-    static detectStraightFlush(List<Hand> hands){
+    public void detectStraightFlush(List<Hand> hands){
         //Check if have a straight and flush to begin with
         Hand flush = hands.find{it.handType == HandType.FLUSH}
         Hand straight = hands.find{it.handType == HandType.STRAIGHT}
@@ -224,7 +234,7 @@ class HandDetector {
         }
     }
 
-    static getSecondaryCards(Hand bestHand, List<Card> cards){
+    public void getSecondaryCards(Hand bestHand, List<Card> cards){
         int cardsToFill = 5 - bestHand.cards.size()
         if(cardsToFill > 0){
             //Get best remaining cards

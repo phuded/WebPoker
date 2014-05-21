@@ -1,5 +1,6 @@
 package poker.game.bettinground
 
+import org.springframework.data.annotation.Id
 import poker.game.round.Round
 import poker.player.Player
 
@@ -11,6 +12,9 @@ import poker.player.Player
  * To change this template use File | Settings | File Templates.
  */
 abstract class BettingRound {
+
+    @Id
+    String id;
 
     Round parentRound
 

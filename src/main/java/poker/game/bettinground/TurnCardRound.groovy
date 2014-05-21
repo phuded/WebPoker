@@ -1,6 +1,6 @@
 package poker.game.bettinground
 
-import poker.main.domain.card.Card
+import poker.card.Card
 import poker.game.round.Round
 import poker.player.Player
 
