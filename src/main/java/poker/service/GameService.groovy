@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
-import poker.domain.game.bettinground.FirstRound
-import poker.domain.game.bettinground.FlopRound
-import poker.domain.game.bettinground.RiverCardRound
-import poker.domain.game.bettinground.TurnCardRound
 import poker.domain.game.round.Round
 import poker.domain.player.Player
 import poker.repository.GameRepository
@@ -47,8 +43,7 @@ class GameService {
             Round round = new Round(game)
             game.rounds << round
 
-            println "SAVING... 0"
-            //TODO: NEED TO TEST 0 - BREAKS!!!
+            println "Saving... new round"
             gameRepository.save(game)
 
             playRound(game, round)
@@ -68,11 +63,16 @@ class GameService {
         //Detect winners
         detectRoundWinners(round)
 
-        println "SAVING... 4"
-        //TODO: Saving here 4 OK
+        println "Saving..."
         gameRepository.save(game)
 
-        //TODO - Add winnings to winners!
+        //Seems to work TODO - Add winnings to winners!
+        round.winners.each { Player winner ->
+            winner.funds += (round.pot/round.winners.size())
+        }
+
+        println "Saving... final"
+        gameRepository.save(game)
 
         //Finish and play next round
         startNextRound(game)
@@ -80,8 +80,7 @@ class GameService {
 
     def playBettingRounds(Game game, Round round){
 
-        println "SAVING... 1"
-        //TODO: Saving here 1 OK
+        println "Saving..."
         gameRepository.save(game)
 
         //TODO: Refactor
@@ -93,15 +92,13 @@ class GameService {
             //Deal cards
             currentBettingRound.dealCards(game,round)
 
-            println "SAVING... 2"
-            //TODO: Saving here 2 OK
+            println "Saving..."
             gameRepository.save(game)
 
             //Bet!
             currentBettingRound.beginBetting(round)
 
-            println "SAVING... 3"
-            //TODO: Saving here 3 OK
+            println "Saving..."
             gameRepository.save(game)
 
             //Finish round - and check if only 1 player remains
@@ -119,7 +116,7 @@ class GameService {
 
         println "Betting round pot: " + bettingRoundPot + ". Total: " + round.pot
 
-        //Reset ALL players after betting round
+        //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
         //Check if > 1 player left

@@ -14,10 +14,6 @@ import poker.domain.player.Player
  */
 class RiverCardRound extends BettingRound{
 
-    RiverCardRound(Round round){
-        super(round)
-    }
-
     @Override
     def dealCards(Game game, Round parentRound) {
         // Remove river card from deck and add to round cards

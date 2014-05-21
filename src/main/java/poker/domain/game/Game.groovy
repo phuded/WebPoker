@@ -22,7 +22,7 @@ class Game {
     List<Round> rounds
 
     //TEMP -> TO DO REMOVE
-    static int tempRoundLimit = 1;
+    static int tempRoundLimit = 2;
 
     Game(List<String> playerNames, int startingPlayerFunds){
         this.players = []

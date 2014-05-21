@@ -71,6 +71,7 @@ class Player {
 
     //Bet
     def makeBet(int newCurrentBet){
+        //TODO - Prevent -ve balance
         int amountToCall = newCurrentBet - this.amountBet
         this.funds -= amountToCall
         this.amountBet = newCurrentBet

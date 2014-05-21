@@ -13,11 +13,6 @@ import poker.domain.player.Player
  */
 class FirstRound extends BettingRound{
 
-
-    FirstRound(Round round) {
-        super(round)
-    }
-
     @Override
     def dealCards(Game game, Round parentRound) {
 

@@ -21,7 +21,7 @@ abstract class BettingRound {
     int currentBet
     boolean firstCycle
 
-    BettingRound(Round round){
+    BettingRound(){
         currentBet = 0
         firstCycle = true
     }

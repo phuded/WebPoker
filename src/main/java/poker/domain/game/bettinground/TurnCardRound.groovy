@@ -14,10 +14,6 @@ import poker.domain.player.Player
  */
 class TurnCardRound extends BettingRound{
 
-    TurnCardRound(Round round){
-        super(round)
-    }
-
     @Override
     def dealCards(Game game, Round parentRound) {
         // Remove turn card from deck and add to round cards

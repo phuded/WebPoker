@@ -53,10 +53,10 @@ class Round {
         roundCards = []
 
         //Betting rounds
-        bettingRounds = [new FirstRound(this),
-                         new FlopRound(this),
-                         new TurnCardRound(this),
-                         new RiverCardRound(this)]
+        bettingRounds = [new FirstRound(),
+                         new FlopRound(),
+                         new TurnCardRound(),
+                         new RiverCardRound()]
     }
 
 }
