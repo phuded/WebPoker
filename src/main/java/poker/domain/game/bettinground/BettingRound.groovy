@@ -108,6 +108,7 @@ abstract class BettingRound {
     }
 
 
+    // TODO: Put in Service method
     // Get the total pot from the betting round - include folded players (use game players)
     def getPot(Game game){
         int roundPot = 0

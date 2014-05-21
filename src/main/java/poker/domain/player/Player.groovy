@@ -36,6 +36,8 @@ class Player {
 
     //Round specific
     boolean hasFolded
+
+    //TODO Always goes to 0 at end of round
     int amountBet
 
 

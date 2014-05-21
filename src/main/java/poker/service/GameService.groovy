@@ -83,17 +83,9 @@ class GameService {
         println "Saving..."
         gameRepository.save(game)
 
-        //TODO: Refactor
-        for(int roundNum = 0; roundNum< round.bettingRounds.size(); roundNum++){
-
-            //Current round
-            BettingRound currentBettingRound = round.bettingRounds[roundNum]
-
+        round.bettingRounds.any { BettingRound currentBettingRound ->
             //Deal cards
             currentBettingRound.dealCards(game,round)
-
-            println "Saving..."
-            gameRepository.save(game)
 
             //Bet!
             currentBettingRound.beginBetting(round)
@@ -102,10 +94,7 @@ class GameService {
             gameRepository.save(game)
 
             //Finish round - and check if only 1 player remains
-            if(completeBettingRound(game,round,currentBettingRound)){
-                //Finish whole round
-                break
-            }
+            return completeBettingRound(game,round,currentBettingRound)
         }
     }
 
