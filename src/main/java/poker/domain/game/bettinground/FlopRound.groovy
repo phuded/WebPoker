@@ -1,6 +1,7 @@
 package poker.domain.game.bettinground
 
 import poker.domain.card.Card
+import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
 
@@ -18,9 +19,9 @@ class FlopRound extends BettingRound{
     }
 
     @Override
-    def dealCards() {
+    def dealCards(Game game, Round parentRound) {
         //Remove flop from deck and add the round cards
-        List<Card> flop = parentRound.parentGame.deck.getFlop()
+        List<Card> flop = game.deck.getFlop()
         parentRound.roundCards.addAll(flop)
 
         //Add flop to each player's hands

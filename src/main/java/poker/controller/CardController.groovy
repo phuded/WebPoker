@@ -10,7 +10,7 @@ import poker.domain.card.Suit
 import poker.domain.player.Player;
 import poker.repository.*
 import poker.service.HandDetector;
-import poker.service.RoundWinnerDetector;
+import poker.service.RoundWinnerDetectorImpl;
 
 @RestController
 public class CardController {
@@ -39,7 +39,7 @@ public class CardController {
     private HandDetector handDetector;
 
     @Autowired
-    private RoundWinnerDetector roundWinnerDetector;
+    private RoundWinnerDetectorImpl roundWinnerDetector;
 
     @RequestMapping("/cards")
     String getCards() {
@@ -49,7 +49,7 @@ public class CardController {
         playerRepository.deleteAll()
         cardRepository.deleteAll()
 
-        def playerNames = ["Matt","Cathy","Ella","Becky"]
+        def playerNames = ["Matt"]//,"Cathy","Ella","Becky"]
         int startingPlayerFunds = 1000;
 
        // Game game = new Game(playerNames,startingPlayerFunds)
@@ -89,6 +89,19 @@ public class CardController {
 
         output.append("<br>saved")
 
+        List<Card> foundCards = cardRepository.findBySuit(Suit.SPADES);
+        Card foundCard = foundCards.get(0);
+
+        foundCard.suit = Suit.DIAMONDS;
+
+        cardRepository.save(foundCard);
+
+        output.append("<br>saved card")
+
+
+        player.allCards.get(0).cardValue = CardValue.ACE
+
+        playerRepository.save(player);
 
        // player.detectHand();
 

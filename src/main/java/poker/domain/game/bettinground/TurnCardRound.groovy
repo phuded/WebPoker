@@ -1,6 +1,7 @@
 package poker.domain.game.bettinground
 
 import poker.domain.card.Card
+import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
 
@@ -18,9 +19,9 @@ class TurnCardRound extends BettingRound{
     }
 
     @Override
-    def dealCards() {
+    def dealCards(Game game, Round parentRound) {
         // Remove turn card from deck and add to round cards
-        Card turnCard = parentRound.parentGame.deck.getCard()
+        Card turnCard = game.deck.getCard()
         parentRound.roundCards.add(turnCard)
 
         //Add to each players hand

@@ -22,6 +22,8 @@ class HandDetectorImpl implements HandDetector{
 
     public detectHand(Player player){
         player.hands = detect(player.allCards)
+
+        //Set best hand
         player.bestHand = player.hands.last()
     }
 
@@ -93,6 +95,8 @@ class HandDetectorImpl implements HandDetector{
         boolean straight = false
 
         //Number of found cards
+        //Add first card to list
+        //TODO: Handler null pointer
         def straightCards = [cards[0]]
 
         //First card value

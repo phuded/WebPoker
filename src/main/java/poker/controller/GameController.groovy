@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import poker.domain.game.Game
+import poker.repository.CardRepository
 import poker.repository.GameRepository
+import poker.repository.PlayerRepository
+import poker.service.GameService
 
 /**
  * Created by matt on 21/05/2014.
@@ -15,17 +18,26 @@ class GameController {
     @Autowired
     private GameRepository gameRepository
 
+    @Autowired
+    private CardRepository cardRepository
+
+    @Autowired
+    private PlayerRepository playerRepository
+
+    @Autowired
+    private GameService gameService
+
     @RequestMapping("/games")
     String startGame() {
 
-    def playerNames = ["Matt","Cathy"]
+        cardRepository.deleteAll()
+        gameRepository.deleteAll()
+        playerRepository.deleteAll()
 
-     Game game = new Game(playerNames,100)
-     gameRepository.deleteAll();
-     gameRepository.save(game)
+        def playerNames = ["Matt","Cathy"]
 
-     game.play()
+        Game game = gameService.createNewGame(playerNames,100)
 
-     null
+        gameService.startNextRound(game);
     }
 }

@@ -1,6 +1,7 @@
 package poker.domain.game.bettinground
 
 import org.springframework.data.annotation.Id
+import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
 
@@ -16,21 +17,19 @@ abstract class BettingRound {
     @Id
     String id;
 
-    Round parentRound
-
     //Current bet in betting round
-    def currentBet
+    int currentBet
     boolean firstCycle
 
     BettingRound(Round round){
-        parentRound = round
         currentBet = 0
         firstCycle = true
     }
 
-    abstract dealCards()
+    abstract dealCards(Game game, Round parentRound)
 
-    def beginBetting(){
+    //TODO: Move out of this class
+    def beginBetting(Round parentRound){
 
         //Do this while all the active players are not checked
         while(checkAllBetsComplete(parentRound.roundPlayers)){
@@ -108,10 +107,10 @@ abstract class BettingRound {
 
 
     // Get the total pot from the betting round - include folded players (use game players)
-    def getPot(){
+    def getPot(Game game){
         int roundPot = 0
         //All players (current and folded)
-        parentRound.parentGame.players.each{Player player ->
+        game.players.each{Player player ->
             roundPot += player.amountBet
         }
         return roundPot
