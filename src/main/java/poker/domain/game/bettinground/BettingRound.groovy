@@ -89,6 +89,8 @@ abstract class BettingRound {
             return true
         }
 
+
+        //TODO: REMOVES PLAYER FROM ROUND -> LOOK AT
         //Remove folded players
         players.removeAll{it.hasFolded}
 
