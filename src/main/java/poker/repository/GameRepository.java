@@ -1,7 +1,7 @@
-package poker.repo;
+package poker.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import poker.game.Game;
+import poker.domain.game.Game;
 
 /**
  * Created by matt on 17/05/2014.

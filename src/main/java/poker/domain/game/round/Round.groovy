@@ -1,15 +1,15 @@
-package poker.game.round
+package poker.domain.game.round
 
 import org.springframework.data.annotation.Id
-import poker.card.Card
-import poker.card.Deck
-import poker.game.Game
-import poker.game.bettinground.BettingRound
-import poker.game.bettinground.FirstRound
-import poker.game.bettinground.FlopRound
-import poker.game.bettinground.RiverCardRound
-import poker.game.bettinground.TurnCardRound
-import poker.player.Player
+import poker.domain.card.Card
+import poker.domain.card.Deck
+import poker.domain.game.Game
+import poker.domain.game.bettinground.BettingRound
+import poker.domain.game.bettinground.FirstRound
+import poker.domain.game.bettinground.FlopRound
+import poker.domain.game.bettinground.RiverCardRound
+import poker.domain.game.bettinground.TurnCardRound
+import poker.domain.player.Player
 
 import poker.service.RoundWinnerDetector
 

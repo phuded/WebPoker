@@ -1,9 +1,9 @@
-package poker.repo;
+package poker.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import poker.card.Card;
-import poker.card.CardValue;
-import poker.card.Suit;
+import poker.domain.card.Card;
+import poker.domain.card.CardValue;
+import poker.domain.card.Suit;
 
 import java.util.List;
 

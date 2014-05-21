@@ -1,12 +1,12 @@
 package poker.service
 
 import org.springframework.stereotype.Service
-import poker.card.Card
-import poker.card.CardValue
-import poker.card.Suit
-import poker.hand.HandType
-import poker.hand.Hand
-import poker.player.Player
+import poker.domain.card.Card
+import poker.domain.card.CardValue
+import poker.domain.card.Suit
+import poker.domain.hand.HandType
+import poker.domain.hand.Hand
+import poker.domain.player.Player
 import poker.util.PokerUtil
 
 /**

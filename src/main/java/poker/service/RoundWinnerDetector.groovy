@@ -1,9 +1,9 @@
 package poker.service
 
 import org.springframework.stereotype.Service
-import poker.card.Card
-import poker.player.Player
-import poker.hand.HandType
+import poker.domain.card.Card
+import poker.domain.player.Player
+import poker.domain.hand.HandType
 
 /**
  * Created with IntelliJ IDEA.

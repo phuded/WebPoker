@@ -4,11 +4,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import poker.card.Card;
-import poker.card.CardValue;
-import poker.card.Suit
-import poker.player.Player;
-import poker.repo.*
+import poker.domain.card.Card;
+import poker.domain.card.CardValue;
+import poker.domain.card.Suit
+import poker.domain.player.Player;
+import poker.repository.*
 import poker.service.HandDetector;
 import poker.service.RoundWinnerDetector;
 

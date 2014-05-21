@@ -1,9 +1,9 @@
 package poker.util
 
-import poker.card.Card
-import poker.card.CardValue
-import poker.card.Suit
-import poker.hand.HandType
+import poker.domain.card.Card
+import poker.domain.card.CardValue
+import poker.domain.card.Suit
+import poker.domain.hand.HandType
 import poker.service.HandDetectorImpl
 
 class HandDetectorTest extends GroovyTestCase {

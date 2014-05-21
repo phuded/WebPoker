@@ -1,11 +1,11 @@
-package poker.player
+package poker.domain.player
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.annotation.Id
 import poker.Application
-import poker.card.Card
-import poker.hand.Hand
+import poker.domain.card.Card
+import poker.domain.hand.Hand
 
 /**
  * Created with IntelliJ IDEA.

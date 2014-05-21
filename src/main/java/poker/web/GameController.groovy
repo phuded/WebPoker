@@ -3,8 +3,8 @@ package poker.web
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import poker.game.Game
-import poker.repo.GameRepository
+import poker.domain.game.Game
+import poker.repository.GameRepository
 
 /**
  * Created by matt on 21/05/2014.

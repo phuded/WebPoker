@@ -1,4 +1,4 @@
-package poker.card
+package poker.domain.card
 
 import org.springframework.data.annotation.Id
 

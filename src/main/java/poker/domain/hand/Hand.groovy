@@ -1,6 +1,6 @@
-package poker.hand
+package poker.domain.hand
 
-import poker.card.Card
+import poker.domain.card.Card
 
 /**
  * Created with IntelliJ IDEA.

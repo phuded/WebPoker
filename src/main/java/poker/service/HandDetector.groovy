@@ -1,8 +1,8 @@
 package poker.service
 
-import poker.card.Card
-import poker.hand.Hand
-import poker.player.Player
+import poker.domain.card.Card
+import poker.domain.hand.Hand
+import poker.domain.player.Player
 
 /**
  * Created by matt on 20/05/2014.

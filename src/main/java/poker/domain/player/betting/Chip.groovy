@@ -1,4 +1,4 @@
-package poker.player.betting
+package poker.domain.player.betting
 
 /**
  * Created with IntelliJ IDEA.

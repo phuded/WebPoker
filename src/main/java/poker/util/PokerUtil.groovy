@@ -1,8 +1,8 @@
 package poker.util
 
-import poker.card.Card
-import poker.card.CardValue
-import poker.hand.Hand
+import poker.domain.card.Card
+import poker.domain.card.CardValue
+import poker.domain.hand.Hand
 
 /**
  * Created with IntelliJ IDEA.

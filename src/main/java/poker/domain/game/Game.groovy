@@ -1,9 +1,9 @@
-package poker.game
+package poker.domain.game
 
 import org.springframework.data.annotation.Id
-import poker.card.Deck
-import poker.game.round.Round
-import poker.player.Player
+import poker.domain.card.Deck
+import poker.domain.game.round.Round
+import poker.domain.player.Player
 
 /**
  * Created with IntelliJ IDEA.

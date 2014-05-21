@@ -1,7 +1,7 @@
-package poker.repo;
+package poker.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import poker.player.Player;
+import poker.domain.player.Player;
 
 
 /**

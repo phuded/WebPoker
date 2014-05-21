@@ -1,4 +1,4 @@
-package poker.card
+package poker.domain.card
 
 /**
  * Created with IntelliJ IDEA.

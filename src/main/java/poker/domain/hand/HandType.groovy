@@ -1,4 +1,4 @@
-package poker.hand
+package poker.domain.hand
 
 /**
  * Created with IntelliJ IDEA.

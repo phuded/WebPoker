@@ -1,7 +1,7 @@
-package poker.game.bettinground
+package poker.domain.game.bettinground
 
-import poker.game.round.Round
-import poker.player.Player
+import poker.domain.game.round.Round
+import poker.domain.player.Player
 
 /**
  * Created with IntelliJ IDEA.
