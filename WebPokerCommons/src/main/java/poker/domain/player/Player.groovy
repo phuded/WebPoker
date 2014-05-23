@@ -3,7 +3,6 @@ package poker.domain.player
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.annotation.Id
-import poker.Application
 import poker.domain.card.Card
 import poker.domain.hand.Hand
 
@@ -17,6 +16,7 @@ import poker.domain.hand.Hand
 
 class Player {
 
+    private static int startingPlayerFunds = 200
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     @Id
@@ -48,7 +48,7 @@ class Player {
             this.funds = funds
         }
         else{
-            this.funds = Application.startingPlayerFunds
+            this.funds = startingPlayerFunds
         }
 
         this.hasFolded = false

@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class Application{
 
-    public static int startingPlayerFunds = 100;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
