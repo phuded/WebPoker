@@ -1,16 +1,23 @@
 package poker.service
 
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import poker.domain.card.Card
 import poker.domain.card.CardValue
 import poker.domain.card.Suit
 import poker.domain.hand.HandType
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = HandDetectorImpl.class)
 class HandDetectorTest extends GroovyTestCase {
 
     @Autowired
     HandDetector handDetector
 
+    @Test
     void testPair() {
 
         def cards = []
@@ -32,6 +39,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testThreeOfAKind() {
 
         def cards = []
@@ -53,6 +61,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testTwoPair() {
 
         def cards = []
@@ -72,6 +81,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testBestTwoPair() {
 
         def cards = []
@@ -92,6 +102,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testStraight() {
 
         def cards = []
@@ -113,6 +124,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testLowStraight() {
 
         def cards = []
@@ -134,6 +146,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testFlush() {
 
         def cards = []
@@ -155,6 +168,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testFourOfAKind() {
 
         def cards = []
@@ -176,6 +190,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testFullHouse() {
 
         def cards = []
@@ -197,6 +212,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testStraightFlush() {
 
         def cards = []
@@ -218,6 +234,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testMismatchedStraightFlush() {
 
         def cards = []
@@ -239,6 +256,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testMismatchedLowStraightFlush() {
 
         def cards = []
@@ -260,6 +278,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    @Test
     void testRoyalFlush() {
 
       def cards = []
