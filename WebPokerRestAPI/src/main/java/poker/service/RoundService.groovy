@@ -64,7 +64,7 @@ class RoundService {
             return bettingRoundService.executeBettingRound(game,round,currentBettingRound)
         }
 
-        println "Saving..."
+        println "Saving after round..."
         gameRepository.save(game)
     }
 
