@@ -31,10 +31,13 @@ class Hand {
     }
 
     @Override
-    boolean equals(Hand nextHandResult){
-        if(this.handType == nextHandResult.handType && this.cards == nextHandResult.cards && this.secondaryCards == nextHandResult.secondaryCards){
+    boolean equals(Object hand){
+        Hand nextHand = (Hand)hand
+
+        if(this.handType == nextHand.handType && this.cards == nextHand.cards && this.secondaryCards == nextHand.secondaryCards){
             return true
         }
+
         return false
     }
 
