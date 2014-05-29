@@ -1,5 +1,6 @@
 package poker.domain.card
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 
 /**
@@ -12,7 +13,9 @@ import org.springframework.data.annotation.Id
 class Card {
 
     @Id
+    @JsonIgnore
     String id
+
     Suit suit
     CardValue cardValue
 
