@@ -38,7 +38,10 @@ class Round {
     //Betting rounds
     List<BettingRound> bettingRounds
 
-    def Round(Game game){
+    //Default Constructor
+    Round(){}
+
+    Round(Game game){
         //TODO: SORT THIS STUFF OUT
 
         //Create/replace deck and shuffle

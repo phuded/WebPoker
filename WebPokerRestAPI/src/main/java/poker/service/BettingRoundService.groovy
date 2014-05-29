@@ -76,7 +76,9 @@ class BettingRoundService {
         //Must be first
         if(bettingRound.currentBet == 0){
             print player.name + " - Place Bet: "
+
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
+
             int betAmount = br.readLine().toInteger()
 
             //Make bet and set new current bet

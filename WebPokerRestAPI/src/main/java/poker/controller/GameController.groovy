@@ -1,12 +1,12 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import poker.domain.game.Game
-import poker.repository.CardRepository
-import poker.repository.GameRepository
-import poker.repository.PlayerRepository
 import poker.service.GameService
 
 /**
@@ -16,28 +16,58 @@ import poker.service.GameService
 class GameController {
 
     @Autowired
-    private GameRepository gameRepository
-
-    @Autowired
-    private CardRepository cardRepository
-
-    @Autowired
-    private PlayerRepository playerRepository
-
-    @Autowired
     private GameService gameService
 
-    @RequestMapping("/games")
-    String startGame() {
+    /**
+     * Create a new Game
+     * @param players
+     * @return
+     */
+    @RequestMapping(value="/games",method = RequestMethod.POST)
+    Game createGame(@RequestParam("players") List<String> players, @RequestParam(value="amount",required = false) Long amount) {
 
-        cardRepository.deleteAll()
-        gameRepository.deleteAll()
-        playerRepository.deleteAll()
+        //TODO: Remove
+        gameService.clearDatabase()
 
-        def playerNames = ["Matt","Cathy"]
+        println players
 
-        Game game = gameService.createNewGame(playerNames,100)
+        Game game = gameService.createNewGame(players,amount)
 
-        gameService.startNextRound(game);
+        return game;
     }
+
+    /**
+     * List all Games
+     * @return
+     */
+    @RequestMapping(value="/games",method = RequestMethod.GET)
+    List<Game> getGames() {
+
+        return gameService.getAllGames()
+    }
+
+    /**
+     * Get a Game
+     * @return
+     */
+    @RequestMapping(value="/games/{gameId}",method = RequestMethod.GET)
+    Game getGame(@PathVariable String gameId) {
+
+        return gameService.loadGame(gameId)
+    }
+
+    /**
+     * Start a game
+     * @param gameId
+     */
+    @RequestMapping(value="/games/{gameId}",method = RequestMethod.POST)
+    void startGame(@PathVariable String gameId){
+
+        Game game = gameService.loadGame(gameId)
+
+        gameService.startNextRound(game)
+
+    }
+
+
 }

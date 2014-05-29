@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
 import poker.domain.game.round.Round
+import poker.repository.CardRepository
 import poker.repository.GameRepository
+import poker.repository.PlayerRepository
 
 /**
  * Created by matt on 21/05/2014.
@@ -16,9 +18,21 @@ class GameService {
     GameRepository gameRepository
 
     @Autowired
+    CardRepository cardRepository
+
+    @Autowired
+    private PlayerRepository playerRepository
+
+
+    @Autowired
     RoundService roundService
 
-    // Start a new Game
+    /**
+     * Create a new Game
+     * @param playerNames
+     * @param startingFunds
+     * @return
+     */
     Game createNewGame(List<String> playerNames, int startingFunds){
         Game game = new Game(playerNames,startingFunds)
 
@@ -26,6 +40,24 @@ class GameService {
 
         return game
     }
+
+    /**
+     * Load Game
+     * @param gameId
+     * @return
+     */
+    Game loadGame(String gameId){
+       return gameRepository.findOne(gameId)
+    }
+
+    /**
+     * List all Games
+     * @return
+     */
+    List<Game> getAllGames(){
+        return gameRepository.findAll()
+    }
+
 
     // Play the next round
     def startNextRound(Game game){
@@ -43,5 +75,12 @@ class GameService {
 
             roundService.playRound(game, round)
         }
+    }
+
+    //TODO Sort
+    def clearDatabase(){
+        cardRepository.deleteAll()
+        gameRepository.deleteAll()
+        playerRepository.deleteAll()
     }
 }

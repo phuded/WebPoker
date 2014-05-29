@@ -15,8 +15,9 @@ import poker.domain.hand.Hand
  */
 
 class Player {
-
+    //TODO Fix
     private static int startingPlayerFunds = 200
+
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     @Id

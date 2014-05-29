@@ -24,6 +24,9 @@ class Game {
     //TEMP -> TO DO REMOVE
     static int tempRoundLimit = 2;
 
+    //Default Constructor
+    Game(){}
+
     Game(List<String> playerNames, int startingPlayerFunds){
         this.players = []
         this.rounds = []

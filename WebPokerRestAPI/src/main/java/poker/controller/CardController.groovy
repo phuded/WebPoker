@@ -13,6 +13,7 @@ import poker.service.HandDetector;
 import poker.service.RoundWinnerDetectorImpl;
 
 @RestController
+@Deprecated
 public class CardController {
 
     private static final Logger logger = LoggerFactory.getLogger(CardController.class);
