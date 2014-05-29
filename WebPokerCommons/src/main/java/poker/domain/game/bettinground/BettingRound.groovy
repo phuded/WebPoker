@@ -1,5 +1,6 @@
 package poker.domain.game.bettinground
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 import poker.domain.game.Game
 import poker.domain.game.round.Round
@@ -15,10 +16,13 @@ import poker.domain.player.Player
 abstract class BettingRound {
 
     @Id
+    @JsonIgnore
     String id;
 
     //Current bet in betting round
     int currentBet
+
+    @JsonIgnore
     boolean firstCycle
 
     BettingRound(){

@@ -13,6 +13,7 @@ import poker.service.GameService
  * Created by matt on 21/05/2014.
  */
 @RestController
+@RequestMapping("/games")
 class GameController {
 
     @Autowired
@@ -23,7 +24,7 @@ class GameController {
      * @param players
      * @return
      */
-    @RequestMapping(value="/games",method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     Game createGame(@RequestParam("player") List<String> players, @RequestParam(value="startingFunds",required = false) Integer startingFunds) {
 
         //TODO: Remove
@@ -40,7 +41,7 @@ class GameController {
      * List all Games
      * @return
      */
-    @RequestMapping(value="/games",method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     List<Game> getGames() {
 
         return gameService.getAllGames()
@@ -50,7 +51,7 @@ class GameController {
      * Get a Game
      * @return
      */
-    @RequestMapping(value="/games/{gameId}",method = RequestMethod.GET)
+    @RequestMapping(value="/{gameId}",method = RequestMethod.GET)
     Game getGame(@PathVariable String gameId) {
 
         return gameService.loadGame(gameId)
@@ -60,7 +61,7 @@ class GameController {
      * Start a game
      * @param gameId
      */
-    @RequestMapping(value="/games/{gameId}",method = RequestMethod.POST)
+    @RequestMapping(value="/{gameId}",method = RequestMethod.POST)
     void startGame(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)

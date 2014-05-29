@@ -1,5 +1,6 @@
 package poker.domain.player
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.annotation.Id
@@ -21,6 +22,7 @@ class Player {
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     @Id
+    @JsonIgnore
     String id
 
     String name
@@ -38,7 +40,7 @@ class Player {
     //Round specific
     boolean hasFolded
 
-    //TODO Always goes to 0 at end of round
+    //Always goes to 0 at end of round
     int amountBet
 
 

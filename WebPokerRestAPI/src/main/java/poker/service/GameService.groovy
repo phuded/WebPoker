@@ -58,8 +58,11 @@ class GameService {
         return gameRepository.findAll()
     }
 
-
-    // Play the next round
+    /**
+     * Begin the Game TODO: Round Limited currently
+     * @param game
+     * @return
+     */
     def startNextRound(Game game){
 
         if(game.rounds.size() < Game.tempRoundLimit){

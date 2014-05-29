@@ -1,5 +1,6 @@
 package poker.domain.game.round
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 import poker.domain.card.Card
 import poker.domain.card.Deck
@@ -21,6 +22,7 @@ import poker.domain.player.Player
 class Round {
 
     @Id
+    @JsonIgnore
     String id;
 
     // Up for 5 cards
