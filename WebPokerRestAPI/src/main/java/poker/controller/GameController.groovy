@@ -24,14 +24,14 @@ class GameController {
      * @return
      */
     @RequestMapping(value="/games",method = RequestMethod.POST)
-    Game createGame(@RequestParam("players") List<String> players, @RequestParam(value="amount",required = false) Long amount) {
+    Game createGame(@RequestParam("player") List<String> players, @RequestParam(value="startingFunds",required = false) Integer startingFunds) {
 
         //TODO: Remove
         gameService.clearDatabase()
 
         println players
 
-        Game game = gameService.createNewGame(players,amount)
+        Game game = gameService.createNewGame(players,startingFunds)
 
         return game;
     }
