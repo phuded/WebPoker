@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
 import poker.domain.game.round.Round
-import poker.repository.CardRepository
 import poker.repository.GameRepository
-import poker.repository.PlayerRepository
 
 /**
  * Created by matt on 21/05/2014.
@@ -16,13 +14,6 @@ class GameService {
 
     @Autowired
     GameRepository gameRepository
-
-    @Autowired
-    CardRepository cardRepository
-
-    @Autowired
-    private PlayerRepository playerRepository
-
 
     @Autowired
     RoundService roundService
@@ -82,8 +73,6 @@ class GameService {
 
     //TODO Sort
     def clearDatabase(){
-        cardRepository.deleteAll()
         gameRepository.deleteAll()
-        playerRepository.deleteAll()
     }
 }

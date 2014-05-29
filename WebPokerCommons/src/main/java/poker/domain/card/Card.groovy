@@ -1,8 +1,5 @@
 package poker.domain.card
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import org.springframework.data.annotation.Id
-
 /**
  * Created with IntelliJ IDEA.
  * User: matthew.carter
@@ -11,10 +8,6 @@ import org.springframework.data.annotation.Id
  * To change this template use File | Settings | File Templates.
  */
 class Card {
-
-    @Id
-    @JsonIgnore
-    String id
 
     Suit suit
     CardValue cardValue

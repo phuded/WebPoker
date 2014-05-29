@@ -1,7 +1,6 @@
 package poker.domain.game.round
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.springframework.data.annotation.Id
 import poker.domain.card.Card
 import poker.domain.card.Deck
 import poker.domain.game.Game
@@ -10,6 +9,7 @@ import poker.domain.game.bettinground.FirstRound
 import poker.domain.game.bettinground.FlopRound
 import poker.domain.game.bettinground.RiverCardRound
 import poker.domain.game.bettinground.TurnCardRound
+import poker.domain.hand.Hand
 import poker.domain.player.Player
 
 /**
@@ -21,17 +21,15 @@ import poker.domain.player.Player
  */
 class Round {
 
-    @Id
-    @JsonIgnore
-    String id;
-
     // Up for 5 cards
     List<Card> roundCards
 
     //Players in round
+    @JsonIgnore
     List<Player> roundPlayers
 
     //Winners
+    @JsonIgnore
     List<Player> winners
 
     //Pot
@@ -39,6 +37,12 @@ class Round {
 
     //Betting rounds
     List<BettingRound> bettingRounds
+
+
+    //Winning Player Names
+    List<String> winningPlayerNames = []
+
+    Hand winningHand
 
     //Default Constructor
     Round(){}

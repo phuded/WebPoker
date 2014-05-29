@@ -45,10 +45,20 @@ class RoundService {
         executeRound(game, round)
 
         //Detect winners
-        detectRoundWinners(game,round)
+        detectRoundWinners(round)
+
+        println "Saving..."
+        gameRepository.save(game)
 
         //Pay Winners
-        payRoundWinners(game,round)
+        payRoundWinners(round)
+
+        //TODO CLOSE ROUND -> Remove persisted Players etc
+        //Close the round
+        closeRound(round)
+
+        println "Saving... final"
+        gameRepository.save(game)
 
         //Finish and play next round
         gameService.startNextRound(game)
@@ -74,7 +84,7 @@ class RoundService {
      * @param round
      * @return
      */
-    def detectRoundWinners(Game game,Round round){
+    def detectRoundWinners(Round round){
 
         if(round.roundPlayers.size() > 1){
             println "================================"
@@ -99,9 +109,6 @@ class RoundService {
 
         println "MAIN: Winners: " + round.winners
 
-
-        println "Saving..."
-        gameRepository.save(game)
     }
 
     /**
@@ -110,13 +117,28 @@ class RoundService {
      * @param round
      * @return
      */
-    def payRoundWinners(Game game, Round round){
+    def payRoundWinners(Round round){
         //Seems to work
         round.winners.each { Player winner ->
             winner.funds += (round.pot/round.winners.size())
         }
 
-        println "Saving... final"
-        gameRepository.save(game)
+    }
+
+    /**
+     * Close the round
+     */
+    def closeRound(Round round){
+        //Set Player Names and Best Hand
+        round.winners.each {Player winner ->
+            round.winningPlayerNames << winner.name
+        }
+
+        round.winningHand = round.winners.get(0).bestHand
+
+        //Clear the objects
+        round.winners = null
+        round.roundPlayers = null
+
     }
 }

@@ -1,9 +1,7 @@
 package poker.domain.player
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.data.annotation.Id
 import poker.domain.card.Card
 import poker.domain.hand.Hand
 
@@ -20,10 +18,6 @@ class Player {
     private static int startingPlayerFunds = 200
 
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
-
-    @Id
-    @JsonIgnore
-    String id
 
     String name
     // First 2 cards

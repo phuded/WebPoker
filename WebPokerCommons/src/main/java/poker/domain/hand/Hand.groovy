@@ -11,9 +11,6 @@ import poker.domain.card.Card
  */
 class Hand {
 
-    //@Id
-    String id;
-
     HandType handType
     List<Card> cards
     //Cards not included in hand

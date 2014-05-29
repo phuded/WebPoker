@@ -32,7 +32,7 @@ class BettingRoundService {
         playBettingRound(bettingRound,round)
 
         //Finish round - and check if only 1 player remains
-        return hasRoundCompleted(game,round,bettingRound)
+        return hasParentRoundCompleted(game,round,bettingRound)
     }
 
     /**
@@ -74,7 +74,7 @@ class BettingRoundService {
      */
     public executePlayerBet(Player player, BettingRound bettingRound){
         //Must be first
-        if(bettingRound.currentBet == 0){
+        if(bettingRound.amountBetPerPlayer == 0){
             print player.name + " - Place Bet: "
 
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
@@ -83,17 +83,17 @@ class BettingRoundService {
 
             //Make bet and set new current bet
             player.makeBet(betAmount.toInteger())
-            bettingRound.currentBet += betAmount.toInteger()
+            bettingRound.amountBetPerPlayer += betAmount.toInteger()
         }
         //Next player
         else{
 
-            if(player.amountBet == bettingRound.currentBet){
+            if(player.amountBet == bettingRound.amountBetPerPlayer){
                 //Skip!!
             }
             else{
                 //Give player options..
-                print player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.currentBet + "):"
+                print player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.amountBetPerPlayer + "):"
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
 
@@ -103,14 +103,14 @@ class BettingRoundService {
                     player.hasFolded = true
                 }
                 else if(betAmount == "c"){
-                    player.makeBet(bettingRound.currentBet)
+                    player.makeBet(bettingRound.amountBetPerPlayer)
                 }
                 else{
                     //Add raise to current bet
-                    bettingRound.currentBet += betAmount.toInteger()
+                    bettingRound.amountBetPerPlayer += betAmount.toInteger()
 
                     //Player bets difference
-                    player.makeBet(bettingRound.currentBet)
+                    player.makeBet(bettingRound.amountBetPerPlayer)
 
                 }
             }
@@ -143,7 +143,7 @@ class BettingRoundService {
         boolean continueBetting = false
         players.each{ Player player ->
 
-            if(player.amountBet != bettingRound.currentBet){
+            if(player.amountBet != bettingRound.amountBetPerPlayer){
 
                 //Must continue betting
                 continueBetting = true
@@ -154,13 +154,13 @@ class BettingRoundService {
     }
 
     /**
-     * Complete the betting round and check if it has completed?
+     * Complete the betting round and check the overall round has completed
      * @param game
      * @param round
      * @param bettingRound
      * @return
      */
-    boolean hasRoundCompleted(Game game, Round round, BettingRound bettingRound){
+    boolean hasParentRoundCompleted(Game game, Round round, BettingRound bettingRound){
         //Get the pot
         int bettingRoundPot = bettingRound.getPot(game)
 
