@@ -35,14 +35,19 @@ class RoundService {
      * @param round
      * @return
      */
-    def playRound(Game game, Round round){
+    def executeRound(Game game, Round round){
 
         println "================================"
         println "MAIN: New Round - " + game.rounds.size()
         println "================================"
 
+        round.isCurrentRound = true
+
+        println "Saving round status"
+        gameRepository.save(game)
+
         //Player betting rounds
-        executeRound(game, round)
+        playRound(game, round)
 
         //Detect winners
         detectRoundWinners(round)
@@ -53,7 +58,6 @@ class RoundService {
         //Pay Winners
         payRoundWinners(round)
 
-        //TODO CLOSE ROUND -> Remove persisted Players etc
         //Close the round
         closeRound(round)
 
@@ -65,13 +69,15 @@ class RoundService {
     }
 
     //Play the betting rounds
-    def executeRound(Game game, Round round){
+    def playRound(Game game, Round round){
 
         //Loop through each betting round
         round.bettingRounds.any { BettingRound currentBettingRound ->
 
             //Can break out of round as round might finish before all cards are dealt (1 player remaining)
-            return bettingRoundService.executeBettingRound(game,round,currentBettingRound)
+            boolean roundComplete = bettingRoundService.executeBettingRound(game,round,currentBettingRound)
+
+            return roundComplete
         }
 
         println "Saving after round..."
@@ -127,6 +133,7 @@ class RoundService {
 
     /**
      * Close the round
+     * TODO: Move to round?
      */
     def closeRound(Round round){
         //Set Player Names and Best Hand
@@ -140,5 +147,7 @@ class RoundService {
         round.winners = null
         round.roundPlayers = null
 
+        //Switch flag
+        round.isCurrentRound = false
     }
 }

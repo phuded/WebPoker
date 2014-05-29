@@ -25,14 +25,24 @@ class BettingRoundService {
      * @return
      */
     boolean executeBettingRound(Game game, Round round, BettingRound bettingRound){
+        //Set as current
+        bettingRound.currentBettingRound = true
+
+        println "Saving betting round status"
+        gameRepository.save(game)
+
+
         //Deal cards
         bettingRound.dealCards(game,round)
 
         //Bet!
         playBettingRound(bettingRound,round)
 
+        //Close
+        closeBettingRound(game,round,bettingRound)
+
         //Finish round - and check if only 1 player remains
-        return hasParentRoundCompleted(game,round,bettingRound)
+        return hasParentRoundCompleted(round)
     }
 
     /**
@@ -154,13 +164,13 @@ class BettingRoundService {
     }
 
     /**
-     * Complete the betting round and check the overall round has completed
+     * Complete the betting round
      * @param game
      * @param round
      * @param bettingRound
      * @return
      */
-    boolean hasParentRoundCompleted(Game game, Round round, BettingRound bettingRound){
+    boolean closeBettingRound(Game game, Round round, BettingRound bettingRound){
         //Get the pot
         int bettingRoundPot = bettingRound.getPot(game)
 
@@ -172,10 +182,21 @@ class BettingRoundService {
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
-        println "Saving..."
+        bettingRound.currentBettingRound = false
+
+        println "Saving after betting round..."
         gameRepository.save(game)
 
+    }
+
+    /**
+     * Check if thee parent round has finished
+     * @param round
+     * @return
+     */
+    boolean hasParentRoundCompleted(Round round){
         //Check if > 1 player left
         return (round.roundPlayers.size()>1)?false:true
     }
+
 }

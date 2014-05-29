@@ -20,9 +20,12 @@ abstract class BettingRound {
     @JsonIgnore
     boolean firstCycle
 
+    boolean currentBettingRound
+
     BettingRound(){
         amountBetPerPlayer = 0
         firstCycle = true
+        currentBettingRound = false
     }
 
     abstract dealCards(Game game, Round parentRound)

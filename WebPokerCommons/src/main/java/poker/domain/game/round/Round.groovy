@@ -44,11 +44,14 @@ class Round {
 
     Hand winningHand
 
+    boolean isCurrentRound
+
     //Default Constructor
     Round(){}
 
     Round(Game game){
         //TODO: SORT THIS STUFF OUT
+        isCurrentRound = false
 
         //Create/replace deck and shuffle
         game.deck = new Deck()

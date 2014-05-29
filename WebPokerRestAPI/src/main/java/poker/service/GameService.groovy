@@ -67,7 +67,7 @@ class GameService {
             println "Saving... new round"
             gameRepository.save(game)
 
-            roundService.playRound(game, round)
+            roundService.executeRound(game, round)
         }
     }
 
