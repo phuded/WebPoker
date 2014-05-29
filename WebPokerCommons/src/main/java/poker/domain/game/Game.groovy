@@ -27,7 +27,7 @@ class Game {
     //Default Constructor
     Game(){}
 
-    Game(List<String> playerNames, int startingPlayerFunds){
+    Game(List<String> playerNames, Integer startingPlayerFunds){
         this.players = []
         this.rounds = []
 
@@ -35,7 +35,7 @@ class Game {
         createPlayers(playerNames,startingPlayerFunds)
     }
 
-    def createPlayers(List<String> playerNames,int startingPlayerFunds){
+    def createPlayers(List<String> playerNames, Integer startingPlayerFunds){
        for (String name: playerNames){
            players << new Player(name,startingPlayerFunds)
        }

@@ -33,7 +33,7 @@ class GameService {
      * @param startingFunds
      * @return
      */
-    Game createNewGame(List<String> playerNames, int startingFunds){
+    Game createNewGame(List<String> playerNames, Integer startingFunds){
         Game game = new Game(playerNames,startingFunds)
 
         gameRepository.save(game)
