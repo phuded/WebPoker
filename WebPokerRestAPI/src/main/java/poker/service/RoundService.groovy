@@ -58,9 +58,6 @@ class RoundService {
 
         println "Saving... final"
         gameRepository.save(game)
-
-        //Finish and play next round
-        gameService.createNextRound(game)
     }
 
     //Play the betting rounds

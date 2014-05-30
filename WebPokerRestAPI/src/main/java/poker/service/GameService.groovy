@@ -50,11 +50,11 @@ class GameService {
     }
 
     /**
-     * Begin the Game TODO: Round Limited currently
+     * Create a new round and set it to current TODO: Round Limited currently
      * @param game
      * @return
      */
-    def createNextRound(Game game){
+    Round createNextRound(Game game){
 
         if(game.rounds.size() < Game.tempRoundLimit){
             //Reset players cards and hands
@@ -69,23 +69,27 @@ class GameService {
 
             println "Saving round status"
             gameRepository.save(game)
+
+            //TODO...
+            roundService.executeRound(game, round)
+
+            return round
         }
     }
 
     /**
-     * Find and play the current round
+     * Find the current round
      * @param game
      * @return
      */
-    def findAndPlayRound(Game game){
+    Round findCurrentRound(Game game){
         //Get the current round
         Round round = game.rounds.find {Round round ->
-           round.isCurrentRound
+            round.isCurrentRound
         }
 
-        roundService.executeRound(game, round)
+        return round
     }
-
 
     //TODO Sort
     def clearDatabase(){

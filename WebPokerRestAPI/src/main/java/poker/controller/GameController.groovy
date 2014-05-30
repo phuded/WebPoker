@@ -30,8 +30,6 @@ class GameController {
         //TODO: Remove
         gameService.clearDatabase()
 
-        println players
-
         Game game = gameService.createNewGame(players,startingFunds)
 
         return game;
@@ -56,35 +54,5 @@ class GameController {
 
         return gameService.loadGame(gameId)
     }
-
-    /**
-     * Start a game
-     * @param gameId
-     */
-    @RequestMapping(value="/{gameId}",method = RequestMethod.POST)
-    void startGame(@PathVariable String gameId){
-
-        Game game = gameService.loadGame(gameId)
-
-        gameService.createNextRound(game)
-
-    }
-
-    /**
-     * TODO: Move this
-     * Find and start the round
-     * @param gameId
-     */
-    @RequestMapping(value="/{gameId}/round",method = RequestMethod.POST)
-    void startRound(@PathVariable String gameId){
-
-        Game game = gameService.loadGame(gameId)
-
-        gameService.findAndPlayRound(game)
-
-    }
-
-
-
 
 }
