@@ -21,7 +21,7 @@ class TurnCardRound extends BettingRound{
         parentRound.roundCards.add(turnCard)
 
         //Add to each players hand
-        parentRound.roundPlayers.each { Player player ->
+        game.getNonFoldedPlayers().each { Player player ->
             //Add river card to player hand
             player.addGameCards(turnCard)
             println "MAIN: Player: " + player.name + " hand after turn card: " + player.allCards

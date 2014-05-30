@@ -24,10 +24,6 @@ class Round {
     // Up for 5 cards
     List<Card> roundCards
 
-    //Players in round
-    @JsonIgnore
-    List<Player> roundPlayers
-
     //Winners
     @JsonIgnore
     List<Player> winners
@@ -56,10 +52,6 @@ class Round {
         //Create/replace deck and shuffle
         game.deck = new Deck()
         game.deck.shuffle()
-
-        //Add players to round
-        roundPlayers = []
-        roundPlayers.addAll(game.players)
 
         //Prepare round cards
         roundCards = []

@@ -21,7 +21,7 @@ class RiverCardRound extends BettingRound{
         parentRound.roundCards.add(finalCard)
 
         //Add to each players hand
-        parentRound.roundPlayers.each { Player player ->
+        game.getNonFoldedPlayers().each { Player player ->
             //Add river card to player hand
             player.addGameCards(finalCard)
             println "MAIN: " + player.name + " - After river card: " + player.allCards

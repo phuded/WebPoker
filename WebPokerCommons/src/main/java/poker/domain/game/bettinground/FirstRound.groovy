@@ -14,10 +14,10 @@ import poker.domain.player.Player
 class FirstRound extends BettingRound{
 
     @Override
-    def dealCards(Game game, Round parentRound) {
+    def dealCards(Game game, Round round) {
 
         //Deal 2 cards to each player
-        parentRound.roundPlayers.each { Player player ->
+        game.getNonFoldedPlayers().each { Player player ->
             //Player gets two cards
             dealInitialCardsToPlayer(game, player)
 

@@ -50,7 +50,7 @@ class RoundService {
         playRound(game, round)
 
         //Detect winners
-        detectRoundWinners(round)
+        detectRoundWinners(game,round)
 
         println "Saving..."
         gameRepository.save(game)
@@ -90,27 +90,31 @@ class RoundService {
      * @param round
      * @return
      */
-    def detectRoundWinners(Round round){
+    def detectRoundWinners(Game game, Round round){
 
-        if(round.roundPlayers.size() > 1){
+
+        if(game.getNonFoldedPlayers().size() > 1){
             println "================================"
 
             //Detect hands...
-            round.roundPlayers.each{ Player player ->
+            game.getNonFoldedPlayers().each{ Player player ->
+
+                //Get the player's hands
                 handDetector.detectHand(player)
+
                 // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
-                println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
+                println "MAIN: " + player.name + " - Best hand: " + player.bestHand
 
             }
 
             println "================================"
 
             //Get winner
-            round.winners = roundWinnerDetector.detectWinners(round.roundPlayers)
+            round.winners = roundWinnerDetector.detectWinners(game.getNonFoldedPlayers())
         }
         else{
             //Winner is last player
-            round.winners =  [round.roundPlayers.first()]
+            round.winners = [game.getNonFoldedPlayers().first()]
         }
 
         println "MAIN: Winners: " + round.winners
@@ -145,7 +149,6 @@ class RoundService {
 
         //Clear the objects
         round.winners = null
-        round.roundPlayers = null
 
         //Switch flag
         round.isCurrentRound = false

@@ -31,18 +31,17 @@ class BettingRoundService {
         println "Saving betting round status"
         gameRepository.save(game)
 
-
         //Deal cards
         bettingRound.dealCards(game,round)
 
         //Bet!
-        playBettingRound(bettingRound,round)
+        playBettingRound(game, bettingRound)
 
         //Close
         closeBettingRound(game,round,bettingRound)
 
         //Finish round - and check if only 1 player remains
-        return hasParentRoundCompleted(round)
+        return hasParentRoundCompleted(game)
     }
 
     /**
@@ -50,13 +49,13 @@ class BettingRoundService {
      * @param bettingRound
      * @param parentRound
      */
-    def playBettingRound(BettingRound bettingRound, Round parentRound){
+    def playBettingRound(Game game,BettingRound bettingRound){
 
         //Do this while all the active players are not in-line or folded
-        while(playersStillBetting(bettingRound, parentRound.roundPlayers)){
+        while(playersStillBetting(game,bettingRound)){
 
             //Run a cycle over every player
-            executeBettingCycle(parentRound,bettingRound)
+            executeBettingCycle(game,bettingRound)
 
         }
     }
@@ -67,8 +66,8 @@ class BettingRoundService {
      * @param bettingRound
      * @return
      */
-    public executeBettingCycle(Round parentRound, BettingRound bettingRound){
-        parentRound.roundPlayers.each{ Player player ->
+    public executeBettingCycle(Game game, BettingRound bettingRound){
+        game.getNonFoldedPlayers().each{ Player player ->
 
             //Player makes bet
             executePlayerBet(player,bettingRound)
@@ -136,7 +135,7 @@ class BettingRoundService {
      * @param players
      * @return
      */
-    private boolean playersStillBetting(BettingRound bettingRound, List<Player> players){
+    private boolean playersStillBetting(Game game, BettingRound bettingRound){
 
         //Workaround to ensure evaluates to 'true' on first pass
         if(bettingRound.firstCycle){
@@ -145,13 +144,9 @@ class BettingRoundService {
         }
 
 
-        //TODO: REMOVES PLAYER FROM ROUND -> LOOK AT
-        //Remove folded players
-        players.removeAll{it.hasFolded}
-
         // Do not keep betting
         boolean continueBetting = false
-        players.each{ Player player ->
+        game.getNonFoldedPlayers().each{ Player player ->
 
             if(player.amountBet != bettingRound.amountBetPerPlayer){
 
@@ -194,9 +189,9 @@ class BettingRoundService {
      * @param round
      * @return
      */
-    boolean hasParentRoundCompleted(Round round){
+    boolean hasParentRoundCompleted(Game game){
         //Check if > 1 player left
-        return (round.roundPlayers.size()>1)?false:true
+        return (game.getNonFoldedPlayers().size()>1)?false:true
     }
 
 }

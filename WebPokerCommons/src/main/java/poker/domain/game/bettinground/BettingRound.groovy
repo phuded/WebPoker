@@ -28,11 +28,12 @@ abstract class BettingRound {
         currentBettingRound = false
     }
 
-    abstract dealCards(Game game, Round parentRound)
+    abstract dealCards(Game game, Round round)
 
     // Get the total pot from the betting round - include folded players (use game players)
     def getPot(Game game){
         int roundPot = 0
+
         //All players (current and folded)
         game.players.each{Player player ->
             roundPot += player.amountBet

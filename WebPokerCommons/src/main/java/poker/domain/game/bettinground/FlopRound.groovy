@@ -21,7 +21,7 @@ class FlopRound extends BettingRound{
         parentRound.roundCards.addAll(flop)
 
         //Add flop to each player's hands
-        parentRound.roundPlayers.each { Player player ->
+        game.getNonFoldedPlayers().each { Player player ->
             //Add flop to player hand
             player.addGameCards(flop)
 

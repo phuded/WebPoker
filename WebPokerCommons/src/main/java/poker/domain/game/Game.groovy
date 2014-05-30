@@ -43,4 +43,19 @@ class Game {
            players << new Player(name,startingPlayerFunds)
        }
     }
+
+    /**
+     * Get a list of non folded players
+     * @return
+     */
+    @JsonIgnore
+    List<Player> getNonFoldedPlayers(){
+
+       def nonFoldedPlayers = players.findAll { Player player ->
+           !player.hasFolded
+       }
+
+       return nonFoldedPlayers
+    }
+
 }
