@@ -54,7 +54,7 @@ class GameService {
      * @param game
      * @return
      */
-    def startNextRound(Game game){
+    def createNextRound(Game game){
 
         if(game.rounds.size() < Game.tempRoundLimit){
             //Reset players cards and hands
@@ -64,12 +64,28 @@ class GameService {
             Round round = new Round(game)
             game.rounds << round
 
-            println "Saving... new round"
-            gameRepository.save(game)
+            //Set to current
+            round.isCurrentRound = true
 
-            roundService.executeRound(game, round)
+            println "Saving round status"
+            gameRepository.save(game)
         }
     }
+
+    /**
+     * Find and play the current round
+     * @param game
+     * @return
+     */
+    def findAndPlayRound(Game game){
+        //Get the current round
+        Round round = game.rounds.find {Round round ->
+           round.isCurrentRound
+        }
+
+        roundService.executeRound(game, round)
+    }
+
 
     //TODO Sort
     def clearDatabase(){

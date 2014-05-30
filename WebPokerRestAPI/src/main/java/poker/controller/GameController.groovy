@@ -66,9 +66,25 @@ class GameController {
 
         Game game = gameService.loadGame(gameId)
 
-        gameService.startNextRound(game)
+        gameService.createNextRound(game)
 
     }
+
+    /**
+     * TODO: Move this
+     * Find and start the round
+     * @param gameId
+     */
+    @RequestMapping(value="/{gameId}/round",method = RequestMethod.POST)
+    void startRound(@PathVariable String gameId){
+
+        Game game = gameService.loadGame(gameId)
+
+        gameService.findAndPlayRound(game)
+
+    }
+
+
 
 
 }

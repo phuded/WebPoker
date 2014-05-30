@@ -41,11 +41,6 @@ class RoundService {
         println "MAIN: New Round - " + game.rounds.size()
         println "================================"
 
-        round.isCurrentRound = true
-
-        println "Saving round status"
-        gameRepository.save(game)
-
         //Player betting rounds
         playRound(game, round)
 
@@ -65,7 +60,7 @@ class RoundService {
         gameRepository.save(game)
 
         //Finish and play next round
-        gameService.startNextRound(game)
+        gameService.createNextRound(game)
     }
 
     //Play the betting rounds
