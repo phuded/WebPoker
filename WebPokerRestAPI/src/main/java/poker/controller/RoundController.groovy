@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.exception.PokerException
+import poker.exception.PokerRoundNotFoundException
 import poker.service.GameService
 
 /**
@@ -40,8 +41,9 @@ class RoundController {
 
         List<Round> rounds = game.rounds;
 
-
-        //TODO Check index
+        if(rounds.size() < roundNumber){
+           throw new PokerRoundNotFoundException("No Round found.")
+        }
 
         return rounds.get(--roundNumber);
     }
@@ -59,8 +61,7 @@ class RoundController {
 
         //If there is not a current round
         if(!currentRound){
-            //TODO 404
-            throw new PokerException("No Round created.")
+            throw new PokerRoundNotFoundException("No Current Round.")
         }
 
         return currentRound

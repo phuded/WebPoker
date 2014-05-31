@@ -38,7 +38,7 @@ class RoundService {
     def executeRound(Game game, Round round){
 
         println "================================"
-        println "MAIN: New Round - " + game.rounds.size()
+        println "MAIN: Round - " + round.roundNumber
         println "================================"
 
         //Player betting rounds
