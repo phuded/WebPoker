@@ -28,11 +28,11 @@ class BettingRoundService {
         //Set as current
         bettingRound.currentBettingRound = true
 
-        println "Saving betting round status"
-        gameRepository.save(game)
-
         //Deal cards
         bettingRound.dealCards(game,round)
+
+        println "Saving Betting Round.."
+        gameRepository.save(game)
 
         //Bet!
         playBettingRound(game, bettingRound)
@@ -71,6 +71,9 @@ class BettingRoundService {
 
             //Player makes bet
             executePlayerBet(player,bettingRound)
+
+            println "Saving after Player Bet.."
+            gameRepository.save(game)
 
         }
     }

@@ -18,6 +18,25 @@ class RoundController {
     private GameService gameService
 
     /**
+     * Get the current Round
+     * @param gameId
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    Round getCurrentRound(@PathVariable String gameId){
+
+        Game game = gameService.loadGame(gameId)
+
+        Round currentRound = gameService.findCurrentRound(game);
+
+        //If there is not a current round
+        if(!currentRound){
+            throw new PokerException("No Round created.")
+        }
+
+        return currentRound
+    }
+
+    /**
      * Create a game round
      * @param gameId
      */
@@ -35,25 +54,6 @@ class RoundController {
 
         //Create new Round
         return gameService.createNextRound(game)
-    }
-
-    /**
-     * Get the current Round
-     * @param gameId
-     */
-    @RequestMapping(method = RequestMethod.GET)
-    Round getCurrentRound(@PathVariable String gameId){
-
-        Game game = gameService.loadGame(gameId)
-
-        Round currentRound = gameService.findCurrentRound(game);
-
-        //If is a current round
-        if(!currentRound){
-            throw new PokerException("No Round created.")
-        }
-
-        return currentRound
     }
 
     /**
