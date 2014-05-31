@@ -21,6 +21,10 @@ import poker.domain.player.Player
  */
 class Round {
 
+    int roundNumber
+
+    boolean isCurrentRound
+
     // Up for 5 cards
     List<Card> roundCards
 
@@ -40,13 +44,15 @@ class Round {
 
     Hand winningHand
 
-    boolean isCurrentRound
 
     //Default Constructor
     Round(){}
 
-    Round(Game game){
+    Round(Game game, int roundNumber){
+
         //TODO: SORT THIS STUFF OUT
+        this.roundNumber = roundNumber
+
         isCurrentRound = false
 
         //Create/replace deck and shuffle

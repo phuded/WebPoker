@@ -56,12 +56,14 @@ class GameService {
      */
     Round createNextRound(Game game){
 
-        if(game.rounds.size() < Game.tempRoundLimit){
+        int numberOfRounds = game.rounds.size()
+
+        if(numberOfRounds < Game.tempRoundLimit){
             //Reset players cards and hands
             game.players*.resetBetweenRounds()
 
             //New round and play
-            Round round = new Round(game)
+            Round round = new Round(game, numberOfRounds + 1)
             game.rounds << round
 
             //Set to current

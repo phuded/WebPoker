@@ -18,10 +18,39 @@ class RoundController {
     private GameService gameService
 
     /**
-     * Get the current Round
+     * Get all of the rounds for the game
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.GET)
+    List<Round> getRounds(@PathVariable String gameId){
+
+        Game game = gameService.loadGame(gameId)
+
+        return game.rounds
+    }
+
+    /**
+     * Get the rounds for the game
+     * @param gameId
+     */
+    @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
+    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber){
+
+        Game game = gameService.loadGame(gameId)
+
+        List<Round> rounds = game.rounds;
+
+
+        //TODO Check index
+
+        return rounds.get(--roundNumber);
+    }
+
+    /**
+     * Get the current Round
+     * @param gameId
+     */
+    @RequestMapping(value="/current",method = RequestMethod.GET)
     Round getCurrentRound(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
@@ -30,6 +59,7 @@ class RoundController {
 
         //If there is not a current round
         if(!currentRound){
+            //TODO 404
             throw new PokerException("No Round created.")
         }
 
@@ -49,7 +79,7 @@ class RoundController {
 
         //If is a current round
         if(currentRound){
-            throw new PokerException("Round already created.")
+            throw new PokerException("A current round already exists.")
         }
 
         //Create new Round
@@ -61,7 +91,7 @@ class RoundController {
      * @param gameId
      * @param roundId
      */
-    @RequestMapping(value="/{roundId}",method = RequestMethod.GET)
+    @RequestMapping(value="/{roundId}/play",method = RequestMethod.GET)
     void checkRound(@PathVariable String gameId, @PathVariable String roundId){
 
     }
@@ -71,7 +101,7 @@ class RoundController {
      * @param gameId
      * @param roundId
      */
-    @RequestMapping(value="/{roundId}",method = RequestMethod.POST)
+    @RequestMapping(value="/{roundId}/play",method = RequestMethod.POST)
     void updateRound(@PathVariable String gameId, @PathVariable String roundId, String playerName){
 
     }
