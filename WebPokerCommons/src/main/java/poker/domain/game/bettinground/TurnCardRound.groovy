@@ -28,5 +28,7 @@ class TurnCardRound extends BettingRound{
             player.addGameCards(turnCard)
             println "MAIN: Player: " + player.name + " hand after turn card: " + player.allCards
         }
+
+        areCardsDealt = true
     }
 }

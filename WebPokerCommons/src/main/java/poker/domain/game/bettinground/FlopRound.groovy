@@ -29,5 +29,7 @@ class FlopRound extends BettingRound{
 
             println "MAIN: " + player.name + " - Hand after flop: " + player.allCards
         }
+
+        areCardsDealt = true
     }
 }

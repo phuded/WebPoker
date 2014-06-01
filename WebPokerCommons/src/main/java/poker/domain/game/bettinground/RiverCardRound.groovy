@@ -28,5 +28,7 @@ class RiverCardRound extends BettingRound{
             player.addGameCards(finalCard)
             println "MAIN: " + player.name + " - After river card: " + player.allCards
         }
+
+        areCardsDealt = true
     }
 }

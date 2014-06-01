@@ -25,6 +25,8 @@ class FirstRound extends BettingRound{
 
             println "MAIN: " + player.name + " - Hand after first deal: " + player.allCards
         }
+
+        areCardsDealt = true
     }
 
     // Deal 1st two cards to player
