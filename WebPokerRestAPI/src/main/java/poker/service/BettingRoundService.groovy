@@ -106,9 +106,9 @@ class BettingRoundService {
         round.currentPlayer = firstPlayer.name
 
         //Deal the cards
-        round.bettingRounds.first().dealCards(game,round)
+        nextBettingRound.dealCards(game,round)
 
-        logger.info("Setting next betting round - saving.")
+        logger.info("Set next betting round - saving.")
         gameRepository.save(game)
 
         return nextBettingRound
@@ -124,6 +124,11 @@ class BettingRoundService {
     public makePlayerBet(Player player, BettingRound bettingRound, String bet){
         //Must be first
         if(bettingRound.amountBetPerPlayer == 0){
+
+            //Checking..
+            if(bet == "c") {
+                bet = 0
+            }
 
             //Make bet and set new current bet
             player.makeBet(bet.toInteger())
