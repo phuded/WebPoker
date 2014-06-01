@@ -17,15 +17,25 @@ abstract class BettingRound {
     //Current bet in betting round
     int amountBetPerPlayer
 
+    //Boolean for are cards dealt
+    boolean areCardsDealt
+
     @JsonIgnore
     boolean firstCycle
 
-    boolean currentBettingRound
+    //Is current?
+    boolean isCurrentBettingRound
+
+    //Has finished?
+    boolean hasFinished
 
     BettingRound(){
+        areCardsDealt = false
         amountBetPerPlayer = 0
         firstCycle = true
-        currentBettingRound = false
+
+        isCurrentBettingRound = false
+        hasFinished = false
     }
 
     abstract dealCards(Game game, Round round)

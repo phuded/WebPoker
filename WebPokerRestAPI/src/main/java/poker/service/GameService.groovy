@@ -50,6 +50,20 @@ class GameService {
     }
 
     /**
+     * Find the current round
+     * @param game
+     * @return
+     */
+    Round findCurrentRound(Game game){
+        //Get the current round
+        Round round = game.rounds.find {Round round ->
+            round.isCurrentRound
+        }
+
+        return round
+    }
+
+    /**
      * Create a new round and set it to current TODO: Round Limited currently
      * @param game
      * @return
@@ -69,29 +83,23 @@ class GameService {
             //Set to current
             round.isCurrentRound = true
 
+            //Set first betting round to current
+            round.bettingRounds.first().isCurrentBettingRound = true
+
+            //Set the first player to current
+            game.players.first().isCurrentPlayer = true
+
+            //Deal the cards
+            round.bettingRounds.first().dealCards(game,round)
+
             println "Saving round status"
             gameRepository.save(game)
-
-            //TODO...
-            roundService.executeRound(game, round)
 
             return round
         }
     }
 
-    /**
-     * Find the current round
-     * @param game
-     * @return
-     */
-    Round findCurrentRound(Game game){
-        //Get the current round
-        Round round = game.rounds.find {Round round ->
-            round.isCurrentRound
-        }
 
-        return round
-    }
 
     //TODO Sort
     def clearDatabase(){

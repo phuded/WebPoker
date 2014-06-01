@@ -23,7 +23,11 @@ class Round {
 
     int roundNumber
 
+    //Is current round
     boolean isCurrentRound
+
+    //Has round finished?
+    boolean hasRoundFinished
 
     // Up for 5 cards
     List<Card> roundCards
@@ -38,10 +42,10 @@ class Round {
     //Betting rounds
     List<BettingRound> bettingRounds
 
-
     //Winning Player Names
     List<String> winningPlayerNames = []
 
+    //Winning hand
     Hand winningHand
 
 
@@ -49,11 +53,10 @@ class Round {
     Round(){}
 
     Round(Game game, int roundNumber){
-
-        //TODO: SORT THIS STUFF OUT
         this.roundNumber = roundNumber
 
         isCurrentRound = false
+        hasRoundFinished = false
 
         //Create/replace deck and shuffle
         game.deck = new Deck()

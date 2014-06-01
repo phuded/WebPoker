@@ -13,6 +13,8 @@ import poker.domain.player.Player
  */
 class FirstRound extends BettingRound{
 
+    int bettingRoundNumber = 1
+
     @Override
     def dealCards(Game game, Round round) {
 

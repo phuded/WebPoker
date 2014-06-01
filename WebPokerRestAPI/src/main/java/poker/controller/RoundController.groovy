@@ -7,6 +7,7 @@ import poker.domain.game.round.Round
 import poker.exception.PokerException
 import poker.exception.PokerRoundNotFoundException
 import poker.service.GameService
+import poker.service.RoundService
 
 /**
  * Created by matt on 21/05/2014.
@@ -16,7 +17,10 @@ import poker.service.GameService
 class RoundController {
 
     @Autowired
-    private GameService gameService
+    GameService gameService
+
+    @Autowired
+    RoundService roundService
 
     /**
      * Get all of the rounds for the game
@@ -31,7 +35,27 @@ class RoundController {
     }
 
     /**
-     * Get the rounds for the game
+     * Create a game round
+     * @param gameId
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    Round createNewRound(@PathVariable String gameId){
+
+        Game game = gameService.loadGame(gameId)
+
+        Round currentRound = gameService.findCurrentRound(game);
+
+        //If is a current round
+        if(currentRound){
+            throw new PokerException("A current round already exists.")
+        }
+
+        //Create new Round
+        return gameService.createNextRound(game)
+    }
+
+    /**
+     * Get the round in the game
      * @param gameId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
@@ -67,47 +91,29 @@ class RoundController {
         return currentRound
     }
 
-    /**
-     * Create a game round
-     * @param gameId
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    Round createNewRound(@PathVariable String gameId){
-
-        Game game = gameService.loadGame(gameId)
-
-        Round currentRound = gameService.findCurrentRound(game);
-
-        //If is a current round
-        if(currentRound){
-            throw new PokerException("A current round already exists.")
-        }
-
-        //Create new Round
-        return gameService.createNextRound(game)
-    }
-
-    /**
-     * Get round status -> current player, cards
-     * @param gameId
-     * @param roundId
-     */
-    @RequestMapping(value="/{roundId}/play",method = RequestMethod.GET)
-    void checkRound(@PathVariable String gameId, @PathVariable String roundId){
-
-    }
 
     /**
      * Make bets, fold etc
      * @param gameId
      * @param roundId
      */
-    @RequestMapping(value="/{roundId}/play",method = RequestMethod.POST)
-    void updateRound(@PathVariable String gameId, @PathVariable String roundId, String playerName){
+    @RequestMapping(value="/{roundNumber}",method = RequestMethod.POST)
+    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String player, @RequestParam String bet){
+
+        Game game = gameService.loadGame(gameId)
+
+        List<Round> rounds = game.rounds;
+
+        if(rounds.size() < roundNumber){
+            throw new PokerRoundNotFoundException("No Round found.")
+        }
+
+        Round round = rounds.get(--roundNumber);
+
+        //Update the round
+        return roundService.updateRound(game,round,player, bet)
 
     }
-
-
 
 
 }

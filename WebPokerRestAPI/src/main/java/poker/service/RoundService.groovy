@@ -6,6 +6,7 @@ import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
 import poker.domain.player.Player
+import poker.exception.PokerException
 import poker.repository.GameRepository
 
 /**
@@ -23,66 +24,88 @@ class RoundService {
     @Autowired
     RoundWinnerDetector roundWinnerDetector
 
-    @Autowired
-    GameService gameService
 
     @Autowired
     BettingRoundService bettingRoundService
 
     /**
-     * Pay the round of poker
+     * Update the round
      * @param game
      * @param round
+     * @param player
+     * @param amountBet
      * @return
      */
-    def executeRound(Game game, Round round){
+    Round updateRound(Game game, Round round, String player, String bet){
 
-        println "================================"
-        println "MAIN: Round - " + round.roundNumber
-        println "================================"
-
-        //Player betting rounds
-        playRound(game, round)
-
-        //Detect winners
-        detectRoundWinners(game,round)
-
-        println "Saving..."
-        gameRepository.save(game)
-
-        //Pay Winners
-        payRoundWinners(round)
-
-        //Close the round
-        closeRound(round)
-
-        println "Saving... final"
-        gameRepository.save(game)
-    }
-
-    //Play the betting rounds
-    def playRound(Game game, Round round){
-
-        //Loop through each betting round
-        round.bettingRounds.any { BettingRound currentBettingRound ->
-
-            //Can break out of round as round might finish before all cards are dealt (1 player remaining)
-            boolean roundComplete = bettingRoundService.executeBettingRound(game,round,currentBettingRound)
-
-            return roundComplete
+        //Check if round finished
+        if(round.hasRoundFinished){
+            throw new PokerException("Round already finished")
         }
 
-        println "Saving after round..."
-        gameRepository.save(game)
+        //Get Current Betting Round
+        BettingRound currentBettingRound = bettingRoundService.getCurrentBettingRound(round)
+
+        //Get current player
+        Player currentPlayer = bettingRoundService.getCurrentPlayer(game)
+
+        if(currentPlayer.name == player){
+
+            //Actually Bet
+            bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, bet)
+
+            //Check if betting round finished
+            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game,currentBettingRound)
+
+            if(bettingRoundFinished){
+                //Finish the betting round
+                bettingRoundService.finishBettingRound(game,round,currentBettingRound)
+
+                //Check if only one player left
+                if(onePlayerRemaining(game)){
+                    //Finish the round
+                    finishRound(game, round)
+                }
+                else{
+                    //Set next betting round
+                    BettingRound nextBettingRound = bettingRoundService.setNextBettingRound(game,round,currentBettingRound)
+
+                    println "Set next betting round. Saving.."
+                    gameRepository.save(game)
+
+                    //If last betting round
+                    if(nextBettingRound == null){
+                       //Finish the round
+                      finishRound(game,round)
+                    }
+                }
+            }
+            else{
+
+                //Make next person current player
+                bettingRoundService.setNextPlayer(game)
+
+                println "Set next player and saving.."
+                gameRepository.save(game)
+            }
+
+            return round
+
+        }
+        else{
+            throw new PokerException("Invalid player")
+        }
+
     }
 
+
     /**
-     * Detect the round winner(s)
+     * Finish the round (and detect winners)
      * @param game
      * @param round
      * @return
      */
-    def detectRoundWinners(Game game, Round round){
+    def finishRound(Game game, Round round){
 
 
         if(game.getNonFoldedPlayers().size() > 1){
@@ -111,27 +134,13 @@ class RoundService {
 
         println "MAIN: Winners: " + round.winners
 
-    }
 
-    /**
-     * Pay the winner(s) of the round
-     * @param game
-     * @param round
-     * @return
-     */
-    def payRoundWinners(Round round){
-        //Seems to work
+        //Pay winners
         round.winners.each { Player winner ->
             winner.funds += (round.pot/round.winners.size())
         }
 
-    }
-
-    /**
-     * Close the round
-     * TODO: Move to round?
-     */
-    def closeRound(Round round){
+        //Close the round
         //Set Player Names and Best Hand
         round.winners.each {Player winner ->
             round.winningPlayerNames << winner.name
@@ -144,5 +153,21 @@ class RoundService {
 
         //Switch flag
         round.isCurrentRound = false
+
+        round.hasRoundFinished = true
+
+        println "Saving after round..."
+        gameRepository.save(game)
     }
+
+    /**
+     * Check if thee parent round has finished
+     * @param round
+     * @return
+     */
+    boolean onePlayerRemaining(Game game){
+        //Check if > 1 player left
+        return (game.getNonFoldedPlayers().size()>1)?false:true
+    }
+
 }

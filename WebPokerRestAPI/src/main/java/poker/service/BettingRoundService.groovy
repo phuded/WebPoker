@@ -18,84 +18,105 @@ class BettingRoundService {
     GameRepository gameRepository
 
     /**
-     * Create the Betting round - Start,Flop, River etc
-     * @param game
+     * Get the current betting round
      * @param round
-     * @param bettingRound
      * @return
      */
-    boolean executeBettingRound(Game game, Round round, BettingRound bettingRound){
-        //Set as current
-        bettingRound.currentBettingRound = true
+    BettingRound getCurrentBettingRound(Round round){
+      BettingRound currentBettingRound = round.bettingRounds.find { BettingRound bettingRound ->
+          bettingRound.isCurrentBettingRound
+      }
 
-        //Deal cards
-        bettingRound.dealCards(game,round)
-
-        println "Saving Betting Round.."
-        gameRepository.save(game)
-
-        //Bet!
-        playBettingRound(game, bettingRound)
-
-        //Close
-        closeBettingRound(game,round,bettingRound)
-
-        //Finish round - and check if only 1 player remains
-        return hasParentRoundCompleted(game)
+      return currentBettingRound
     }
 
     /**
-     * Bet in betting round
-     * @param bettingRound
-     * @param parentRound
-     */
-    def playBettingRound(Game game,BettingRound bettingRound){
-
-        //Do this while all the active players are not in-line or folded
-        while(playersStillBetting(game,bettingRound)){
-
-            //Run a cycle over every player
-            executeBettingCycle(game,bettingRound)
-
-        }
-    }
-
-    /**
-     * Run a betting cycle
-     * @param parentRound
-     * @param bettingRound
+     * Get the current player
+     * @param game
      * @return
      */
-    public executeBettingCycle(Game game, BettingRound bettingRound){
-        game.getNonFoldedPlayers().each{ Player player ->
-
-            //Player makes bet
-            executePlayerBet(player,bettingRound)
-
-            println "Saving after Player Bet.."
-            gameRepository.save(game)
-
+    Player getCurrentPlayer(Game game){
+        Player activePlayer =game.players.find {Player player ->
+            player.isCurrentPlayer
         }
+
+        return activePlayer
     }
 
     /**
-     * One player bets
+     * Set the next player
+     * @param game
+     * @return
+     */
+    void setNextPlayer(Game game){
+        //Get the player
+        Player player = getCurrentPlayer(game)
+
+        //Set inactive
+        player.isCurrentPlayer = false
+
+        //Get the index
+        int playerInx = game.getNonFoldedPlayers().indexOf(player)
+
+        //Add one
+        playerInx++
+
+        if(playerInx == game.getNonFoldedPlayers().size()) {
+            //Reset
+            player = game.getNonFoldedPlayers().get(0)
+        }
+        else {
+            //Get the next
+            player = game.getNonFoldedPlayers().get(playerInx)
+        }
+
+        //Set active
+        player.isCurrentPlayer = true
+
+    }
+
+    /**
+     * Set the next betting round
+     * @param game
+     * @return
+     */
+    BettingRound setNextBettingRound(Game game,Round round, BettingRound currentBettingRound){
+
+        if(currentBettingRound.bettingRoundNumber == 4){
+            return null
+        }
+
+        //Get the next
+        BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.bettingRoundNumber)
+
+        //Set next as current
+        nextBettingRound.isCurrentBettingRound = true
+
+        //Set the first player to current
+        game.players.first().isCurrentPlayer = true
+
+        //Deal the cards
+        round.bettingRounds.first().dealCards(game,round)
+
+        return nextBettingRound
+    }
+
+
+    /**
+     * Perform Bet
      * @param player
      * @param bettingRound
      * @return
      */
-    public executePlayerBet(Player player, BettingRound bettingRound){
+    public makePlayerBet(Player player, BettingRound bettingRound, String bet){
         //Must be first
         if(bettingRound.amountBetPerPlayer == 0){
-            print player.name + " - Place Bet: "
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
-
-            int betAmount = br.readLine().toInteger()
 
             //Make bet and set new current bet
-            player.makeBet(betAmount.toInteger())
-            bettingRound.amountBetPerPlayer += betAmount.toInteger()
+            player.makeBet(bet.toInteger())
+            bettingRound.amountBetPerPlayer += bet.toInteger()
+
+            print player.name + " bet: " + bet
         }
         //Next player
         else{
@@ -107,58 +128,55 @@ class BettingRoundService {
                 //Give player options..
                 print player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.amountBetPerPlayer + "):"
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
-
-                def betAmount = br.readLine()
-
-                if(betAmount == "f"){
+                if(bet == "f"){
                     player.hasFolded = true
                 }
-                else if(betAmount == "c"){
+                else if(bet == "c"){
                     player.makeBet(bettingRound.amountBetPerPlayer)
                 }
                 else{
                     //Add raise to current bet
-                    bettingRound.amountBetPerPlayer += betAmount.toInteger()
+                    bettingRound.amountBetPerPlayer += bet.toInteger()
 
                     //Player bets difference
                     player.makeBet(bettingRound.amountBetPerPlayer)
 
                 }
+
+                print player.name + " bet: " + bet
             }
 
         }
     }
 
-
-
     /**
-     * Check if all players match the current bet or have folded
+     * Has the betting round finished
+     * @param game
      * @param bettingRound
-     * @param players
      * @return
      */
-    private boolean playersStillBetting(Game game, BettingRound bettingRound){
+    boolean hasBettingRoundFinished(Game game, BettingRound bettingRound){
 
         //Workaround to ensure evaluates to 'true' on first pass
         if(bettingRound.firstCycle){
             bettingRound.firstCycle = false
-            return true
+            return false
         }
 
 
         // Do not keep betting
-        boolean continueBetting = false
+        boolean bettingRoundFinished = true
+
         game.getNonFoldedPlayers().each{ Player player ->
 
             if(player.amountBet != bettingRound.amountBetPerPlayer){
 
                 //Must continue betting
-                continueBetting = true
+                bettingRoundFinished = false
             }
         }
 
-        return continueBetting
+        return bettingRoundFinished
     }
 
     /**
@@ -168,7 +186,7 @@ class BettingRoundService {
      * @param bettingRound
      * @return
      */
-    boolean closeBettingRound(Game game, Round round, BettingRound bettingRound){
+    void finishBettingRound(Game game, Round round, BettingRound bettingRound){
         //Get the pot
         int bettingRoundPot = bettingRound.getPot(game)
 
@@ -180,21 +198,13 @@ class BettingRoundService {
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
-        bettingRound.currentBettingRound = false
+        bettingRound.isCurrentBettingRound = false
+
+        bettingRound.hasFinished = true
 
         println "Saving after betting round..."
         gameRepository.save(game)
 
-    }
-
-    /**
-     * Check if thee parent round has finished
-     * @param round
-     * @return
-     */
-    boolean hasParentRoundCompleted(Game game){
-        //Check if > 1 player left
-        return (game.getNonFoldedPlayers().size()>1)?false:true
     }
 
 }

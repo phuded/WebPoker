@@ -20,11 +20,14 @@ class Player {
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     String name
+
     // First 2 cards
     List<Card> initialCards = []
 
     // First 2 plus all parentGame cards (up to 7)
     List<Card> allCards = []
+
+    //Hands
     List<Hand> hands
     Hand bestHand
 
@@ -34,14 +37,18 @@ class Player {
     //Round specific
     boolean hasFolded
 
-    //TODO IS WINNER?????
+    //Is this players turn
+    boolean isCurrentPlayer
 
     //Always goes to 0 at end of round
     int amountBet
 
+    //TODO IS WINNER?????
 
     Player(String name, Integer funds){
         this.name = name
+
+        this.isCurrentPlayer = false
 
         if(funds) {
             this.funds = funds
@@ -85,6 +92,7 @@ class Player {
 
     //Reset player between Poker Rounds
     def resetBetweenRounds(){
+        this.isCurrentPlayer = false
         this.initialCards = []
         this.allCards = []
         this.hands = null
@@ -95,12 +103,22 @@ class Player {
 
     //Reset player between betting rounds
     def resetBetweenBettingRounds(){
+        this.isCurrentPlayer = false
         this.amountBet = 0
     }
 
     @Override
     String toString(){
         this.name + " - " + this.allCards
+    }
+
+    @Override
+    boolean equals(Object object){
+       if(object instanceof Player && ((Player)object).name.equals(this.name)){
+           return true
+       }
+
+       return false
     }
 
 }

@@ -14,6 +14,8 @@ import poker.domain.player.Player
  */
 class FlopRound extends BettingRound{
 
+    int bettingRoundNumber = 2
+
     @Override
     def dealCards(Game game, Round parentRound) {
         //Remove flop from deck and add the round cards
