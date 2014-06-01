@@ -172,11 +172,20 @@ class BettingRoundService {
      * @param bettingRound
      * @return
      */
-    boolean hasBettingRoundFinished(Game game, BettingRound bettingRound){
+    boolean hasBettingRoundFinished(Game game, BettingRound bettingRound, Player currentPlayer){
 
         //Workaround to ensure evaluates to 'true' on first pass
         if(bettingRound.firstCycle){
-            bettingRound.firstCycle = false
+
+            //Get the index of the next player
+            int playerInx = game.getNonFoldedPlayers().indexOf(currentPlayer) + 2
+
+            //Is the next player the last player?
+            if(playerInx == game.getNonFoldedPlayers().size()) {
+                bettingRound.firstCycle = false
+            }
+
+            //Betting not finished
             return false
         }
 
