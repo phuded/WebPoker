@@ -1,5 +1,7 @@
 package poker.service
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
@@ -12,11 +14,10 @@ import poker.repository.GameRepository
 @Service
 class GameService {
 
-    @Autowired
-    GameRepository gameRepository
+    static final Logger logger = LoggerFactory.getLogger(GameService.class)
 
     @Autowired
-    RoundService roundService
+    GameRepository gameRepository
 
     /**
      * Create a new Game
@@ -92,7 +93,7 @@ class GameService {
             //Deal the cards
             round.bettingRounds.first().dealCards(game,round)
 
-            println "Saving round status"
+            logger.info("Saving new Round: " + round.roundNumber)
             gameRepository.save(game)
 
             return round
@@ -101,7 +102,7 @@ class GameService {
 
 
 
-    //TODO Sort
+    //TODO Remove later
     def clearDatabase(){
         gameRepository.deleteAll()
     }

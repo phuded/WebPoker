@@ -1,5 +1,7 @@
 package poker.service
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import poker.domain.card.Card
 import poker.domain.player.Player
@@ -16,16 +18,18 @@ import poker.domain.hand.HandType
 @Service
 class RoundWinnerDetectorImpl implements RoundWinnerDetector{
 
+    static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorImpl.class)
+
     public List<Player> detectWinners(List<Player> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
-        println "MAIN: Best hand type: " + bestHandType.name
+        logger.info("MAIN: Best hand type: " + bestHandType.name)
 
         //Get all players with that hand type
         List<Player> winningPlayers = players.findAll{it.bestHand.handType == bestHandType}
 
-        println "MAIN: Players with winning hand type: " + winningPlayers
+        logger.info("MAIN: Players with winning hand type: " + winningPlayers)
 
         // If one player with hand-> they are the winner
         if(winningPlayers.size() == 1){
@@ -50,7 +54,7 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
             Card bestCardInPosition = potentialWinners.max{it.bestHand.cards[cardIndex].cardValue.value}.bestHand.cards[cardIndex]
             int bestCardValue = bestCardInPosition.cardValue.value
 
-            //Loop through players -> disgard any which don't have max card
+            //Loop through players -> discard any which don't have max card
             potentialWinners.each{ Player player ->
                 int lastCardValue = player.bestHand.cards[cardIndex].cardValue.value
                 if(lastCardValue != bestCardValue){

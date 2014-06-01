@@ -1,5 +1,7 @@
 package poker.service
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
@@ -15,6 +17,8 @@ import poker.repository.GameRepository
 @Service
 class RoundService {
 
+    static final Logger logger = LoggerFactory.getLogger(RoundService.class)
+
     @Autowired
     GameRepository gameRepository
 
@@ -23,7 +27,6 @@ class RoundService {
 
     @Autowired
     RoundWinnerDetector roundWinnerDetector
-
 
     @Autowired
     BettingRoundService bettingRoundService
@@ -70,9 +73,6 @@ class RoundService {
                     //Set next betting round
                     BettingRound nextBettingRound = bettingRoundService.setNextBettingRound(game,round,currentBettingRound)
 
-                    println "Set next betting round. Saving.."
-                    gameRepository.save(game)
-
                     //If last betting round
                     if(nextBettingRound == null){
                        //Finish the round
@@ -84,9 +84,6 @@ class RoundService {
 
                 //Make next person current player
                 bettingRoundService.setNextPlayer(game)
-
-                println "Set next player and saving.."
-                gameRepository.save(game)
             }
 
             return round
@@ -109,7 +106,7 @@ class RoundService {
 
 
         if(game.getNonFoldedPlayers().size() > 1){
-            println "================================"
+            logger.info("================================")
 
             //Detect hands...
             game.getNonFoldedPlayers().each{ Player player ->
@@ -117,12 +114,12 @@ class RoundService {
                 //Get the player's hands
                 handDetector.detectHand(player)
 
-                // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
-                println "MAIN: " + player.name + " - Best hand: " + player.bestHand
+                // logger.info("Player: " + player.name + " - All hand-results: " + player.hands)
+                logger.info("Player: " + player.name + " - Best hand: " + player.bestHand)
 
             }
 
-            println "================================"
+            logger.info("================================")
 
             //Get winner
             round.winners = roundWinnerDetector.detectWinners(game.getNonFoldedPlayers())
@@ -132,7 +129,7 @@ class RoundService {
             round.winners = [game.getNonFoldedPlayers().first()]
         }
 
-        println "MAIN: Winners: " + round.winners
+        logger.info("Round Winners: " + round.winners)
 
 
         //Pay winners
@@ -156,7 +153,7 @@ class RoundService {
 
         round.hasRoundFinished = true
 
-        println "Saving after round..."
+        logger.info("Round finished: " + round.roundNumber + " - saving.")
         gameRepository.save(game)
     }
 

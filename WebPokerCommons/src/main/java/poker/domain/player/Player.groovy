@@ -1,7 +1,5 @@
 package poker.domain.player
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import poker.domain.card.Card
 import poker.domain.hand.Hand
 
@@ -15,9 +13,7 @@ import poker.domain.hand.Hand
 
 class Player {
     //TODO Fix
-    private static int startingPlayerFunds = 200
-
-    private static final Logger logger = LoggerFactory.getLogger(Player.class);
+    private static int defaultStartingPlayerFunds = 200
 
     String name
 
@@ -54,7 +50,7 @@ class Player {
             this.funds = funds
         }
         else{
-            this.funds = startingPlayerFunds
+            this.funds = defaultStartingPlayerFunds
         }
 
         this.hasFolded = false

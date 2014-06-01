@@ -13,12 +13,23 @@ import poker.domain.hand.Hand
  */
 class PokerUtil {
 
+    /**
+     * Put cards in order of value
+     * @param cards
+     * @return
+     */
     static sortCards(List<Card> cards){
         cards.sort {
             it.cardValue.value
         }
     }
 
+    /**
+     * Switch between the Ace being High and Low
+     * @param cards
+     * @param low
+     * @return
+     */
     static convertAce(List<Card> cards, boolean low){
         cards.each {
             if(it.cardValue == CardValue.ACE){
@@ -35,6 +46,11 @@ class PokerUtil {
         sortCards(cards)
     }
 
+    /**
+     * Sort hands by value
+     * @param hands
+     * @return
+     */
     static sortHandResults(List<Hand> hands){
         hands.sort{
             it.handType.value

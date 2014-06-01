@@ -38,6 +38,8 @@ abstract class BettingRound {
         hasFinished = false
     }
 
+    abstract int getBettingRoundNumber()
+
     abstract dealCards(Game game, Round round)
 
     // Get the total pot from the betting round - include folded players (use game players)

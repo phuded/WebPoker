@@ -1,5 +1,7 @@
 package poker.domain.game.bettinground
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import poker.domain.card.Card
 import poker.domain.game.Game
 import poker.domain.game.round.Round
@@ -14,7 +16,12 @@ import poker.domain.player.Player
  */
 class TurnCardRound extends BettingRound{
 
-    int bettingRoundNumber = 3
+    static final Logger logger = LoggerFactory.getLogger(TurnCardRound.class)
+
+    @Override
+    int getBettingRoundNumber(){
+        return  3
+    }
 
     @Override
     def dealCards(Game game, Round parentRound) {
@@ -26,7 +33,8 @@ class TurnCardRound extends BettingRound{
         game.getNonFoldedPlayers().each { Player player ->
             //Add river card to player hand
             player.addGameCards(turnCard)
-            println "MAIN: Player: " + player.name + " hand after turn card: " + player.allCards
+
+            logger.info("MAIN: Player: " + player.name + " hand after turn card: " + player.allCards)
         }
 
         areCardsDealt = true

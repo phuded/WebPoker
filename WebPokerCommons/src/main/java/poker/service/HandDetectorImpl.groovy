@@ -94,9 +94,8 @@ class HandDetectorImpl implements HandDetector{
     public void detectStraight(List <Card> cards, List<Hand> hands){
         boolean straight = false
 
-        //Number of found cards
-        //Add first card to list
-        //TODO: Handler null pointer
+        //Number of found cards - add first card to list
+        //TODO: Handle null pointer
         def straightCards = [cards[0]]
 
         //First card value

@@ -1,5 +1,7 @@
 package poker.service
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
@@ -13,6 +15,8 @@ import poker.repository.GameRepository
  */
 @Service
 class BettingRoundService {
+
+    static final Logger logger = LoggerFactory.getLogger(BettingRoundService.class)
 
     @Autowired
     GameRepository gameRepository
@@ -63,7 +67,7 @@ class BettingRoundService {
 
         if(playerInx == game.getNonFoldedPlayers().size()) {
             //Reset
-            player = game.getNonFoldedPlayers().get(0)
+            player = game.getNonFoldedPlayers().first()
         }
         else {
             //Get the next
@@ -72,6 +76,9 @@ class BettingRoundService {
 
         //Set active
         player.isCurrentPlayer = true
+
+        logger.info("Setting next Player to: " + player.name + " - saving.")
+        gameRepository.save(game)
 
     }
 
@@ -82,21 +89,24 @@ class BettingRoundService {
      */
     BettingRound setNextBettingRound(Game game,Round round, BettingRound currentBettingRound){
 
-        if(currentBettingRound.bettingRoundNumber == 4){
+        if(currentBettingRound.getBettingRoundNumber() == 4){
             return null
         }
 
         //Get the next
-        BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.bettingRoundNumber)
+        BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.getBettingRoundNumber())
 
         //Set next as current
         nextBettingRound.isCurrentBettingRound = true
 
         //Set the first player to current
-        game.players.first().isCurrentPlayer = true
+        game.getNonFoldedPlayers().first().isCurrentPlayer = true
 
         //Deal the cards
         round.bettingRounds.first().dealCards(game,round)
+
+        logger.info("Setting next betting round - saving.")
+        gameRepository.save(game)
 
         return nextBettingRound
     }
@@ -116,7 +126,7 @@ class BettingRoundService {
             player.makeBet(bet.toInteger())
             bettingRound.amountBetPerPlayer += bet.toInteger()
 
-            print player.name + " bet: " + bet
+            logger.info(player.name + " bet: " + bet)
         }
         //Next player
         else{
@@ -125,8 +135,7 @@ class BettingRoundService {
                 //Skip!!
             }
             else{
-                //Give player options..
-                print player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.amountBetPerPlayer + "):"
+                //logger.debug(player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.amountBetPerPlayer + ")")
 
                 if(bet == "f"){
                     player.hasFolded = true
@@ -143,14 +152,14 @@ class BettingRoundService {
 
                 }
 
-                print player.name + " bet: " + bet
+                logger.info(player.name + " bet: " + bet)
             }
 
         }
     }
 
     /**
-     * Has the betting round finished
+     * Has the betting round finished?
      * @param game
      * @param bettingRound
      * @return
@@ -193,7 +202,7 @@ class BettingRoundService {
         //Add to the overall round pot
         round.pot += bettingRoundPot
 
-        println "Betting round pot: " + bettingRoundPot + ". Total round pot: " + round.pot
+        logger.info("Betting round pot: " + bettingRoundPot + ". Total round pot: " + round.pot)
 
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
@@ -202,9 +211,8 @@ class BettingRoundService {
 
         bettingRound.hasFinished = true
 
-        println "Saving after betting round..."
+        logger.info("Betting round finished - saving.")
         gameRepository.save(game)
-
     }
 
 }
