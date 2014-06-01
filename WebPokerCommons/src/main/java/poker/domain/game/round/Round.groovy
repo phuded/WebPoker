@@ -24,10 +24,10 @@ class Round {
     int roundNumber
 
     //Is current round
-    boolean isCurrentRound
+    boolean isCurrent
 
     //Has round finished?
-    boolean hasRoundFinished
+    boolean hasFinished
 
     // Up for 5 cards
     List<Card> roundCards
@@ -35,6 +35,9 @@ class Round {
     //Winners
     @JsonIgnore
     List<Player> winners
+
+    //Current Player
+    String currentPlayer
 
     //Pot
     int pot
@@ -55,8 +58,8 @@ class Round {
     Round(Game game, int roundNumber){
         this.roundNumber = roundNumber
 
-        isCurrentRound = false
-        hasRoundFinished = false
+        isCurrent = false
+        hasFinished = false
 
         //Create/replace deck and shuffle
         game.deck = new Deck()

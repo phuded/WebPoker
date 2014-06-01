@@ -42,7 +42,7 @@ class RoundService {
     Round updateRound(Game game, Round round, String player, String bet){
 
         //Check if round finished
-        if(round.hasRoundFinished){
+        if(round.hasFinished){
             throw new PokerException("Round already finished")
         }
 
@@ -83,7 +83,7 @@ class RoundService {
             else{
 
                 //Make next person current player
-                bettingRoundService.setNextPlayer(game)
+                bettingRoundService.setNextPlayer(game, round)
             }
 
             return round
@@ -145,13 +145,17 @@ class RoundService {
 
         round.winningHand = round.winners.get(0).bestHand
 
-        //Clear the objects
+        //Clear the winners
         round.winners = null
 
         //Switch flag
-        round.isCurrentRound = false
+        round.isCurrent = false
 
-        round.hasRoundFinished = true
+        //Remove the current player
+        round.currentPlayer = null
+
+        //Set finished
+        round.hasFinished = true
 
         logger.info("Round finished: " + round.roundNumber + " - saving.")
         gameRepository.save(game)

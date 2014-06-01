@@ -24,7 +24,7 @@ abstract class BettingRound {
     boolean firstCycle
 
     //Is current?
-    boolean isCurrentBettingRound
+    boolean isCurrent
 
     //Has finished?
     boolean hasFinished
@@ -34,7 +34,7 @@ abstract class BettingRound {
         amountBetPerPlayer = 0
         firstCycle = true
 
-        isCurrentBettingRound = false
+        isCurrent = false
         hasFinished = false
     }
 

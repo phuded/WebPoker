@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.game.Game
 import poker.domain.game.round.Round
+import poker.domain.player.Player
 import poker.repository.GameRepository
 
 /**
@@ -58,7 +59,7 @@ class GameService {
     Round findCurrentRound(Game game){
         //Get the current round
         Round round = game.rounds.find {Round round ->
-            round.isCurrentRound
+            round.isCurrent
         }
 
         return round
@@ -82,13 +83,15 @@ class GameService {
             game.rounds << round
 
             //Set to current
-            round.isCurrentRound = true
+            round.isCurrent = true
 
             //Set first betting round to current
-            round.bettingRounds.first().isCurrentBettingRound = true
+            round.bettingRounds.first().isCurrent = true
 
             //Set the first player to current
-            game.players.first().isCurrentPlayer = true
+            Player firstPlayer =game.players.first()
+            firstPlayer.isCurrent = true
+            round.currentPlayer = firstPlayer.name
 
             //Deal the cards
             round.bettingRounds.first().dealCards(game,round)

@@ -28,7 +28,7 @@ class BettingRoundService {
      */
     BettingRound getCurrentBettingRound(Round round){
       BettingRound currentBettingRound = round.bettingRounds.find { BettingRound bettingRound ->
-          bettingRound.isCurrentBettingRound
+          bettingRound.isCurrent
       }
 
       return currentBettingRound
@@ -41,7 +41,7 @@ class BettingRoundService {
      */
     Player getCurrentPlayer(Game game){
         Player activePlayer =game.players.find {Player player ->
-            player.isCurrentPlayer
+            player.isCurrent
         }
 
         return activePlayer
@@ -52,12 +52,12 @@ class BettingRoundService {
      * @param game
      * @return
      */
-    void setNextPlayer(Game game){
+    void setNextPlayer(Game game, Round round){
         //Get the player
         Player player = getCurrentPlayer(game)
 
         //Set inactive
-        player.isCurrentPlayer = false
+        player.isCurrent = false
 
         //Get the index
         int playerInx = game.getNonFoldedPlayers().indexOf(player)
@@ -75,7 +75,8 @@ class BettingRoundService {
         }
 
         //Set active
-        player.isCurrentPlayer = true
+        player.isCurrent = true
+        round.currentPlayer = player.name
 
         logger.info("Setting next Player to: " + player.name + " - saving.")
         gameRepository.save(game)
@@ -97,10 +98,12 @@ class BettingRoundService {
         BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.getBettingRoundNumber())
 
         //Set next as current
-        nextBettingRound.isCurrentBettingRound = true
+        nextBettingRound.isCurrent = true
 
         //Set the first player to current
-        game.getNonFoldedPlayers().first().isCurrentPlayer = true
+        Player firstPlayer = game.getNonFoldedPlayers().first()
+        firstPlayer.isCurrent = true
+        round.currentPlayer = firstPlayer.name
 
         //Deal the cards
         round.bettingRounds.first().dealCards(game,round)
@@ -207,7 +210,7 @@ class BettingRoundService {
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
-        bettingRound.isCurrentBettingRound = false
+        bettingRound.isCurrent = false
 
         bettingRound.hasFinished = true
 

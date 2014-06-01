@@ -34,7 +34,7 @@ class Player {
     boolean hasFolded
 
     //Is this players turn
-    boolean isCurrentPlayer
+    boolean isCurrent
 
     //Always goes to 0 at end of round
     int amountBet
@@ -44,7 +44,7 @@ class Player {
     Player(String name, Integer funds){
         this.name = name
 
-        this.isCurrentPlayer = false
+        this.isCurrent = false
 
         if(funds) {
             this.funds = funds
@@ -88,7 +88,7 @@ class Player {
 
     //Reset player between Poker Rounds
     def resetBetweenRounds(){
-        this.isCurrentPlayer = false
+        this.isCurrent = false
         this.initialCards = []
         this.allCards = []
         this.hands = null
@@ -99,7 +99,7 @@ class Player {
 
     //Reset player between betting rounds
     def resetBetweenBettingRounds(){
-        this.isCurrentPlayer = false
+        this.isCurrent = false
         this.amountBet = 0
     }
 
