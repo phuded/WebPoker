@@ -30,7 +30,7 @@ class FirstRound extends BettingRound{
             //Player gets two cards
             dealInitialCardsToPlayer(game, player)
 
-            logger.info("MAIN: " + player.name + " - Hand after first deal: " + player.allCards)
+            logger.info(player.name + " - Hand after first deal: " + player.allCards)
         }
 
         areCardsDealt = true

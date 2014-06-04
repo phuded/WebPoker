@@ -60,7 +60,7 @@ class RoundService {
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
 
             //Check if betting round finished
-            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game,currentBettingRound, currentPlayer)
+            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game,currentBettingRound)
 
             if(bettingRoundFinished){
                 //Finish the betting round

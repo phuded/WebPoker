@@ -34,7 +34,7 @@ class FlopRound extends BettingRound{
             //Add flop to player hand
             player.addGameCards(flop)
 
-            logger.info("MAIN: " + player.name + " - Hand after flop: " + player.allCards)
+            logger.info(player.name + " - Hand after flop: " + player.allCards)
         }
 
         areCardsDealt = true

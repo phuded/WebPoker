@@ -27,6 +27,12 @@ class Player {
     //Funds
     int funds
 
+    //Order
+    int order
+
+    //Has bet once
+    boolean hasBetOnce
+
     //Round specific
     boolean hasFolded
 
@@ -36,10 +42,12 @@ class Player {
     //Always goes to 0 at end of round
     int amountBet
 
-    Player(String name, Integer funds){
+    Player(String name, Integer order, Integer funds){
         this.name = name
+        this.order = order
         this.funds = funds
 
+        this.hasBetOnce = false
         this.isCurrent = false
         this.hasFolded = false
         this.amountBet = 0
@@ -77,6 +85,7 @@ class Player {
     //Reset player between Poker Rounds
     def resetBetweenRounds(){
         this.isCurrent = false
+        this.hasBetOnce = false
         this.initialCards = []
         this.allCards = []
         this.hands = null
@@ -88,6 +97,7 @@ class Player {
     //Reset player between betting rounds
     def resetBetweenBettingRounds(){
         this.isCurrent = false
+        this.hasBetOnce = false
         this.amountBet = 0
     }
 

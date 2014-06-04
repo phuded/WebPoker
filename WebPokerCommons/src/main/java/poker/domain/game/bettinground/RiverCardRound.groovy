@@ -34,7 +34,7 @@ class RiverCardRound extends BettingRound{
             //Add river card to player hand
             player.addGameCards(finalCard)
 
-            logger.info("MAIN: " + player.name + " - After river card: " + player.allCards)
+            logger.info(player.name + " - After river card: " + player.allCards)
         }
 
         areCardsDealt = true

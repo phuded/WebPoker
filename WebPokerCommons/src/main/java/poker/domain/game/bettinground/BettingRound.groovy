@@ -22,9 +22,6 @@ abstract class BettingRound {
     //Boolean for are cards dealt
     boolean areCardsDealt
 
-    @JsonIgnore
-    boolean firstCycle
-
     //Is current?
     boolean isCurrent
 
@@ -34,7 +31,6 @@ abstract class BettingRound {
     BettingRound(){
         areCardsDealt = false
         amountBetPerPlayer = 0
-        firstCycle = true
 
         isCurrent = false
         hasFinished = false

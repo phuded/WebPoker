@@ -54,8 +54,9 @@ class Game {
     }
 
     def createPlayers(List<String> playerNames, Integer startingPlayerFunds){
-       for (String name: playerNames){
-           players << new Player(name,startingPlayerFunds)
+
+       playerNames.eachWithIndex{ String playerName, int i ->
+           players << new Player(playerName,++i,startingPlayerFunds)
        }
     }
 
@@ -71,6 +72,17 @@ class Game {
        }
 
        return nonFoldedPlayers
+    }
+
+    /**
+     *  Check if there are any players who have not bet once
+     */
+    boolean anyNonFoldedPlayersYetToBet(){
+        List<Player> playersYetToBet = getNonFoldedPlayers().findAll {Player player ->
+          !player.hasBetOnce
+        }
+
+        return playersYetToBet.size() > 0
     }
 
 }

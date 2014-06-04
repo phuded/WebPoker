@@ -61,19 +61,18 @@ class BettingRoundService {
         //Set inactive
         player.isCurrent = false
 
-        //Get the index
-        int playerInx = game.getNonFoldedPlayers().indexOf(player)
-
-        //Add one
-        playerInx++
-
-        if(playerInx == game.getNonFoldedPlayers().size()) {
-            //Reset
-            player = game.getNonFoldedPlayers().first()
+        //Check for a non-folded player who has a higher order than the current
+        player = game.getNonFoldedPlayers().find { Player pl ->
+            pl.order > player.order
         }
-        else {
-            //Get the next
-            player = game.getNonFoldedPlayers().get(playerInx)
+
+        //If that does not exist -> get the first
+        if(player == null){
+
+            logger.debug("There is no non-folded player with a higher order number")
+
+            //Must reset
+            player = game.getNonFoldedPlayers().first()
         }
 
         //Set active
@@ -147,6 +146,9 @@ class BettingRoundService {
 
         }
 
+        //Player has now bet once
+        player.hasBetOnce = true
+
         logger.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
     }
 
@@ -156,18 +158,19 @@ class BettingRoundService {
      * @param bettingRound
      * @return
      */
-    boolean hasBettingRoundFinished(Game game, BettingRound bettingRound, Player currentPlayer){
+    boolean hasBettingRoundFinished(Game game, BettingRound bettingRound){
 
-        //Workaround to ensure evaluates to 'true' on first pass
-        if(bettingRound.firstCycle){
+        //In case after the current player folding - is only 1 player left
+        if(game.getNonFoldedPlayers().size() == 1){
 
-            //Get the index of the next player
-            int playerInx = game.getNonFoldedPlayers().indexOf(currentPlayer) + 2
+            logger.debug("There is only 1 non-folded player")
+            return true
+        }
 
-            //Is the next player the last player?
-            if(playerInx == game.getNonFoldedPlayers().size()) {
-                bettingRound.firstCycle = false
-            }
+        //Are there any non-folded players who have yet to bet once?
+        if(game.anyNonFoldedPlayersYetToBet()){
+
+            logger.debug("There is still a non-folded player who has not bet")
 
             //Betting not finished
             return false
