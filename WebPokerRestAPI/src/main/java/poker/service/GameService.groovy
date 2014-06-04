@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import poker.domain.GameRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
@@ -26,8 +27,11 @@ class GameService {
      * @param startingFunds
      * @return
      */
-    Game createNewGame(List<String> playerNames, Integer startingFunds){
-        Game game = new Game(playerNames,startingFunds)
+    Game createNewGame(GameRequest gameRequest){
+        //Validate it
+        gameRequest.validate();
+
+        Game game = new Game(gameRequest.name, gameRequest.playerNames,gameRequest.startingPlayerFunds)
 
         gameRepository.save(game)
 
@@ -74,33 +78,32 @@ class GameService {
 
         int numberOfRounds = game.rounds.size()
 
-        if(numberOfRounds < Game.tempRoundLimit){
-            //Reset players cards and hands
-            game.players*.resetBetweenRounds()
+        //Reset players cards and hands
+        game.players*.resetBetweenRounds()
 
-            //New round and play
-            Round round = new Round(game, numberOfRounds + 1)
-            game.rounds << round
+        //Create new round and play
+        Round round = new Round(game, numberOfRounds + 1)
+        game.rounds << round
 
-            //Set to current
-            round.isCurrent = true
+        //Set to current
+        round.isCurrent = true
 
-            //Set first betting round to current
-            round.bettingRounds.first().isCurrent = true
+        //Set first betting round to current
+        round.bettingRounds.first().isCurrent = true
 
-            //Set the first player to current
-            Player firstPlayer =game.players.first()
-            firstPlayer.isCurrent = true
-            round.currentPlayer = firstPlayer.name
+        //Set the first player to current
+        Player firstPlayer =game.players.first()
+        firstPlayer.isCurrent = true
+        round.currentPlayer = firstPlayer.name
 
-            //Deal the cards
-            round.bettingRounds.first().dealCards(game,round)
+        //Deal the cards
+        round.bettingRounds.first().dealCards(game,round)
 
-            logger.info("Saving new Round: " + round.roundNumber)
-            gameRepository.save(game)
+        logger.info("Saving new Round: " + round.roundNumber)
+        gameRepository.save(game)
 
-            return round
-        }
+        return round
+
     }
 
 

@@ -1,10 +1,16 @@
 package poker.domain.game
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import org.joda.time.DateTime
+import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.LastModifiedDate
 import poker.domain.card.Deck
 import poker.domain.game.round.Round
 import poker.domain.player.Player
+import poker.util.PokerDateSerializer
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,10 +19,21 @@ import poker.domain.player.Player
  * Time: 18:10
  * To change this template use File | Settings | File Templates.
  */
+@JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","players","rounds"])
 class Game {
 
     @Id
-    String id;
+    String id
+
+    String name
+
+    @CreatedDate
+    @JsonSerialize(using = PokerDateSerializer.class)
+    DateTime createdDate
+
+    @LastModifiedDate
+    @JsonSerialize(using = PokerDateSerializer.class)
+    DateTime lastModifiedDate
 
     @JsonIgnore
     Deck deck
@@ -24,13 +41,11 @@ class Game {
     List<Player> players
     List<Round> rounds
 
-    //TEMP -> TO DO REMOVE
-    static int tempRoundLimit = 2;
-
     //Default Constructor
     Game(){}
 
-    Game(List<String> playerNames, Integer startingPlayerFunds){
+    Game(String name, List<String> playerNames, Integer startingPlayerFunds){
+        this.name = name
         this.players = []
         this.rounds = []
 

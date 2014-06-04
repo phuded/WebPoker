@@ -12,9 +12,6 @@ import poker.domain.hand.Hand
  */
 
 class Player {
-    //TODO Fix
-    private static int defaultStartingPlayerFunds = 200
-
     String name
 
     // First 2 cards
@@ -39,20 +36,11 @@ class Player {
     //Always goes to 0 at end of round
     int amountBet
 
-    //TODO IS WINNER?????
-
     Player(String name, Integer funds){
         this.name = name
+        this.funds = funds
 
         this.isCurrent = false
-
-        if(funds) {
-            this.funds = funds
-        }
-        else{
-            this.funds = defaultStartingPlayerFunds
-        }
-
         this.hasFolded = false
         this.amountBet = 0
     }

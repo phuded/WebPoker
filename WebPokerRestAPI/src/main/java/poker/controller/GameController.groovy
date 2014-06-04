@@ -2,10 +2,11 @@ package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import poker.domain.GameRequest
 import poker.domain.game.Game
 import poker.service.GameService
 
@@ -25,12 +26,12 @@ class GameController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    Game createGame(@RequestParam("player") List<String> players, @RequestParam(value="startingFunds",required = false) Integer startingFunds) {
+    Game createGame(@RequestBody GameRequest gameRequest) {
 
         //TODO: Remove
         gameService.clearDatabase()
 
-        Game game = gameService.createNewGame(players,startingFunds)
+        Game game = gameService.createNewGame(gameRequest)
 
         return game;
     }

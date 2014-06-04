@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import poker.domain.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
@@ -39,7 +40,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, String player, String bet){
+    Round updateRound(Game game, Round round, BetRequest betRequest){
 
         //Check if round finished
         if(round.hasFinished){
@@ -49,13 +50,14 @@ class RoundService {
         //Get Current Betting Round
         BettingRound currentBettingRound = bettingRoundService.getCurrentBettingRound(round)
 
-        //Get current player
+        //Get the current player
         Player currentPlayer = bettingRoundService.getCurrentPlayer(game)
 
-        if(currentPlayer.name == player){
+        //Check there is a match
+        if(currentPlayer.name == betRequest.player){
 
             //Actually Bet
-            bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, bet)
+            bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
 
             //Check if betting round finished
             boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game,currentBettingRound, currentPlayer)

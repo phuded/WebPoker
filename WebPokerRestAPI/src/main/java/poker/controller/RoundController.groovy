@@ -2,6 +2,7 @@ package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import poker.domain.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.exception.PokerException
@@ -98,7 +99,7 @@ class RoundController {
      * @param roundId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.POST)
-    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String player, @RequestParam String bet){
+    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestBody BetRequest betRequest){
 
         Game game = gameService.loadGame(gameId)
 
@@ -110,8 +111,11 @@ class RoundController {
 
         Round round = rounds.get(--roundNumber);
 
+        //Validate the request
+        betRequest.validate()
+
         //Update the round
-        return roundService.updateRound(game,round,player, bet)
+        return roundService.updateRound(game,round,betRequest)
 
     }
 

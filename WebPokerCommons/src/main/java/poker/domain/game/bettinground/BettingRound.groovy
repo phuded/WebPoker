@@ -1,6 +1,7 @@
 package poker.domain.game.bettinground
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
@@ -12,6 +13,7 @@ import poker.domain.player.Player
  * Time: 21:21
  * To change this template use File | Settings | File Templates.
  */
+@JsonPropertyOrder(["bettingRoundNumber","amountBetPerPlayer","isCurrent","hasFinished","areCardsDealt"])
 abstract class BettingRound {
 
     //Current bet in betting round

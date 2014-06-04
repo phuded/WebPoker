@@ -4,10 +4,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import poker.domain.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
 import poker.domain.player.Player
+import poker.domain.player.betting.BettingAction
 import poker.repository.GameRepository
 
 /**
@@ -114,56 +116,38 @@ class BettingRoundService {
         return nextBettingRound
     }
 
-
     /**
-     * Perform Bet
+     * Perform bet
      * @param player
      * @param bettingRound
+     * @param betRequest
      * @return
      */
-    public makePlayerBet(Player player, BettingRound bettingRound, String bet){
-        //Must be first
-        if(bettingRound.amountBetPerPlayer == 0){
+    public makePlayerBet(Player player, BettingRound bettingRound, BetRequest betRequest){
+        //Is a betting action
+        if(betRequest.bettingAction) {
 
-            //Checking..
-            if(bet == "c") {
-                bet = 0
+            BettingAction bettingAction = BettingAction.getBettingActionByName(betRequest.bettingAction)
+
+            if (bettingAction == BettingAction.FOLD) {
+                //Set to folded
+                player.hasFolded = true
             }
-
-            //Make bet and set new current bet
-            player.makeBet(bet.toInteger())
-            bettingRound.amountBetPerPlayer += bet.toInteger()
-
-            logger.info(player.name + " bet: " + bet)
+            else if (bettingAction == BettingAction.CALL || bettingAction == BettingAction.CHECK) {
+                //Player bets the difference
+                player.makeBet(bettingRound.amountBetPerPlayer)
+            }
         }
-        //Next player
         else{
+            //Add raise to current bet
+            bettingRound.amountBetPerPlayer += betRequest.bet
 
-            if(player.amountBet == bettingRound.amountBetPerPlayer){
-                //Skip!!
-            }
-            else{
-                //logger.debug(player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + bettingRound.amountBetPerPlayer + ")")
-
-                if(bet == "f"){
-                    player.hasFolded = true
-                }
-                else if(bet == "c"){
-                    player.makeBet(bettingRound.amountBetPerPlayer)
-                }
-                else{
-                    //Add raise to current bet
-                    bettingRound.amountBetPerPlayer += bet.toInteger()
-
-                    //Player bets difference
-                    player.makeBet(bettingRound.amountBetPerPlayer)
-
-                }
-
-                logger.info(player.name + " bet: " + bet)
-            }
+            //Player bets difference
+            player.makeBet(bettingRound.amountBetPerPlayer)
 
         }
+
+        logger.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
     }
 
     /**
