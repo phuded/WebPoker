@@ -52,7 +52,7 @@ class RoundControllerImpl implements RoundController{
         }
 
         //Create new Round
-        return gameService.createNextRound(game)
+        return roundService.createNextRound(game)
     }
 
     /**
@@ -98,7 +98,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      * @param roundId
      */
-    @RequestMapping(value="/{roundNumber}",method = RequestMethod.POST)
+    @RequestMapping(value="/{roundNumber}",method = RequestMethod.PUT)
     Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestBody BetRequest betRequest){
 
         Game game = gameService.loadGame(gameId)

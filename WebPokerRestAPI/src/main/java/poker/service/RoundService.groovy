@@ -32,6 +32,42 @@ class RoundService {
     @Autowired
     BettingRoundService bettingRoundService
 
+
+    /**
+     * Create a new round and set it to current TODO: Round Limited currently
+     * @param game
+     * @return
+     */
+    Round createNextRound(Game game){
+
+        int numberOfRounds = game.rounds.size()
+
+        //Create new round and play
+        Round round = new Round(game, numberOfRounds + 1)
+        game.rounds << round
+
+        //Set to current
+        round.isCurrent = true
+
+        //Set first betting round to current
+        round.bettingRounds.first().isCurrent = true
+
+        //Set the first player to current
+        Player firstPlayer =game.players.first()
+        firstPlayer.isCurrent = true
+        round.currentPlayer = firstPlayer.name
+
+        //Deal the cards
+        round.bettingRounds.first().dealCards(game,round)
+
+        logger.info("Saving new Round: " + round.roundNumber)
+        gameRepository.save(game)
+
+        return round
+
+    }
+
+
     /**
      * Update the round
      * @param game
@@ -106,7 +142,6 @@ class RoundService {
      */
     def finishRound(Game game, Round round){
 
-
         if(game.getNonFoldedPlayers().size() > 1){
             logger.info("================================")
 
@@ -159,7 +194,30 @@ class RoundService {
         //Set finished
         round.hasFinished = true
 
+        //Shift the players
+        shiftPlayers(game)
+
+        //Reset players cards and hands
+        game.players*.resetBetweenRounds()
+
         logger.info("Round finished: " + round.roundNumber + " - saving.")
+        gameRepository.save(game)
+    }
+
+    /**
+     * Shift the player order
+     * @param game
+     */
+    void shiftPlayers(Game game){
+        //Shift
+        game.players = game.players[1..-1,0]
+
+        //Re-allocate order
+        game.players.eachWithIndex{ Player player, int i ->
+            player.order = i
+        }
+
+        logger.info("Saving after shift" + game.players)
         gameRepository.save(game)
     }
 

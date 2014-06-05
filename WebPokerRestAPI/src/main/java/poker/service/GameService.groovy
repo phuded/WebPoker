@@ -69,45 +69,6 @@ class GameService {
         return round
     }
 
-    /**
-     * Create a new round and set it to current TODO: Round Limited currently
-     * @param game
-     * @return
-     */
-    Round createNextRound(Game game){
-
-        int numberOfRounds = game.rounds.size()
-
-        //Reset players cards and hands
-        game.players*.resetBetweenRounds()
-
-        //Create new round and play
-        Round round = new Round(game, numberOfRounds + 1)
-        game.rounds << round
-
-        //Set to current
-        round.isCurrent = true
-
-        //Set first betting round to current
-        round.bettingRounds.first().isCurrent = true
-
-        //Set the first player to current
-        Player firstPlayer =game.players.first()
-        firstPlayer.isCurrent = true
-        round.currentPlayer = firstPlayer.name
-
-        //Deal the cards
-        round.bettingRounds.first().dealCards(game,round)
-
-        logger.info("Saving new Round: " + round.roundNumber)
-        gameRepository.save(game)
-
-        return round
-
-    }
-
-
-
     //TODO Remove later
     def clearDatabase(){
         gameRepository.deleteAll()
