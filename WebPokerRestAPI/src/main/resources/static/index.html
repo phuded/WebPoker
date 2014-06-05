@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/main.js"></script>
+        <title>Poker</title>
+    </head>
+    <body>
+      <h1>Poker!</h1>
+        <p>
+            Player:
+            <input id="player1" type="text"/>
+        </p>
+        <p>
+            Player 2:
+            <input id="player2" type="text"/>
+        </p>
+        <p>
+            Amount:
+            <input id="amount" type="text"/>
+        </p>
+        <input type="button" value="Create Game" onclick="createGame()"/>
+
+        <h2>Game Cards</h2>
+        <textarea id="cards"></textarea>
+
+        <h2>Player Cards</h2>
+        <textarea id="playerCards"></textarea>
+
+        <p>
+          Cuurent Player:
+          <input id="currentPlayer" type="text"/>
+        </p>
+
+        <p>
+            Bet Amount
+            <input id="betAmount" type="text"/>
+        </p>
+
+        <input type="button" value="Call" onclick="updateRound('call')"/>
+        <input type="button" value="Fold" onclick="updateRound('fold')"/>
+        <input type="button" value="Bet" onclick="updateRound('bet')"/>
+    </body>
+</html>
