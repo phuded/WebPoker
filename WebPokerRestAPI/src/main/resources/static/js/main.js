@@ -58,11 +58,13 @@ function getGame(){
         success: function(data){
 
             var cards = ""
-            cards += data.players[0].initialCards[0].suit + " " + data.players[0].initialCards[0].cardValue  + "\n"
-            cards += data.players[0].initialCards[1].suit + " " + data.players[0].initialCards[1].cardValue  + "\n\n"
 
-            cards += data.players[1].initialCards[0].suit + " " + data.players[1].initialCards[0].cardValue  + "\n"
-            cards += data.players[1].initialCards[1].suit + " " + data.players[1].initialCards[1].cardValue  + "\n"
+            $.each(data.players, function(i, item) {
+                $.each(item.initialCards, function(i, card) {
+                    cards += card.suit + " " + card.cardValue  + "\n";
+                });
+                cards += "\n"
+            });
 
             $("#playerCards").text(cards);
         },
@@ -103,14 +105,25 @@ function updateRound(betType){
               var cards = ""
 
               if(data.roundCards[0]){
-                 cards += data.roundCards[0].suit + " " + data.roundCards[0].cardValue  + "\n"
-                 cards += data.roundCards[1].suit + " " + data.roundCards[1].cardValue  + "\n"
-                 cards += data.roundCards[2].suit + " " + data.roundCards[2].cardValue  + "\n"
+
+                $.each(data.roundCards, function(i, item) {
+                    cards += item.suit + " " + item.cardValue  + "\n";
+                });
+
               }
 
               $("#cards").text(cards)
 
               $("#currentPlayer").val(data.currentPlayer)
+
+              if(data.hasFinished){
+                 var winners = ""
+                 $.each(data.winningPlayerNames, function(i, item) {
+                   winners += item + " "
+                 });
+
+                 $("#winners").text(winners)
+              }
           },
           failure: function(errMsg) {
               alert(errMsg);

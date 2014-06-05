@@ -10,15 +10,15 @@
       <h1>Poker!</h1>
         <p>
             Player:
-            <input id="player1" type="text"/>
+            <input id="player1" type="text" value="Matt"/>
         </p>
         <p>
             Player 2:
-            <input id="player2" type="text"/>
+            <input id="player2" type="text" value="Cathy"/>
         </p>
         <p>
             Amount:
-            <input id="amount" type="text"/>
+            <input id="amount" type="text" value="1000"/>
         </p>
         <input type="button" value="Create Game" onclick="createGame()"/>
 
@@ -36,6 +36,11 @@
         <p>
             Bet Amount
             <input id="betAmount" type="text"/>
+        </p>
+
+        <p>
+            Winner:
+            <span id="winners" style="font-weight:bold;"></span>
         </p>
 
         <input type="button" value="Call" onclick="updateRound('call')"/>
