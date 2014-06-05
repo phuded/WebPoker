@@ -1,4 +1,4 @@
-package poker.domain
+package poker.domain.request
 
 import poker.domain.player.betting.BettingAction
 import poker.exception.PokerException

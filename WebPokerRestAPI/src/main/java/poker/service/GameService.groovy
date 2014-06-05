@@ -4,7 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import poker.domain.GameRequest
+import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player

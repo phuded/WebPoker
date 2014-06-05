@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import poker.domain.GameRequest
+import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.service.GameService
 
@@ -15,7 +15,7 @@ import poker.service.GameService
  */
 @RestController
 @RequestMapping("/games")
-class GameController {
+class GameControllerImpl implements GameController{
 
     @Autowired
     private GameService gameService

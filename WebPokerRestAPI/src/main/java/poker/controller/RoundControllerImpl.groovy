@@ -2,7 +2,7 @@ package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import poker.domain.BetRequest
+import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.exception.PokerException
@@ -15,7 +15,7 @@ import poker.service.RoundService
  */
 @RestController
 @RequestMapping("/games/{gameId}/rounds")
-class RoundController {
+class RoundControllerImpl implements RoundController{
 
     @Autowired
     GameService gameService
