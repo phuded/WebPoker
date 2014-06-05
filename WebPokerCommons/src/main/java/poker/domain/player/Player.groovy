@@ -25,7 +25,7 @@ class Player {
     Hand bestHand
 
     //Funds
-    int funds
+    Integer funds
 
     //Order
     int order
