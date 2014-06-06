@@ -7,7 +7,11 @@ $(document).ready(function() {
 
 function createGame(){
 
-var game = {name:"Test",
+    //Clear
+    $("textarea.reset").text("");
+    $("input.reset").val("");
+
+    var game = {name:"Test",
             playerNames:[$("#player1").val(),$("#player2").val()],
             startingPlayerFunds:$("#amount").val()};
 
@@ -39,6 +43,12 @@ function createRound(){
 
               $("#currentPlayer").val(data.currentPlayer)
 
+              $.each(data.bettingRounds, function(i, item) {
+                  if(item.isCurrent){
+                      $("#bettingRound").val(item.bettingRoundNumber)
+                  }
+              });
+
               getGame()
           },
           failure: function(errMsg) {
@@ -60,10 +70,12 @@ function getGame(){
             var cards = ""
 
             $.each(data.players, function(i, item) {
+                cards += item.name + "\n"
+                cards += "-----------------\n"
                 $.each(item.initialCards, function(i, card) {
                     cards += card.suit + " " + card.cardValue  + "\n";
                 });
-                cards += "\n"
+                cards += "-----------------\n\n"
             });
 
             $("#playerCards").text(cards);
@@ -102,6 +114,9 @@ function updateRound(betType){
           dataType: "json",
           success: function(data){
 
+              //Remove bet amount
+              $("#betAmount").val("")
+
               var cards = ""
 
               if(data.roundCards[0]){
@@ -112,17 +127,33 @@ function updateRound(betType){
 
               }
 
+              //Set cards and current player
               $("#cards").text(cards)
 
               $("#currentPlayer").val(data.currentPlayer)
 
+              $("#pot").val(data.pot)
+
+              //Current details of bet and current
+              $.each(data.bettingRounds, function(i, item) {
+                    if(item.isCurrent){
+                        $("#bettingRound").val(item.bettingRoundNumber)
+                        $("#currentBet").val(item.amountBetPerPlayer)
+                    }
+              });
+
+              //If round finished
               if(data.hasFinished){
                  var winners = ""
                  $.each(data.winningPlayerNames, function(i, item) {
-                   winners += item + " "
+                    winners += item + ", "
                  });
 
-                 $("#winners").text(winners)
+                 winners += "Round Pot: " + data.pot
+
+                 $("#winners").val(winners)
+
+                 alert("Finished! Winner is: " + winners)
               }
           },
           failure: function(errMsg) {
