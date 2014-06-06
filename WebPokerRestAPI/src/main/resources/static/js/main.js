@@ -11,8 +11,11 @@ function createGame(){
     $("textarea.reset").text("");
     $("input.reset").val("");
 
+    var players = $("#players").val();
+    var playerList = players.split(",")
+
     var game = {name:"Test",
-            playerNames:[$("#player1").val(),$("#player2").val()],
+            playerNames:playerList,
             startingPlayerFunds:$("#amount").val()};
 
     $.ajax({
@@ -73,7 +76,7 @@ function getGame(){
                 cards += item.name + "\n"
                 cards += "-----------------\n"
                 $.each(item.initialCards, function(i, card) {
-                    cards += card.suit + " " + card.cardValue  + "\n";
+                    cards += card.cardValue + " - " + card.suit  + "\n";
                 });
                 cards += "-----------------\n\n"
             });
@@ -122,7 +125,7 @@ function updateRound(betType){
               if(data.roundCards[0]){
 
                 $.each(data.roundCards, function(i, item) {
-                    cards += item.suit + " " + item.cardValue  + "\n";
+                    cards += item.cardValue + " - " + item.suit  + "\n";
                 });
 
               }
