@@ -15,7 +15,7 @@ function createGame(){
     //Clear
     $("textarea.reset").text("");
     $("input.reset").val("");
-    $("#response").html();
+    $("#response").html("");
 
     var players = $("#players").val();
     var playerList = players.split(",")
