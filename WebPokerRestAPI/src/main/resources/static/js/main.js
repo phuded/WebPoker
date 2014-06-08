@@ -15,6 +15,7 @@ function createGame(){
     //Clear
     $("textarea.reset").text("");
     $("input.reset").val("");
+    $("#response").html();
 
     var players = $("#players").val();
     var playerList = players.split(",")
@@ -63,10 +64,7 @@ function createRound(){
 //Entry point 2
 function connectToGame(){
     //Set Game ID and Player name
-    if(!gameId){
-        gameId = $("#gameId").val();
-    }
-
+    gameId = $("#gameId").val();
     playerName = $("#playerName").val();
 
     $.ajax({
@@ -88,6 +86,28 @@ function connectToGame(){
     });
 
 }
+
+
+function refreshGame(){
+
+    $.ajax({
+        type: "GET",
+        url: "/games/"+ gameId+"/rounds/"+ roundId + "?playerName="+ playerName,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){
+            //Update
+            updateDetails(data)
+
+        },
+        failure: function(errMsg) {
+            alert(errMsg);
+        }
+    });
+
+}
+
+
 
 function updateRound(betType){
 
@@ -207,7 +227,7 @@ function connect() {
         stompClient.subscribe('/topic/betNotifications', function(betNotification){
             showBet(JSON.parse(betNotification.body));
             //Refresh
-            connectToGame()
+            refreshGame()
         });
     });
 }
