@@ -8,6 +8,7 @@ import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
 import poker.domain.player.Player
+import poker.exception.PokerException
 import poker.repository.GameRepository
 
 /**
@@ -44,7 +45,13 @@ class GameService {
      * @return
      */
     Game loadGame(String gameId){
-       return gameRepository.findOne(gameId)
+       Game game =  gameRepository.findOne(gameId)
+
+       if(!game){
+           throw new PokerException("No game found with ID: " + gameId)
+       }
+
+       return game
     }
 
     /**
