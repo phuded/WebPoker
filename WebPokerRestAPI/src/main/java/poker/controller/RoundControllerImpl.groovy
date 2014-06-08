@@ -1,7 +1,10 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.web.bind.annotation.*
+import poker.domain.notification.BetNotification
+import poker.domain.player.betting.BettingAction
 import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
@@ -22,6 +25,9 @@ class RoundControllerImpl implements RoundController{
 
     @Autowired
     RoundService roundService
+
+    @Autowired
+    SimpMessagingTemplate template
 
     /**
      * Get all of the rounds for the game
@@ -115,8 +121,22 @@ class RoundControllerImpl implements RoundController{
         betRequest.validate()
 
         //Update the round
-        return roundService.updateRound(game,round,betRequest)
+        round = roundService.updateRound(game,round,betRequest)
 
+        sendNotification(betRequest)
+
+        return round
+    }
+
+
+    void sendNotification(BetRequest betRequest){//, BettingAction bettingAction, int bet) throws Exception {
+
+        BetNotification betNotification = new BetNotification()
+        betNotification.playerName = betRequest.player
+        betNotification.bettingAction = BettingAction.getBettingActionByName(betRequest.bettingAction)
+        betNotification.bet = betRequest.bet
+
+        this.template.convertAndSend("/topic/betNotifications", betNotification);
     }
 
 

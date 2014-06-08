@@ -2,6 +2,11 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
+
+
+        <script src="js/sockjs.js"></script>
+        <script src="js/stomp.js"></script>
+
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/main.js"></script>
         <title>Poker</title>
@@ -17,6 +22,11 @@
             <input id="amount" type="text" value="1000"/>
         </p>
         <input type="button" value="Create Game" onclick="createGame()"/>
+
+        <h2>Connect to Game</h2>
+        <input id="gameId" type="text"/>
+        <input type="button" value="Connect" onclick="connectToGame()"/>
+
 
         <h2>Game Cards</h2>
         <textarea id="cards" class="reset" rows="10"></textarea>
@@ -45,8 +55,11 @@
 
         <p>
            Winners:
-           <input id="winners" class="reset" type="text" style="font-weight:bold;width:250px"></input>
+           <input id="winners" class="reset" type="text" style="font-weight:bold;width:250px" disabled/>
         </p>
+
+        <h4>Notification</h4>
+        <p id="response"></p>
 
         <input type="button" value="Call" onclick="updateRound('call')"/>
         <input type="button" value="Fold" onclick="updateRound('fold')"/>

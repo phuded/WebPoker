@@ -5,7 +5,7 @@
     <parent>
         <artifactId>webpoker-parent</artifactId>
         <groupId>web.poker</groupId>
-        <version>0.0.6-SNAPSHOT</version>
+        <version>0.0.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,15 @@
         <dependency>
             <groupId>web.poker</groupId>
             <artifactId>webpoker-commons</artifactId>
-            <version>0.0.6-SNAPSHOT</version>
+            <version>0.0.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
         </dependency>
     </dependencies>
 
