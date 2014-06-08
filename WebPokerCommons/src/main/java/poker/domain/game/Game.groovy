@@ -124,6 +124,7 @@ class Game {
      * Get the current round
      * @return
      */
+    @JsonIgnore
     Round getCurrentRound(){
         return rounds.find{ Round round ->
             round.isCurrent
@@ -134,6 +135,7 @@ class Game {
      * Get the current player
      * @return
      */
+    @JsonIgnore
     Player getCurrentPlayer(){
         return players.find {Player player ->
             player.isCurrent

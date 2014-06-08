@@ -109,6 +109,7 @@ class Round {
      * Get the current betting round
      * @return
      */
+    @JsonIgnore
     BettingRound getCurrentBettingRound(){
         return bettingRounds.find{BettingRound bettingRound ->
             bettingRound.isCurrent
