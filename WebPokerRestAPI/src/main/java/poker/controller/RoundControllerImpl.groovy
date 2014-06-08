@@ -126,7 +126,7 @@ class RoundControllerImpl implements RoundController{
         round = roundService.updateRound(game,round,betRequest,playerName)
 
         //Issue notification
-        notificationService.sendNotification(betRequest)
+        notificationService.sendNotification(betRequest,playerName)
 
         return round.filter(playerName, game)
     }

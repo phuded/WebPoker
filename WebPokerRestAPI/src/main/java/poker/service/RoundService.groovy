@@ -34,7 +34,7 @@ class RoundService {
 
 
     /**
-     * Create a new round and set it to current TODO: Round Limited currently
+     * Create a new round and set it to current
      * @param game
      * @return
      */
