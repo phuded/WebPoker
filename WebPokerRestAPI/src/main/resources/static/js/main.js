@@ -2,6 +2,7 @@ var gameId;
 var roundId;
 
 $(document).ready(function() {
+    //Connect
     connect();
 });
 
