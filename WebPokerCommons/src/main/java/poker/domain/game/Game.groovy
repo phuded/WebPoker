@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate
 import poker.domain.card.Deck
 import poker.domain.game.round.Round
 import poker.domain.player.Player
+import poker.exception.PokerException
 import poker.util.PokerDateSerializer
 
 /**
@@ -38,7 +39,9 @@ class Game {
     @JsonIgnore
     Deck deck
 
+    @JsonIgnore
     List<Player> players
+
     List<Round> rounds
 
     //Default Constructor
@@ -61,6 +64,23 @@ class Game {
     }
 
     /**
+     * Get a player by name
+     * @param playerName
+     * @return
+     */
+    Player getPlayerByName(String playerName){
+        Player foundPlayer = players.find{
+            it.name.equals(playerName)
+        }
+
+        if(!foundPlayer){
+          throw new PokerException("Invalid player: " + playerName)
+        }
+
+        return foundPlayer
+    }
+
+    /**
      * Get a list of non folded players
      * @return
      */
@@ -78,11 +98,46 @@ class Game {
      *  Check if there are any players who have not bet once
      */
     boolean anyNonFoldedPlayersYetToBet(){
-        List<Player> playersYetToBet = getNonFoldedPlayers().findAll {Player player ->
+        List<Player> playersYetToBet = nonFoldedPlayers.findAll {Player player ->
           !player.hasBetOnce
         }
 
         return playersYetToBet.size() > 0
+    }
+
+    /**
+     * Get list of rounds
+     * @return
+     */
+    List<Round> getRounds(String playerName){
+       Player player = this.getPlayerByName(playerName)
+
+       //Set the requested player
+       this.rounds.each {
+         it.player = player
+       }
+
+       return rounds
+    }
+
+    /**
+     * Get the current round
+     * @return
+     */
+    Round getCurrentRound(){
+        return rounds.find{ Round round ->
+            round.isCurrent
+        }
+    }
+
+    /**
+     * Get the current player
+     * @return
+     */
+    Player getCurrentPlayer(){
+        return players.find {Player player ->
+            player.isCurrent
+        }
     }
 
 }

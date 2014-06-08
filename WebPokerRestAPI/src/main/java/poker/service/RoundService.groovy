@@ -55,7 +55,7 @@ class RoundService {
         //Set the first player to current
         Player firstPlayer =game.players.first()
         firstPlayer.isCurrent = true
-        round.currentPlayer = firstPlayer.name
+        round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
         round.bettingRounds.first().dealCards(game,round)
@@ -76,7 +76,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest){
+    Round updateRound(Game game, Round round, BetRequest betRequest, String playerName){
 
         //Check if round finished
         if(round.hasFinished){
@@ -84,13 +84,13 @@ class RoundService {
         }
 
         //Get Current Betting Round
-        BettingRound currentBettingRound = bettingRoundService.getCurrentBettingRound(round)
+        BettingRound currentBettingRound = round.currentBettingRound
 
         //Get the current player
-        Player currentPlayer = bettingRoundService.getCurrentPlayer(game)
+        Player currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.name == betRequest.player){
+        if(currentPlayer.name == playerName){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
@@ -128,7 +128,7 @@ class RoundService {
 
         }
         else{
-            throw new PokerException("Invalid player")
+            throw new PokerException("Invalid player: " + playerName)
         }
 
     }
@@ -142,11 +142,11 @@ class RoundService {
      */
     def finishRound(Game game, Round round){
 
-        if(game.getNonFoldedPlayers().size() > 1){
+        if(game.nonFoldedPlayers.size() > 1){
             logger.info("================================")
 
             //Detect hands...
-            game.getNonFoldedPlayers().each{ Player player ->
+            game.nonFoldedPlayers.each{ Player player ->
 
                 //Get the player's hands
                 handDetector.detectHand(player)
@@ -159,11 +159,11 @@ class RoundService {
             logger.info("================================")
 
             //Get winner
-            round.winners = roundWinnerDetector.detectWinners(game.getNonFoldedPlayers())
+            round.winners = roundWinnerDetector.detectWinners(game.nonFoldedPlayers)
         }
         else{
             //Winner is last player
-            round.winners = [game.getNonFoldedPlayers().first()]
+            round.winners = [game.nonFoldedPlayers.first()]
         }
 
         logger.info("Round Winners: " + round.winners)
@@ -175,24 +175,7 @@ class RoundService {
         }
 
         //Close the round
-        //Set Player Names and Best Hand
-        round.winners.each {Player winner ->
-            round.winningPlayerNames << winner.name
-        }
-
-        round.winningHand = round.winners.get(0).bestHand
-
-        //Clear the winners
-        round.winners = null
-
-        //Switch flag
-        round.isCurrent = false
-
-        //Remove the current player
-        round.currentPlayer = null
-
-        //Set finished
-        round.hasFinished = true
+        round.close();
 
         //Shift the players
         shiftPlayers(game)
@@ -228,7 +211,7 @@ class RoundService {
      */
     boolean onePlayerRemaining(Game game){
         //Check if > 1 player left
-        return (game.getNonFoldedPlayers().size()>1)?false:true
+        return !(game.nonFoldedPlayers.size()>1)
     }
 
 }

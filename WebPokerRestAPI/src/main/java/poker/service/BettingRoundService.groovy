@@ -24,45 +24,19 @@ class BettingRoundService {
     GameRepository gameRepository
 
     /**
-     * Get the current betting round
-     * @param round
-     * @return
-     */
-    BettingRound getCurrentBettingRound(Round round){
-      BettingRound currentBettingRound = round.bettingRounds.find { BettingRound bettingRound ->
-          bettingRound.isCurrent
-      }
-
-      return currentBettingRound
-    }
-
-    /**
-     * Get the current player
-     * @param game
-     * @return
-     */
-    Player getCurrentPlayer(Game game){
-        Player activePlayer =game.players.find {Player player ->
-            player.isCurrent
-        }
-
-        return activePlayer
-    }
-
-    /**
      * Set the next player
      * @param game
      * @return
      */
     void setNextPlayer(Game game, Round round){
         //Get the player
-        Player player = getCurrentPlayer(game)
+        Player player = game.currentPlayer
 
         //Set inactive
         player.isCurrent = false
 
         //Check for a non-folded player who has a higher order than the current
-        player = game.getNonFoldedPlayers().find { Player pl ->
+        player = game.nonFoldedPlayers.find { Player pl ->
             pl.order > player.order
         }
 
@@ -72,12 +46,12 @@ class BettingRoundService {
             logger.debug("There is no non-folded player with a higher order number")
 
             //Must reset
-            player = game.getNonFoldedPlayers().first()
+            player = game.nonFoldedPlayers.first()
         }
 
         //Set active
         player.isCurrent = true
-        round.currentPlayer = player.name
+        round.currentPlayerName = player.name
 
         logger.info("Setting next Player to: " + player.name + " - saving.")
         gameRepository.save(game)
@@ -91,20 +65,22 @@ class BettingRoundService {
      */
     BettingRound setNextBettingRound(Game game,Round round, BettingRound currentBettingRound){
 
-        if(currentBettingRound.getBettingRoundNumber() == 4){
+        //Check if last
+        if(currentBettingRound.last){
             return null
         }
 
         //Get the next
-        BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.getBettingRoundNumber())
+        BettingRound nextBettingRound = round.bettingRounds.get(currentBettingRound.bettingRoundNumber)
 
         //Set next as current
         nextBettingRound.isCurrent = true
 
         //Set the first player to current
-        Player firstPlayer = game.getNonFoldedPlayers().first()
+        Player firstPlayer = game.nonFoldedPlayers.first()
+
         firstPlayer.isCurrent = true
-        round.currentPlayer = firstPlayer.name
+        round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
         nextBettingRound.dealCards(game,round)
@@ -161,7 +137,7 @@ class BettingRoundService {
     boolean hasBettingRoundFinished(Game game, BettingRound bettingRound){
 
         //In case after the current player folding - is only 1 player left
-        if(game.getNonFoldedPlayers().size() == 1){
+        if(game.nonFoldedPlayers.size() == 1){
 
             logger.debug("There is only 1 non-folded player")
             return true
@@ -180,7 +156,7 @@ class BettingRoundService {
         // Do not keep betting
         boolean bettingRoundFinished = true
 
-        game.getNonFoldedPlayers().each{ Player player ->
+        game.nonFoldedPlayers.each{ Player player ->
 
             if(player.amountBet != bettingRound.amountBetPerPlayer){
 
@@ -211,9 +187,7 @@ class BettingRoundService {
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
-        bettingRound.isCurrent = false
-
-        bettingRound.hasFinished = true
+        bettingRound.close()
 
         logger.info("Betting round finished - saving.")
         gameRepository.save(game)

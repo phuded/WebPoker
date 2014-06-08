@@ -30,7 +30,7 @@ class RiverCardRound extends BettingRound{
         parentRound.roundCards.add(finalCard)
 
         //Add to each players hand
-        game.getNonFoldedPlayers().each { Player player ->
+        game.nonFoldedPlayers.each { Player player ->
             //Add river card to player hand
             player.addGameCards(finalCard)
 
@@ -39,4 +39,10 @@ class RiverCardRound extends BettingRound{
 
         areCardsDealt = true
     }
+
+    @Override
+    boolean isLast(){
+        return true
+    }
+
 }

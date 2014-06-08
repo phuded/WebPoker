@@ -1,6 +1,7 @@
 package poker.domain.game.round
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.data.annotation.Transient
 import poker.domain.card.Card
 import poker.domain.card.Deck
 import poker.domain.game.Game
@@ -37,7 +38,7 @@ class Round {
     List<Player> winners
 
     //Current Player
-    String currentPlayer
+    String currentPlayerName
 
     //Pot
     int pot
@@ -51,6 +52,9 @@ class Round {
     //Winning hand
     Hand winningHand
 
+    //The requested player
+    @Transient
+    Player player
 
     //Default Constructor
     Round(){}
@@ -74,5 +78,54 @@ class Round {
                          new TurnCardRound(),
                          new RiverCardRound()]
     }
+
+    /**
+     * Close the round
+     */
+    void close(){
+        //Close the round
+        //Set Player Names and Best Hand
+        this.winners.each {Player winner ->
+            this.winningPlayerNames << winner.name
+        }
+
+        this.winningHand = this.winners.get(0).bestHand
+
+        //Clear the winners
+        this.winners = null
+
+        //Switch flag
+        this.isCurrent = false
+
+        //Remove the current player
+        this.currentPlayerName = null
+
+        //Set finished
+        this.hasFinished = true
+
+    }
+
+    /**
+     * Get the current betting round
+     * @return
+     */
+    BettingRound getCurrentBettingRound(){
+        return bettingRounds.find{BettingRound bettingRound ->
+            bettingRound.isCurrent
+        }
+    }
+
+    /**
+     * Filter the response
+     * @param playerName
+     * @param game
+     * @return
+     */
+    Round filter(String playerName, Game game){
+        this.player = game.getPlayerByName(playerName)
+
+        return this
+    }
+
 
 }

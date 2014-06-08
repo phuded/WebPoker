@@ -40,7 +40,9 @@ abstract class BettingRound {
 
     abstract dealCards(Game game, Round round)
 
-    // Get the total pot from the betting round - include folded players (use game players)
+    /**
+     * Get the total pot from the betting round - include folded players (use game players)
+     */
     def getPot(Game game){
         int roundPot = 0
 
@@ -50,4 +52,22 @@ abstract class BettingRound {
         }
         return roundPot
     }
+
+    /**
+     * Is the last betting round?
+     * @return
+     */
+    boolean isLast(){
+        return false
+    }
+
+    /**
+     * Close the round
+     */
+    void close(){
+        this.isCurrent = false
+
+        this.hasFinished = true
+    }
+
 }

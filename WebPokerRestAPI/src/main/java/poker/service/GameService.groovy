@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
-import poker.domain.game.round.Round
-import poker.domain.player.Player
-import poker.exception.PokerException
+import poker.exception.PokerNotFoundException
 import poker.repository.GameRepository
 
 /**
@@ -45,10 +43,10 @@ class GameService {
      * @return
      */
     Game loadGame(String gameId){
-       Game game =  gameRepository.findOne(gameId)
+       Game game = gameRepository.findOne(gameId)
 
        if(!game){
-           throw new PokerException("No game found with ID: " + gameId)
+           throw new PokerNotFoundException("No game found with ID: " + gameId)
        }
 
        return game
@@ -60,20 +58,6 @@ class GameService {
      */
     List<Game> getAllGames(){
         return gameRepository.findAll()
-    }
-
-    /**
-     * Find the current round
-     * @param game
-     * @return
-     */
-    Round findCurrentRound(Game game){
-        //Get the current round
-        Round round = game.rounds.find {Round round ->
-            round.isCurrent
-        }
-
-        return round
     }
 
     //TODO Remove later

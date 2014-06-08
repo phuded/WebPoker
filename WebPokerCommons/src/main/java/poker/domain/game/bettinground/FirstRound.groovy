@@ -26,7 +26,7 @@ class FirstRound extends BettingRound{
     def dealCards(Game game, Round round) {
 
         //Deal 2 cards to each player
-        game.getNonFoldedPlayers().each { Player player ->
+        game.nonFoldedPlayers.each { Player player ->
             //Player gets two cards
             dealInitialCardsToPlayer(game, player)
 
