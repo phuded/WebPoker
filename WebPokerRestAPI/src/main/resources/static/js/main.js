@@ -192,7 +192,7 @@ var stompClient = null;
 }*/
 
 function connect() {
-    var socket = new SockJS('/poker');
+    var socket = new SockJS('/poker',null,{rtt:5000});
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
        // setConnected(true);
