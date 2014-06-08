@@ -13,6 +13,11 @@
     </head>
     <body>
       <h1>Poker!</h1>
+
+        <h2>Player Name</h2>
+        <input id="playerName" type="text" value="Matt"/>
+
+        <h2>New Game</h2>
         <p>
             Players:
             <input id="players" type="text" value="Matt,Cathy"/>
@@ -61,9 +66,11 @@
         <h4>Notification</h4>
         <p id="response"></p>
 
+        <input id="betAmount" class="reset" type="text"/>
+        <br/>
         <input type="button" value="Call" onclick="updateRound('call')"/>
         <input type="button" value="Fold" onclick="updateRound('fold')"/>
         <input type="button" value="Bet" onclick="updateRound('bet')"/>
-        <input id="betAmount" class="reset" type="text"/>
+
     </body>
 </html>

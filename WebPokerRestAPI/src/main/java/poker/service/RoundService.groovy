@@ -128,7 +128,7 @@ class RoundService {
 
         }
         else{
-            throw new PokerException("Invalid player: " + playerName)
+            throw new PokerException("Invalid player: " + playerName + " - not the current Player.")
         }
 
     }

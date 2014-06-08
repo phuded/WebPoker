@@ -1,12 +1,16 @@
 var gameId;
 var roundId;
+var playerName;
 
 $(document).ready(function() {
     //Connect
     connect();
 });
 
+//Entry Point 1
 function createGame(){
+    //Set name
+    playerName = $("#playerName").val();
 
     //Clear
     $("textarea.reset").text("");
@@ -26,6 +30,7 @@ function createGame(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
+            //Set Game ID
             gameId = data.id;
 
             createRound();
@@ -39,11 +44,15 @@ function createGame(){
 function createRound(){
       $.ajax({
           type: "POST",
-          url: "/games/"+gameId+"/rounds",
+          url: "/games/"+gameId+"/rounds?playerName="+ playerName,
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function(data){
-              getGame()
+              //Set round ID
+              roundId = data.roundNumber
+
+              //Update
+              updateDetails(data)
           },
           failure: function(errMsg) {
               alert(errMsg);
@@ -51,39 +60,26 @@ function createRound(){
       });
 }
 
+//Entry point 2
+function connectToGame(){
+    //Set Game ID and Player name
+    if(!gameId){
+        gameId = $("#gameId").val();
+    }
 
-function getGame(){
+    playerName = $("#playerName").val();
 
     $.ajax({
         type: "GET",
-        url: "/games/"+ gameId,
+        url: "/games/"+ gameId+"/rounds/current?playerName="+ playerName,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
+            //Set round ID
+            roundId = data.roundNumber
 
-            //Get current round
-            $.each(data.rounds, function(i,round){
-
-              if(round.isCurrent || i == (data.rounds.length - 1)){
-                  updateDetails(round);
-              }
-            });
-
-
-
-            //Player cards
-            var cards = ""
-
-            $.each(data.players, function(i, player) {
-                cards += player.name + "\n"
-                cards += "-----------------\n"
-                $.each(player.initialCards, function(i, card) {
-                    cards += card.cardValue + " - " + card.suit  + "\n";
-                });
-                cards += "-----------------\n\n"
-            });
-
-            $("#playerCards").text(cards);
+            //Update
+            updateDetails(data)
 
         },
         failure: function(errMsg) {
@@ -95,26 +91,22 @@ function getGame(){
 
 function updateRound(betType){
 
-    var playerName = $("#currentPlayer").val()
-
     var roundUpdate
 
     if(betType == "bet"){
         roundUpdate = {
-                        player:playerName,
                         bet:$("#betAmount").val()
                       }
     }
     else{
         roundUpdate = {
-                        player:playerName,
                         bettingAction:betType
                       }
     }
 
       $.ajax({
           type: "PUT",
-          url: "/games/"+gameId+"/rounds/"+roundId,
+          url: "/games/"+gameId+"/rounds/"+roundId + "?playerName="+ playerName,
           data: JSON.stringify(roundUpdate),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -129,12 +121,30 @@ function updateRound(betType){
 }
 
 function updateDetails(data){
+    //Always show Current Player cards
+    if($("#playerCards").text() == ""){
+        var cards = ""
 
+
+        cards += data.player.name + "\n"
+        cards += "-----------------\n"
+        $.each(data.player.initialCards, function(i, card) {
+            cards += card.cardValue + " - " + card.suit  + "\n";
+        });
+        cards += "-----------------\n\n"
+
+
+        $("#playerCards").text(cards);
+    }
+
+
+     //Set round number
      roundId = data.roundNumber;
 
      //Remove bet amount
      $("#betAmount").val("")
 
+     //Round cards
      var cards = ""
 
      if(data.roundCards[0]){
@@ -148,7 +158,7 @@ function updateDetails(data){
      //Set cards and current player
      $("#cards").text(cards)
 
-     $("#currentPlayer").val(data.currentPlayer)
+     $("#currentPlayer").val(data.currentPlayerName)
 
      $("#pot").val(data.pot)
 
@@ -175,12 +185,6 @@ function updateDetails(data){
      }
 }
 
-function connectToGame(){
-    gameId = $("#gameId").val();
-
-    getGame();
-}
-
 
 //Web Socket code
 var stompClient = null;
@@ -203,7 +207,7 @@ function connect() {
         stompClient.subscribe('/topic/betNotifications', function(betNotification){
             showBet(JSON.parse(betNotification.body));
             //Refresh
-            getGame()
+            connectToGame()
         });
     });
 }
