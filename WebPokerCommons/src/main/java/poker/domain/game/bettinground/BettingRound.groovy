@@ -57,6 +57,7 @@ abstract class BettingRound {
      * Is the last betting round?
      * @return
      */
+    @JsonIgnore
     boolean isLast(){
         return false
     }
