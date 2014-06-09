@@ -193,13 +193,13 @@ function updateDetails(data){
      //If round finished
      if(data.hasFinished){
         var winners = ""
-        $.each(data.winningPlayerNames, function(i, item) {
-           winners += item + ", "
+        $.each(data.winningPlayerNames, function(i, winner) {
+           winners += winner + " - " + data.winningHand.handType.name + "\n"
         });
 
         winners += "Round Pot: " + data.pot
 
-        $("#winners").val(winners)
+        $("#winners").text(winners)
 
         alert("Finished! Winner is: " + winners)
      }

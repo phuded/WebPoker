@@ -34,10 +34,10 @@
 
 
         <h2>Game Cards</h2>
-        <textarea id="cards" class="reset" rows="10"></textarea>
+        <textarea id="cards" class="reset" rows="10" disabled></textarea>
 
         <h2>Player Cards</h2>
-        <textarea id="playerCards" class="reset" rows="12"></textarea>
+        <textarea id="playerCards" class="reset" rows="12" disabled></textarea>
 
         <p>
           Current Player:
@@ -58,12 +58,10 @@
           <input id="pot" class="reset" type="text" DISABLED/>
         </p>
 
-        <p>
-           Winners:
-           <input id="winners" class="reset" type="text" style="font-weight:bold;width:250px" disabled/>
-        </p>
+        <h4>Winners:</h4>
+        <textarea id="winners" class="reset" rows="10" style="font-weight:bold;width:250px" disabled></textarea>
 
-        <h4>Notification</h4>
+        <h4>Notification:</h4>
         <p id="response"></p>
 
         <input id="betAmount" class="reset" type="text"/>

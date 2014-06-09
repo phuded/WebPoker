@@ -17,8 +17,8 @@ class GameRequest {
             throw new PokerException("You must specify a name.")
         }
 
-        if(playerNames == null || playerNames.isEmpty()) {
-            throw new PokerException("You must specify at least 1 player.")
+        if(playerNames == null || playerNames.size() < 2) {
+            throw new PokerException("You must specify at least 2 players.")
         }
     }
 
