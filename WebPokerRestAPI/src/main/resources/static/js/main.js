@@ -194,7 +194,7 @@ function updateDetails(data){
      if(data.hasFinished){
         var winners = ""
         $.each(data.winningPlayerNames, function(i, winner) {
-           winners += winner + " - " + data.winningHand.handType.name + "\n"
+           winners += winner + " - " + data.winningHand.handType + "\n"
         });
 
         winners += "Round Pot: " + data.pot

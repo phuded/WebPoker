@@ -200,7 +200,7 @@ class RoundService {
             player.order = i
         }
 
-        logger.info("Saving after shift" + game.players)
+        logger.info("Saving after shift: " + game.players)
         gameRepository.save(game)
     }
 
