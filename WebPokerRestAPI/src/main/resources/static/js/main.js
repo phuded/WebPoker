@@ -43,6 +43,9 @@ function createGame(){
 }
 
 function createRound(){
+      //Clear text area
+      $("textarea.reset").text("");
+
       $.ajax({
           type: "POST",
           url: "/games/"+gameId+"/rounds?playerName="+ playerName,
