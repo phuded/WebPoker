@@ -58,6 +58,8 @@ class RoundControllerImpl implements RoundController{
         //Create new Round
         Round newRound = roundService.createNextRound(game)
 
+        notificationService.sendNotification(game.id, newRound.roundNumber)
+
         return newRound.filter(playerName,game)
     }
 
@@ -123,10 +125,10 @@ class RoundControllerImpl implements RoundController{
         betRequest.validate()
 
         //Update the round
-        round = roundService.updateRound(game,round,betRequest,playerName)
+        round = roundService.updateRound(game, round, betRequest, playerName)
 
         //Issue notification
-        notificationService.sendNotification(betRequest,playerName)
+        notificationService.sendNotification(game.id, betRequest, playerName)
 
         return round.filter(playerName, game)
     }

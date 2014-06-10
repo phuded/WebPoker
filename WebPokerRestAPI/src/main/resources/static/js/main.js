@@ -12,11 +12,6 @@ function createGame(){
     //Set name
     playerName = $("#playerName").val();
 
-    //Clear
-    $("textarea.reset").text("");
-    $("input.reset").val("");
-    $("#response").html("");
-
     var players = $("#players").val();
     var playerList = players.split(",")
 
@@ -34,6 +29,7 @@ function createGame(){
             //Set Game ID
             gameId = data.id;
 
+            alert("Game created.")
             createRound();
         },
         failure: function(errMsg) {
@@ -42,9 +38,8 @@ function createGame(){
     });
 }
 
+//New round
 function createRound(){
-      //Clear text area
-      $("textarea.reset").text("");
 
       $.ajax({
           type: "POST",
@@ -52,14 +47,10 @@ function createRound(){
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function(data){
-              //Set round ID
-              roundId = data.roundNumber
-
-              //Update
-              updateDetails(data)
+            //Do nothing
           },
-          failure: function(errMsg) {
-              alert(errMsg);
+          error: function(errMsg) {
+              alert("Round already in progress");
           }
       });
 }
@@ -227,10 +218,8 @@ function connect() {
         console.log('Connected: ' + frame);
 
         //When subscribing
-        stompClient.subscribe('/topic/betNotifications', function(betNotification){
-            showBet(JSON.parse(betNotification.body));
-            //Refresh
-            refreshGame()
+        stompClient.subscribe('/topic/notifications', function(notification){
+            processNotification(JSON.parse(notification.body));
         });
     });
 }
@@ -242,9 +231,27 @@ function disconnect() {
 }
 
 
-function showBet(betNotification) {
-    var response = $("#response");
-    response.text(betNotification.playerName + " bet: " + (betNotification.bet?betNotification.bet:betNotification.bettingAction))
+function processNotification(notification) {
 
+    if(notification.gameId == gameId){
+
+        if(notification.type == "bet"){
+            var response = $("#response");
+            response.text(notification.playerName + " bet: " + (notification.bet?notification.bet:notification.bettingAction))
+        }
+
+        if(notification.type == "round"){
+            //New round
+            roundId = notification.roundNumber
+
+            //Clear form
+            $("textarea.reset").text("");
+            $("input.reset").val("");
+            $("#response").html("");
+        }
+
+        //Refresh
+        refreshGame()
+    }
 }
 

@@ -3,8 +3,7 @@ package poker.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
-import poker.domain.notification.BetNotification
-import poker.domain.player.betting.BettingAction
+import poker.domain.notification.Notification
 import poker.domain.request.BetRequest
 
 /**
@@ -20,14 +19,24 @@ class NotificationService {
      * Send betting notification
      * @param betRequest
      */
-    void sendNotification(BetRequest betRequest, String player){
+    void sendNotification(String gameId, BetRequest betRequest, String player){
+        Notification notification = new Notification(gameId, "bet")
 
-        BetNotification betNotification = new BetNotification()
-        betNotification.playerName = player
+        notification.playerName = player
+        notification.bettingAction = betRequest.bettingAction
+        notification.bet = betRequest.bet
 
-        betNotification.bettingAction = betRequest.bettingAction
-        betNotification.bet = betRequest.bet
+        this.template.convertAndSend("/topic/notifications", notification);
+    }
 
-        this.template.convertAndSend("/topic/betNotifications", betNotification);
+    /**
+     * Send new round notification
+     */
+    void sendNotification(String gameId, int roundNumber){
+        Notification notification = new Notification(gameId, "round")
+
+        notification.roundNumber = roundNumber
+
+        this.template.convertAndSend("/topic/notifications", notification);
     }
 }
