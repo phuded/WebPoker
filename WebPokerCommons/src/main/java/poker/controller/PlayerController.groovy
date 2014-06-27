@@ -1,6 +1,5 @@
 package poker.controller
 
-import poker.domain.game.Game
 import poker.domain.player.Player
 import poker.domain.request.PlayerRequest
 
@@ -15,7 +14,7 @@ interface PlayerController {
      * @param players
      * @return
      */
-    Game createPlayer(PlayerRequest playerRequest)
+    Player createPlayer(PlayerRequest playerRequest)
 
     /**
      * List all Players

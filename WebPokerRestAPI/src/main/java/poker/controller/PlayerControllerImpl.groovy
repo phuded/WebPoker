@@ -23,7 +23,7 @@ class PlayerControllerImpl implements PlayerController{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    Game createPlayer(@RequestBody PlayerRequest playerRequest) {
+    Player createPlayer(@RequestBody PlayerRequest playerRequest) {
         //Validate it
         playerRequest.validate()
 
