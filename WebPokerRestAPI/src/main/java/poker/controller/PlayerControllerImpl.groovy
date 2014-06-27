@@ -27,9 +27,6 @@ class PlayerControllerImpl implements PlayerController{
         //Validate it
         playerRequest.validate()
 
-        //TODO: Remove
-        playerService.clearDatabase()
-
         Player player = playerService.createNewPlayer(playerRequest)
 
         return player

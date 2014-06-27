@@ -74,7 +74,7 @@ class GameControllerImpl implements GameController{
 
         Game game = getGame(gameId)
 
-        Player player = playerService.loadPlayer(playerService)
+        Player player = playerService.loadPlayer(playerId)
 
         game.addPlayer(player)
 
