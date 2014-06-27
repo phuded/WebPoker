@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import poker.domain.game.Game
 import poker.domain.game.round.Round
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,7 +47,7 @@ abstract class BettingRound {
         int roundPot = 0
 
         //All players (current and folded)
-        game.players.each{Player player ->
+        game.players.each{GamePlayer player ->
             roundPot += player.amountBet
         }
         return roundPot

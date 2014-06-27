@@ -27,12 +27,11 @@ function createGame(){
         dataType: "json",
         success: function(data){
             //Set Game ID
-            gameId = data.id;
+            $("#gameId").val(data.id);
 
             alert("Game created.")
-            createRound();
         },
-        failure: function(errMsg) {
+        error: function(errMsg) {
             alert(errMsg);
         }
     });
@@ -50,7 +49,7 @@ function createRound(){
             //Do nothing
           },
           error: function(errMsg) {
-              alert("Round already in progress");
+              alert("Problem creating round: " + errMsg);
           }
       });
 }
@@ -60,6 +59,26 @@ function connectToGame(){
     //Set Game ID and Player name
     gameId = $("#gameId").val();
     playerName = $("#playerName").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/games/"+ gameId+"/connect?playerName="+ playerName,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){
+           // if(data.success){
+               getRoundDetails()
+           // }
+        },
+        error: function(errMsg) {
+            alert(errMsg);
+        }
+    });
+
+}
+
+//TODO: Combine with other method
+function getRoundDetails(){
 
     $.ajax({
         type: "GET",
@@ -74,13 +93,12 @@ function connectToGame(){
             updateDetails(data)
 
         },
-        failure: function(errMsg) {
-            alert(errMsg);
+        error: function(errMsg) {
+            //Do nothing
         }
     });
 
 }
-
 
 function refreshGame(){
 

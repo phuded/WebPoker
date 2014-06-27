@@ -8,7 +8,7 @@ import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 import poker.exception.PokerException
 import poker.repository.GameRepository
 
@@ -53,7 +53,7 @@ class RoundService {
         round.bettingRounds.first().isCurrent = true
 
         //Set the first player to current
-        Player firstPlayer =game.players.first()
+        GamePlayer firstPlayer =game.players.first()
         firstPlayer.isCurrent = true
         round.currentPlayerName = firstPlayer.name
 
@@ -76,7 +76,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, String playerName){
+    Round updateRound(Game game, Round round, BetRequest betRequest, Integer playerId){
 
         //Check if round finished
         if(round.hasFinished){
@@ -87,10 +87,10 @@ class RoundService {
         BettingRound currentBettingRound = round.currentBettingRound
 
         //Get the current player
-        Player currentPlayer = game.currentPlayer
+        GamePlayer currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.name == playerName){
+        if(currentPlayer.playerId == playerId){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
@@ -146,7 +146,7 @@ class RoundService {
             logger.info("================================")
 
             //Detect hands...
-            game.nonFoldedPlayers.each{ Player player ->
+            game.nonFoldedPlayers.each{ GamePlayer player ->
 
                 //Get the player's hands
                 handDetector.detectHand(player)
@@ -170,7 +170,7 @@ class RoundService {
 
 
         //Pay winners
-        round.winners.each { Player winner ->
+        round.winners.each { GamePlayer winner ->
             winner.funds += (round.pot/round.winners.size())
         }
 
@@ -196,7 +196,7 @@ class RoundService {
         game.players = game.players[1..-1,0]
 
         //Re-allocate order
-        game.players.eachWithIndex{ Player player, int i ->
+        game.players.eachWithIndex{ GamePlayer player, int i ->
             player.order = i
         }
 

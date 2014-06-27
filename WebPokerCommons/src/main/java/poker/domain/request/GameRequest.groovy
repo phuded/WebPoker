@@ -8,18 +8,14 @@ import poker.exception.PokerException
 class GameRequest {
 
     String name
-    List<String> playerNames
     Integer startingPlayerFunds = 1000
 
     void validate(){
 
-        if(name == null){
-            throw new PokerException("You must specify a name.")
+        if(!name){
+            throw new PokerException("You must specify a Game name.")
         }
 
-        if(playerNames == null || playerNames.size() < 2) {
-            throw new PokerException("You must specify at least 2 players.")
-        }
     }
 
 }

@@ -32,11 +32,11 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.GET)
-    List<Round> getRounds(@PathVariable String gameId, @RequestParam String playerName){
+    List<Round> getRounds(@PathVariable String gameId, @RequestParam Integer playerId){
 
         Game game = gameService.loadGame(gameId)
 
-        return game.getRounds(playerName)
+        return game.rounds
     }
 
     /**
@@ -44,7 +44,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.POST)
-    Round createNewRound(@PathVariable String gameId, @RequestParam String playerName){
+    Round createNewRound(@PathVariable String gameId, @RequestParam Integer playerId){
 
         Game game = gameService.loadGame(gameId)
 
@@ -60,7 +60,7 @@ class RoundControllerImpl implements RoundController{
 
         notificationService.sendNotification(game.id, newRound.roundNumber)
 
-        return newRound.filter(playerName,game)
+        return newRound
     }
 
     /**
@@ -68,19 +68,13 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
-    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String playerName){
+    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam Integer playerId){
 
         Game game = gameService.loadGame(gameId)
 
-        List<Round> rounds = game.rounds;
+        Round round = game.getRoundByNumber(roundNumber)
 
-        if(rounds.size() < roundNumber){
-           throw new PokerNotFoundException("No Round found: " + roundNumber)
-        }
-
-        Round round = rounds.get(--roundNumber);
-
-        return round.filter(playerName, game)
+        return round
     }
 
     /**
@@ -88,7 +82,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/current",method = RequestMethod.GET)
-    Round getCurrentRound(@PathVariable String gameId, @RequestParam String playerName){
+    Round getCurrentRound(@PathVariable String gameId, @RequestParam Integer playerId){
 
         Game game = gameService.loadGame(gameId)
 
@@ -99,7 +93,7 @@ class RoundControllerImpl implements RoundController{
             throw new PokerNotFoundException("No Current Round.")
         }
 
-        return currentRound.filter(playerName, game)
+        return currentRound
     }
 
 
@@ -109,27 +103,21 @@ class RoundControllerImpl implements RoundController{
      * @param roundId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.PUT)
-    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String playerName, @RequestBody BetRequest betRequest){
-
-        Game game = gameService.loadGame(gameId)
-
-        List<Round> rounds = game.rounds;
-
-        if(rounds.size() < roundNumber){
-            throw new PokerNotFoundException("No Round found: " + roundNumber)
-        }
-
-        Round round = rounds.get(--roundNumber);
+    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam Integer playerId, @RequestBody BetRequest betRequest){
 
         //Validate the request
         betRequest.validate()
 
+        Game game = gameService.loadGame(gameId)
+
+        Round round = game.getRoundByNumber(roundNumber)
+
         //Update the round
-        round = roundService.updateRound(game, round, betRequest, playerName)
+        round = roundService.updateRound(game, round, betRequest, playerId)
 
         //Issue notification
-        notificationService.sendNotification(game.id, betRequest, playerName)
+        notificationService.sendNotification(game.id, betRequest, playerId)
 
-        return round.filter(playerName, game)
+        return round
     }
 }

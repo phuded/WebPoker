@@ -27,8 +27,6 @@ class GameService {
      * @return
      */
     Game createNewGame(GameRequest gameRequest){
-        //Validate it
-        gameRequest.validate();
 
         Game game = new Game(gameRequest.name, gameRequest.playerNames,gameRequest.startingPlayerFunds)
 
@@ -42,8 +40,8 @@ class GameService {
      * @param gameId
      * @return
      */
-    Game loadGame(String gameId){
-       Game game = gameRepository.findOne(gameId)
+    Game loadGame(Integer gameId){
+       Game game = gameRepository.find(gameId)
 
        if(!game){
            throw new PokerNotFoundException("No game found with ID: " + gameId)

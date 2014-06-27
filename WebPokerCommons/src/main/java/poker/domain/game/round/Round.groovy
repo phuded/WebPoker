@@ -11,7 +11,7 @@ import poker.domain.game.bettinground.FlopRound
 import poker.domain.game.bettinground.RiverCardRound
 import poker.domain.game.bettinground.TurnCardRound
 import poker.domain.hand.Hand
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +35,7 @@ class Round {
 
     //Winners
     @JsonIgnore
-    List<Player> winners
+    List<GamePlayer> winners
 
     //Current Player
     String currentPlayerName
@@ -54,7 +54,7 @@ class Round {
 
     //The requested player
     @Transient
-    Player player
+    GamePlayer player
 
     //Default Constructor
     Round(){}
@@ -85,7 +85,7 @@ class Round {
     void close(){
         //Close the round
         //Set Player Names and Best Hand
-        this.winners.each {Player winner ->
+        this.winners.each {GamePlayer winner ->
             this.winningPlayerNames << winner.name
         }
 
@@ -115,18 +115,5 @@ class Round {
             bettingRound.isCurrent
         }
     }
-
-    /**
-     * Filter the response
-     * @param playerName
-     * @param game
-     * @return
-     */
-    Round filter(String playerName, Game game){
-        this.player = game.getPlayerByName(playerName)
-
-        return this
-    }
-
 
 }

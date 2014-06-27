@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import poker.domain.card.Card
 import poker.domain.game.Game
 import poker.domain.game.round.Round
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +30,7 @@ class RiverCardRound extends BettingRound{
         parentRound.roundCards.add(finalCard)
 
         //Add to each players hand
-        game.nonFoldedPlayers.each { Player player ->
+        game.nonFoldedPlayers.each { GamePlayer player ->
             //Add river card to player hand
             player.addGameCards(finalCard)
 

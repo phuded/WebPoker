@@ -4,7 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import poker.domain.game.Game
 import poker.domain.game.round.Round
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +26,7 @@ class FirstRound extends BettingRound{
     def dealCards(Game game, Round round) {
 
         //Deal 2 cards to each player
-        game.nonFoldedPlayers.each { Player player ->
+        game.nonFoldedPlayers.each { GamePlayer player ->
             //Player gets two cards
             dealInitialCardsToPlayer(game, player)
 
@@ -37,7 +37,7 @@ class FirstRound extends BettingRound{
     }
 
     // Deal 1st two cards to player
-    def dealInitialCardsToPlayer(Game game, Player player){
+    def dealInitialCardsToPlayer(Game game, GamePlayer player){
         player.receiveCard(game.deck.getCard())
         player.receiveCard(game.deck.getCard())
     }

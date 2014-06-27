@@ -13,25 +13,25 @@ interface RoundController {
      * Get all of the rounds for the game
      * @param gameId
      */
-    List<Round> getRounds(String gameId, String playerName)
+    List<Round> getRounds(String gameId, Integer playerId)
 
     /**
      * Create a game round
      * @param gameId
      */
-    Round createNewRound(String gameId, String playerName)
+    Round createNewRound(String gameId, Integer playerId)
 
     /**
      * Get the round in the game
      * @param gameId
      */
-    Round getRound(String gameId, Integer roundNumber, String playerName)
+    Round getRound(String gameId, Integer roundNumber, Integer playerId)
 
     /**
      * Get the current Round
      * @param gameId
      */
-    Round getCurrentRound(String gameId, String playerName)
+    Round getCurrentRound(String gameId, Integer playerId)
 
 
     /**
@@ -39,7 +39,7 @@ interface RoundController {
      * @param gameId
      * @param roundId
      */
-    Round updateRound(String gameId, Integer roundNumber, String playerName, BetRequest betRequest)
+    Round updateRound(String gameId, Integer roundNumber, Integer playerId, BetRequest betRequest)
 
 
 }

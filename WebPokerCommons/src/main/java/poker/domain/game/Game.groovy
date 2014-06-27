@@ -9,8 +9,9 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
 import poker.domain.card.Deck
 import poker.domain.game.round.Round
+import poker.domain.player.GamePlayer
 import poker.domain.player.Player
-import poker.exception.PokerException
+import poker.exception.PokerNotFoundException
 import poker.util.PokerDateSerializer
 
 /**
@@ -40,54 +41,42 @@ class Game {
     Deck deck
 
     @JsonIgnore
-    List<Player> players
+    List<GamePlayer> players
 
     List<Round> rounds
+
+    @JsonIgnore
+    Integer playerStartingFunds
 
     //Default Constructor
     Game(){}
 
-    Game(String name, List<String> playerNames, Integer startingPlayerFunds){
+    Game(String name, Integer playerStartingFunds){
         this.name = name
         this.players = []
         this.rounds = []
 
-        //Create players
-        createPlayers(playerNames,startingPlayerFunds)
-    }
-
-    def createPlayers(List<String> playerNames, Integer startingPlayerFunds){
-
-       playerNames.eachWithIndex{ String playerName, int i ->
-           players << new Player(playerName,++i,startingPlayerFunds)
-       }
+        this.playerStartingFunds = playerStartingFunds
     }
 
     /**
-     * Get a player by name
-     * @param playerName
+     * Add player to game
+     * @param player
      * @return
      */
-    Player getPlayerByName(String playerName){
-        Player foundPlayer = players.find{
-            it.name.equals(playerName)
-        }
-
-        if(!foundPlayer){
-          throw new PokerException("Invalid player: " + playerName)
-        }
-
-        return foundPlayer
+    void addPlayer(Player player){
+        players << new GamePlayer(player.id, players.size() + 1, this.playerStartingFunds)
     }
+
 
     /**
      * Get a list of non folded players
      * @return
      */
     @JsonIgnore
-    List<Player> getNonFoldedPlayers(){
+    List<GamePlayer> getNonFoldedPlayers(){
 
-       def nonFoldedPlayers = players.findAll { Player player ->
+       def nonFoldedPlayers = players.findAll { GamePlayer player ->
            !player.hasFolded
        }
 
@@ -98,26 +87,11 @@ class Game {
      *  Check if there are any players who have not bet once
      */
     boolean anyNonFoldedPlayersYetToBet(){
-        List<Player> playersYetToBet = nonFoldedPlayers.findAll {Player player ->
+        List<GamePlayer> playersYetToBet = nonFoldedPlayers.findAll {GamePlayer player ->
           !player.hasBetOnce
         }
 
         return playersYetToBet.size() > 0
-    }
-
-    /**
-     * Get list of rounds
-     * @return
-     */
-    List<Round> getRounds(String playerName){
-       Player player = this.getPlayerByName(playerName)
-
-       //Set the requested player
-       this.rounds.each {
-         it.player = player
-       }
-
-       return rounds
     }
 
     /**
@@ -132,12 +106,27 @@ class Game {
     }
 
     /**
+     * Get round by number
+     * @param roundNumber
+     */
+    @JsonIgnore
+    Round getRoundByNumber(Integer roundNumber){
+
+        if(rounds.size() < roundNumber){
+            throw new PokerNotFoundException("No Round found: " + roundNumber)
+        }
+
+        return rounds.get(--roundNumber);
+    }
+
+
+    /**
      * Get the current player
      * @return
      */
     @JsonIgnore
-    Player getCurrentPlayer(){
-        return players.find {Player player ->
+    GamePlayer getCurrentPlayer(){
+        return players.find {GamePlayer player ->
             player.isCurrent
         }
     }

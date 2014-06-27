@@ -4,7 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import poker.domain.card.Card
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 import poker.domain.hand.HandType
 
 /**
@@ -20,14 +20,14 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
 
     static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorImpl.class)
 
-    public List<Player> detectWinners(List<Player> players){
+    public List<GamePlayer> detectWinners(List<GamePlayer> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
         logger.info("MAIN: Best hand type: " + bestHandType.name)
 
         //Get all players with that hand type
-        List<Player> winningPlayers = players.findAll{it.bestHand.handType == bestHandType}
+        List<GamePlayer> winningPlayers = players.findAll{it.bestHand.handType == bestHandType}
 
         logger.info("MAIN: Players with winning hand type: " + winningPlayers)
 
@@ -43,9 +43,9 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
     }
 
     //Get winners based on cards in hand
-    private List<Player> getWinnersOfBestHandType(List<Player> potentialWinners){
+    private List<GamePlayer> getWinnersOfBestHandType(List<GamePlayer> potentialWinners){
 
-       List<Player> losers = []
+       List<GamePlayer> losers = []
        int handSize = potentialWinners.first().bestHand.cards.size()
        int cardIndex = handSize -1
 
@@ -55,7 +55,7 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
             int bestCardValue = bestCardInPosition.cardValue.value
 
             //Loop through players -> discard any which don't have max card
-            potentialWinners.each{ Player player ->
+            potentialWinners.each{ GamePlayer player ->
                 int lastCardValue = player.bestHand.cards[cardIndex].cardValue.value
                 if(lastCardValue != bestCardValue){
                     losers << player
@@ -78,9 +78,9 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
     }
 
     //Filter winners based on kicker cards
-    private List<Player> getWinnersOfBestSecondaryCards(List<Player> potentialWinners){
+    private List<GamePlayer> getWinnersOfBestSecondaryCards(List<GamePlayer> potentialWinners){
 
-        List<Player> losers = []
+        List<GamePlayer> losers = []
         int secondaryCardSize = potentialWinners.first().bestHand.secondaryCards.size()
         int cardIndex = secondaryCardSize -1
 
@@ -90,7 +90,7 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
             int bestCardValue = bestCardInPosition.cardValue.value
 
             //Loop through players -> disgard any which don't have max card
-            potentialWinners.each{ Player player ->
+            potentialWinners.each{ GamePlayer player ->
                 int lastCardValue = player.bestHand.secondaryCards[cardIndex].cardValue.value
                 if(lastCardValue != bestCardValue){
                     losers << player

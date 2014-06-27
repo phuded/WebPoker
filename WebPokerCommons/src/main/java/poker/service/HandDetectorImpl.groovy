@@ -6,7 +6,7 @@ import poker.domain.card.CardValue
 import poker.domain.card.Suit
 import poker.domain.hand.HandType
 import poker.domain.hand.Hand
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 import poker.util.PokerUtil
 
 /**
@@ -20,7 +20,7 @@ import poker.util.PokerUtil
 @Service
 class HandDetectorImpl implements HandDetector{
 
-    public detectHand(Player player){
+    public detectHand(GamePlayer player){
         player.hands = detect(player.allCards)
 
         //Set best hand

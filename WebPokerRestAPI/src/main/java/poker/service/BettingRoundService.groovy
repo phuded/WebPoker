@@ -8,7 +8,7 @@ import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
-import poker.domain.player.Player
+import poker.domain.player.GamePlayer
 import poker.domain.player.betting.BettingAction
 import poker.repository.GameRepository
 
@@ -30,13 +30,13 @@ class BettingRoundService {
      */
     void setNextPlayer(Game game, Round round){
         //Get the player
-        Player player = game.currentPlayer
+        GamePlayer player = game.currentPlayer
 
         //Set inactive
         player.isCurrent = false
 
         //Check for a non-folded player who has a higher order than the current
-        player = game.nonFoldedPlayers.find { Player pl ->
+        player = game.nonFoldedPlayers.find { GamePlayer pl ->
             pl.order > player.order
         }
 
@@ -77,7 +77,7 @@ class BettingRoundService {
         nextBettingRound.isCurrent = true
 
         //Set the first player to current
-        Player firstPlayer = game.nonFoldedPlayers.first()
+        GamePlayer firstPlayer = game.nonFoldedPlayers.first()
 
         firstPlayer.isCurrent = true
         round.currentPlayerName = firstPlayer.name
@@ -98,7 +98,7 @@ class BettingRoundService {
      * @param betRequest
      * @return
      */
-    public makePlayerBet(Player player, BettingRound bettingRound, BetRequest betRequest){
+    public makePlayerBet(GamePlayer player, BettingRound bettingRound, BetRequest betRequest){
         //Is a betting action
         if(betRequest.bettingAction) {
 
@@ -125,7 +125,7 @@ class BettingRoundService {
         //Player has now bet once
         player.hasBetOnce = true
 
-        logger.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
+        logger.info(player.playerId + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
     }
 
     /**
@@ -156,7 +156,7 @@ class BettingRoundService {
         // Do not keep betting
         boolean bettingRoundFinished = true
 
-        game.nonFoldedPlayers.each{ Player player ->
+        game.nonFoldedPlayers.each{ GamePlayer player ->
 
             if(player.amountBet != bettingRound.amountBetPerPlayer){
 
