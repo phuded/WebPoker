@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id
  */
 class Player {
     @Id
-    Integer id
+    String id
 
     String name
 

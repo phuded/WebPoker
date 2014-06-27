@@ -26,13 +26,13 @@ interface GameController {
      * Get a Game
      * @return
      */
-    Game getGame(Integer gameId)
+    Game getGame(String gameId)
 
     /**
      * Add a player to a game
      * @param gameId
      * @param platerId
      */
-    Game addPlayer(Integer gameId, Integer playerId)
+    Game addPlayer(String gameId, String playerId)
 
 }

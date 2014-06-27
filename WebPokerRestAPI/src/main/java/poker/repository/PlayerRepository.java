@@ -6,7 +6,7 @@ import poker.domain.player.Player;
 /**
  * Created by matt on 17/05/2014.
  */
-public interface PlayerRepository extends MongoRepository<Player, Integer> {
+public interface PlayerRepository extends MongoRepository<Player, String> {
 
 
 }

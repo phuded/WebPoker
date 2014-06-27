@@ -32,7 +32,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.GET)
-    List<Round> getRounds(@PathVariable String gameId, @RequestParam Integer playerId){
+    List<Round> getRounds(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
 
@@ -44,7 +44,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.POST)
-    Round createNewRound(@PathVariable String gameId, @RequestParam Integer playerId){
+    Round createNewRound(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
 
@@ -68,7 +68,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
-    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam Integer playerId){
+    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber){
 
         Game game = gameService.loadGame(gameId)
 
@@ -82,7 +82,7 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/current",method = RequestMethod.GET)
-    Round getCurrentRound(@PathVariable String gameId, @RequestParam Integer playerId){
+    Round getCurrentRound(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
 
@@ -103,7 +103,7 @@ class RoundControllerImpl implements RoundController{
      * @param roundId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.PUT)
-    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam Integer playerId, @RequestBody BetRequest betRequest){
+    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String playerId, @RequestBody BetRequest betRequest){
 
         //Validate the request
         betRequest.validate()

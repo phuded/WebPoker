@@ -76,7 +76,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, Integer playerId){
+    Round updateRound(Game game, Round round, BetRequest betRequest, String playerId){
 
         //Check if round finished
         if(round.hasFinished){

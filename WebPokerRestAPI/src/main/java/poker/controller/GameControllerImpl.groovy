@@ -63,14 +63,14 @@ class GameControllerImpl implements GameController{
      */
     @Override
     @RequestMapping(value="/{gameId}",method = RequestMethod.GET)
-    Game getGame(@PathVariable Integer gameId) {
+    Game getGame(@PathVariable String gameId) {
 
         return gameService.loadGame(gameId)
     }
 
     @Override
     @RequestMapping(value="/{gameId}/players",method = RequestMethod.POST)
-    Game addPlayer(@PathVariable Integer gameId, @RequestParam Integer playerId) {
+    Game addPlayer(@PathVariable String gameId, @RequestParam String playerId) {
 
         Game game = getGame(gameId)
 

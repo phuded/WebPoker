@@ -44,7 +44,7 @@ class PlayerControllerImpl implements PlayerController{
 
     @Override
     @RequestMapping(value="/{playerId}",method = RequestMethod.GET)
-    Player getPlayer(@PathVariable Integer playerId) {
+    Player getPlayer(@PathVariable String playerId) {
 
         return playerService.loadPlayer(playerId)
     }

@@ -40,8 +40,8 @@ class PlayerService {
      * @param gameId
      * @return
      */
-    Player loadPlayer(Integer playerId){
-       Player player = playerRepository.find(playerId)
+    Player loadPlayer(String playerId){
+       Player player = playerRepository.findOne(playerId)
 
        if(!player){
            throw new PokerNotFoundException("No Player found with ID: " + playerId)

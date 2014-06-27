@@ -13,7 +13,7 @@ import poker.domain.hand.Hand
 
 class GamePlayer {
     //Player id
-    Integer playerId
+    String playerId
 
     // First 2 cards
     List<Card> initialCards = []
@@ -43,8 +43,9 @@ class GamePlayer {
     //Always goes to 0 at end of round
     int amountBet
 
-    GamePlayer(Integer playerId, Integer order, Integer funds){
+    GamePlayer(String playerId, Integer order, Integer funds){
         this.playerId = playerId
+
         this.order = order
         this.funds = funds
 

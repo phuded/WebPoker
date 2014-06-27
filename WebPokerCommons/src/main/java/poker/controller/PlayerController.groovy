@@ -27,6 +27,6 @@ interface PlayerController {
      * Get a Player
      * @return
      */
-    Player getPlayer(Integer gameId)
+    Player getPlayer(String gameId)
 
 }

@@ -19,7 +19,7 @@ class NotificationService {
      * Send betting notification
      * @param betRequest
      */
-    void sendNotification(String gameId, BetRequest betRequest, Integer playerId){
+    void sendNotification(String gameId, BetRequest betRequest, String playerId){
         Notification notification = new Notification(gameId, "bet")
 
         notification.playerId = playerId
