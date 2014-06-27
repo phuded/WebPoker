@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import poker.domain.player.Player
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.service.GameService
-import poker.service.PlayerService
 
 /**
  * Created by matt on 21/05/2014.
@@ -22,9 +20,6 @@ class GameControllerImpl implements GameController{
 
     @Autowired
     private GameService gameService
-
-    @Autowired
-    private PlayerService playerService
 
     /**
      * Create a new Game
@@ -41,9 +36,7 @@ class GameControllerImpl implements GameController{
         //TODO: Remove
         gameService.clearDatabase()
 
-        Game game = gameService.createNewGame(gameRequest)
-
-        return game;
+        return gameService.createNewGame(gameRequest)
     }
 
     /**
@@ -72,13 +65,7 @@ class GameControllerImpl implements GameController{
     @RequestMapping(value="/{gameId}/players",method = RequestMethod.POST)
     Game addPlayer(@PathVariable String gameId, @RequestParam String playerId) {
 
-        Game game = getGame(gameId)
-
-        Player player = playerService.loadPlayer(playerId)
-
-        game.addPlayer(player)
-
-        return game
+        return gameService.addToPlayerToGame(gameId, playerId)
 
     }
 }

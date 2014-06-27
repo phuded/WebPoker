@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import poker.domain.player.Player
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.exception.PokerNotFoundException
@@ -19,6 +20,9 @@ class GameService {
 
     @Autowired
     GameRepository gameRepository
+
+    @Autowired
+    PlayerService playerService
 
     /**
      * Create a new Game
@@ -56,6 +60,25 @@ class GameService {
      */
     List<Game> getAllGames(){
         return gameRepository.findAll()
+    }
+
+    /**
+     * Add a player to a game
+     * @param game
+     * @param player
+     * @return
+     */
+    Game addToPlayerToGame(String gameId, String playerId){
+
+        Game game = gameRepository.findOne(gameId)
+
+        Player player = playerService.loadPlayer(playerId)
+
+        game.addPlayer(player);
+
+        gameRepository.save(game)
+
+        return game
     }
 
     //TODO Remove later
