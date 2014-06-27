@@ -53,8 +53,8 @@ class Round {
     Hand winningHand
 
     //The requested player
-    @Transient
-    GamePlayer player
+    //@Transient
+    //GamePlayer player
 
     //Default Constructor
     Round(){}
