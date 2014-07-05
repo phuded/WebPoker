@@ -55,7 +55,7 @@ class RoundService {
         //Set the first player to current
         GamePlayer firstPlayer =game.players.first()
         firstPlayer.isCurrent = true
-        round.currentPlayerName = firstPlayer.name
+        round.currentPlayerId = firstPlayer.playerId
 
         //Deal the cards
         round.bettingRounds.first().dealCards(game,round)

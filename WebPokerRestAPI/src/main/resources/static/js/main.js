@@ -15,7 +15,7 @@ $(document).ready(function() {
 //Entry Point 1
 function createGame(){
     var game = {name:"Test", startingPlayerFunds:$("#amount").val()};
-                alert(headerName + " " + token)
+
     $.ajax({
         type: "POST",
         url: "/games",

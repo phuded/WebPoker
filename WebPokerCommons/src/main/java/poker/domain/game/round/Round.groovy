@@ -1,7 +1,6 @@
 package poker.domain.game.round
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.springframework.data.annotation.Transient
 import poker.domain.card.Card
 import poker.domain.card.Deck
 import poker.domain.game.Game
@@ -38,7 +37,7 @@ class Round {
     List<GamePlayer> winners
 
     //Current Player
-    String currentPlayerName
+    String currentPlayerId
 
     //Pot
     int pot
@@ -98,7 +97,7 @@ class Round {
         this.isCurrent = false
 
         //Remove the current player
-        this.currentPlayerName = null
+        this.currentPlayerId = null
 
         //Set finished
         this.hasFinished = true

@@ -44,7 +44,7 @@ class PlayerService {
        Player player = playerRepository.findByName(userName)
 
        if(!player){
-           throw new PokerNotFoundException("No Player found with ID: " + playerId)
+           throw new PokerNotFoundException("No Player found with name: " + userName)
        }
 
        return player
