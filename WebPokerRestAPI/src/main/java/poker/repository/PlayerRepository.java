@@ -8,5 +8,5 @@ import poker.domain.player.Player;
  */
 public interface PlayerRepository extends MongoRepository<Player, String> {
 
-
+     Player findByName(String name);
 }

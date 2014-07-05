@@ -1,27 +1,27 @@
 var gameId;
 var roundId;
-var playerName;
+
+var headerName;
+var token;
 
 $(document).ready(function() {
     //Connect
     connect();
+
+    headerName = $("meta[name='_csrf_header']").attr("content");
+    token = $("meta[name='_csrf']").attr("content");
 });
 
 //Entry Point 1
 function createGame(){
-    //Set name
-    playerName = $("#playerName").val();
-
-    var players = $("#players").val();
-    var playerList = players.split(",")
-
-    var game = {name:"Test",
-            playerNames:playerList,
-            startingPlayerFunds:$("#amount").val()};
-
+    var game = {name:"Test", startingPlayerFunds:$("#amount").val()};
+                alert(headerName + " " + token)
     $.ajax({
         type: "POST",
         url: "/games",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(headerName, token);
+        },
         data: JSON.stringify(game),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -42,7 +42,10 @@ function createRound(){
 
       $.ajax({
           type: "POST",
-          url: "/games/"+gameId+"/rounds?playerName="+ playerName,
+          url: "/games/"+gameId+"/rounds",
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader(headerName, token);
+          },
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function(data){
@@ -55,14 +58,16 @@ function createRound(){
 }
 
 //Entry point 2
-function connectToGame(){
+function joinGame(){
     //Set Game ID and Player name
     gameId = $("#gameId").val();
-    playerName = $("#playerName").val();
 
     $.ajax({
         type: "POST",
-        url: "/games/"+ gameId+"/connect?playerName="+ playerName,
+        url: "/games/"+ gameId+"/players",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(headerName, token);
+        },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
@@ -82,7 +87,10 @@ function getRoundDetails(){
 
     $.ajax({
         type: "GET",
-        url: "/games/"+ gameId+"/rounds/current?playerName="+ playerName,
+        url: "/games/"+ gameId+"/rounds/current",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(headerName, token);
+        },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
@@ -104,7 +112,10 @@ function refreshGame(){
 
     $.ajax({
         type: "GET",
-        url: "/games/"+ gameId+"/rounds/"+ roundId + "?playerName="+ playerName,
+        url: "/games/"+ gameId+"/rounds/"+ roundId,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(headerName, token);
+        },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
@@ -138,7 +149,8 @@ function updateRound(betType){
 
       $.ajax({
           type: "PUT",
-          url: "/games/"+gameId+"/rounds/"+roundId + "?playerName="+ playerName,
+          url: "/games/"+gameId+"/rounds/"+roundId,
+          headers:{headerName:token},
           data: JSON.stringify(roundUpdate),
           contentType: "application/json; charset=utf-8",
           dataType: "json",

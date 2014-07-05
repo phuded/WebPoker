@@ -5,11 +5,12 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.service.GameService
+
+import java.security.Principal
 
 /**
  * Created by matt on 21/05/2014.
@@ -63,9 +64,8 @@ class GameControllerImpl implements GameController{
 
     @Override
     @RequestMapping(value="/{gameId}/players",method = RequestMethod.POST)
-    Game addPlayer(@PathVariable String gameId, @RequestParam String playerId) {
-
-        return gameService.addToPlayerToGame(gameId, playerId)
+    Game addPlayer(@PathVariable String gameId, Principal principal ) {
+        return gameService.addToPlayerToGame(gameId, principal)
 
     }
 }

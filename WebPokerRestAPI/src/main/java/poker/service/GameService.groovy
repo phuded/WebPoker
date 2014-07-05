@@ -10,6 +10,8 @@ import poker.domain.game.Game
 import poker.exception.PokerNotFoundException
 import poker.repository.GameRepository
 
+import java.security.Principal
+
 /**
  * Created by matt on 21/05/2014.
  */
@@ -68,11 +70,11 @@ class GameService {
      * @param player
      * @return
      */
-    Game addToPlayerToGame(String gameId, String playerId){
+    Game addToPlayerToGame(String gameId, Principal principal){
 
         Game game = gameRepository.findOne(gameId)
 
-        Player player = playerService.loadPlayer(playerId)
+        Player player = playerService.loadPlayer(principal.getName())
 
         game.addPlayer(player);
 

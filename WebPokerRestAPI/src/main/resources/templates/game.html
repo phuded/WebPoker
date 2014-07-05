@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="UTF-8">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8"/>
 
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
 
         <script src="js/sockjs.js"></script>
         <script src="js/stomp.js"></script>
@@ -14,14 +16,14 @@
     <body>
       <h1>Poker!</h1>
 
-        <h2>Player Name</h2>
-        <input id="playerName" type="text" value="Matt"/>
+      <div class="container">
+          <p th:inline="text">User logged in: [[${#httpServletRequest.remoteUser}]]!</p>
+          <form th:action="@{/logout}" method="post">
+              <input type="submit" value="Sign Out"/>
+          </form>
+      </div>
 
         <h2>New Game</h2>
-        <p>
-            Players:
-            <input id="players" type="text" value="Matt,Cathy"/>
-        </p>
         <p>
             Starting amount:
             <input id="amount" type="text" value="1000"/>
@@ -30,36 +32,36 @@
 
         <h2>Connect to Game</h2>
         <input id="gameId" type="text"/>
-        <input type="button" value="Connect" onclick="connectToGame()"/>
+        <input type="button" value="Join" onclick="joinGame()"/>
 
 
         <h2>Game Cards</h2>
-        <textarea id="cards" class="reset" rows="10" disabled></textarea>
+        <textarea id="cards" class="reset" rows="10" disabled="disabled"></textarea>
 
         <h2>Player Cards</h2>
-        <textarea id="playerCards" class="reset" rows="12" disabled></textarea>
+        <textarea id="playerCards" class="reset" rows="12" disabled="disabled"></textarea>
 
         <p>
           Current Player:
-          <input id="currentPlayer" class="reset" type="text" DISABLED/>
+          <input id="currentPlayer" class="reset" type="text" disabled="disabled"/>
         </p>
 
         <p>
           Betting Round:
-          <input id="bettingRound" class="reset" type="text" DISABLED/>
+          <input id="bettingRound" class="reset" type="text" disabled="disabled"/>
         </p>
 
         <p>
           Current Bet
-          <input id="currentBet" class="reset" type="text" DISABLED/>
+          <input id="currentBet" class="reset" type="text" disabled="disabled"/>
         </p>
         <p>
           Pot:
-          <input id="pot" class="reset" type="text" DISABLED/>
+          <input id="pot" class="reset" type="text" disabled="disabled"/>
         </p>
 
         <h4>Winners:</h4>
-        <textarea id="winners" class="reset" rows="10" style="font-weight:bold;width:250px" disabled></textarea>
+        <textarea id="winners" class="reset" rows="10" style="font-weight:bold;width:250px" disabled="disabled"></textarea>
 
         <h4>Notification:</h4>
         <p id="response"></p>
