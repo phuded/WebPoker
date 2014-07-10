@@ -1,6 +1,7 @@
 package poker.service
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
@@ -30,7 +31,7 @@ class PokerUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Incorrect user name: " + name)
         }
 
-        PokerUser user = new PokerUser(player.id, player.name, player.password, true, true, true, true, null);
+        PokerUser user = new PokerUser(player.id, player.name, player.password, true, true, true, true, new TreeSet<GrantedAuthority>());
 
         return user
     }
