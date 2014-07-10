@@ -25,7 +25,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/players/**").permitAll()
+            .antMatchers("/players/**").anonymous()
             .antMatchers("/**").authenticated()
 
         http
@@ -38,11 +38,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService())
-
-        /*.inMemoryAuthentication()
-                                    .withUser("matt").password("password").roles("USER")
-                                    .and()
-                                    .withUser("cathy").password("password").roles("USER");*/
     }
 
     @Bean

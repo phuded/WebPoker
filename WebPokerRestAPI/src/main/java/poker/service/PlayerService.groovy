@@ -37,10 +37,10 @@ class PlayerService {
 
     /**
      * Load Player
-     * @param gameId
+     * @param userName
      * @return
      */
-    Player loadPlayer(String userName){
+    Player loadPlayerByName(String userName){
        Player player = playerRepository.findByName(userName)
 
        if(!player){
@@ -48,6 +48,21 @@ class PlayerService {
        }
 
        return player
+    }
+
+    /**
+     * Load Player
+     * @param gameId
+     * @return
+     */
+    Player loadPlayer(String playerId){
+        Player player = playerRepository.findOne(playerId)
+
+        if(!player){
+            throw new PokerNotFoundException("No Player found with ID: " + playerId)
+        }
+
+        return player
     }
 
     /**

@@ -74,7 +74,7 @@ class GameService {
 
         Game game = gameRepository.findOne(gameId)
 
-        Player player = playerService.loadPlayer(principal.getName())
+        Player player = playerService.loadPlayerByName(principal.getName())
 
         game.addPlayer(player);
 
