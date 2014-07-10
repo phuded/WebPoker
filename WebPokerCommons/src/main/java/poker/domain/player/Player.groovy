@@ -15,9 +15,12 @@ class Player {
 
     String lastName
 
-    Player(String name, String firstName, String lastName){
+    String password
+
+    Player(String name, String firstName, String lastName, String password){
         this.name = name
         this.firstName = firstName
         this.lastName = lastName
+        this.password = password
     }
 }

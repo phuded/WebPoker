@@ -10,11 +10,12 @@ class PlayerRequest {
     String name
     String firstName
     String lastName
+    String password
 
     void validate(){
 
-        if(!name || !firstName || !lastName){
-            throw new PokerException("You must specify a Player name, first name and last name.")
+        if(!name || !firstName || !lastName || !password){
+            throw new PokerException("You must specify a Player name, first name, last name and password.")
         }
 
     }
