@@ -23,11 +23,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     PlayerRepository playerRepository
 
     @Override
-    public void configure(WebSecurity webSecurity) throws Exception
-    {
+    public void configure(WebSecurity webSecurity) throws Exception {
         webSecurity
             .ignoring()
                 .antMatchers("/players/**")
+                .antMatchers("/js/**", "/css/**")
     }
 
     @Override

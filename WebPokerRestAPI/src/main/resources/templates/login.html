@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Log in To Poker</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/signin.css"/>
+
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <title>Log in to Drinking Poker!</title>
 </head>
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
+    <div class="jumbotron" style="text-align:center;margin-bottom:0">
+        <h1>Drinking Poker!</h1>
+        <p><a class="btn btn-lg btn-success" href="#" role="button">Create new Account</a></p>
+    </div>
+    <div class="container">
+        <form th:action="@{/login}" method="post" class="form-signin" role="form">
+            <!-- Validation -->
+            <h4 th:if="${param.error}">
+                Invalid username and password.
+            </h4>
+            <h4 th:if="${param.logout}">
+                You have been logged out.
+            </h4>
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="text" class="form-control" name="username" placeholder="User Name" required="required" autofocus="autofocus"/>
+            <input type="password" class="form-control" name="password" placeholder="Password" required="required"/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+
+    </div>
 </body>
 </html>
