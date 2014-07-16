@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
 import poker.repository.PlayerRepository
-import poker.service.PokerUserDetailsService
+import poker.service.security.PokerUserDetailsService
 
 /**
  * Created by matt on 05/07/2014.

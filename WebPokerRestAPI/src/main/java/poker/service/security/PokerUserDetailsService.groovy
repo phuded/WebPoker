@@ -1,11 +1,11 @@
-package poker.service
+package poker.service.security
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import poker.domain.PokerUser
+import poker.domain.security.PokerUser
 import poker.domain.player.Player
 import poker.repository.PlayerRepository
 

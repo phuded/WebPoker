@@ -1,4 +1,4 @@
-package poker.domain
+package poker.domain.security
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.User
 /**
  * Created by matt on 10/07/2014.
  */
-class PokerUser extends User{
+class PokerUser extends User {
 
     private String id
 
