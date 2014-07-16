@@ -53,9 +53,9 @@ class RoundService {
         round.bettingRounds.first().isCurrent = true
 
         //Set the first player to current
-        GamePlayer firstPlayer =game.players.first()
+        GamePlayer firstPlayer = game.players.first()
         firstPlayer.isCurrent = true
-        round.currentPlayerId = firstPlayer.playerId
+        round.currentPlayerName = firstPlayer.playerName
 
         //Deal the cards
         round.bettingRounds.first().dealCards(game,round)
@@ -76,7 +76,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, String playerId){
+    Round updateRound(Game game, Round round, BetRequest betRequest, String playerName){
 
         //Check if round finished
         if(round.hasFinished){
@@ -90,7 +90,7 @@ class RoundService {
         GamePlayer currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.playerId == playerId){
+        if(currentPlayer.playerName == playerName){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
@@ -152,7 +152,7 @@ class RoundService {
                 handDetector.detectHand(player)
 
                 // logger.info("Player: " + player.name + " - All hand-results: " + player.hands)
-                logger.info("Player: " + player.name + " - Best hand: " + player.bestHand)
+                logger.info("Player: " + player.playerName + " - Best hand: " + player.bestHand)
 
             }
 

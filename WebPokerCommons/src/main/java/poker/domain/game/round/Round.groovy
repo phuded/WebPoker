@@ -37,7 +37,7 @@ class Round {
     List<GamePlayer> winners
 
     //Current Player
-    String currentPlayerId
+    String currentPlayerName
 
     //Pot
     int pot
@@ -50,10 +50,6 @@ class Round {
 
     //Winning hand
     Hand winningHand
-
-    //The requested player
-    //@Transient
-    //GamePlayer player
 
     //Default Constructor
     Round(){}
@@ -85,7 +81,7 @@ class Round {
         //Close the round
         //Set Player Names and Best Hand
         this.winners.each {GamePlayer winner ->
-            this.winningPlayerNames << winner.name
+            this.winningPlayerNames << winner.playerName
         }
 
         this.winningHand = this.winners.get(0).bestHand
@@ -97,7 +93,7 @@ class Round {
         this.isCurrent = false
 
         //Remove the current player
-        this.currentPlayerId = null
+        this.currentPlayerName = null
 
         //Set finished
         this.hasFinished = true

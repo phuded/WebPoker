@@ -86,7 +86,7 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
 
         for(cardIndex; cardIndex>=0; cardIndex--){
             //Get the best card in the position
-            Card bestCardInPosition = potentialWinners.max{it.bestHand.secondaryCards[cardIndex].cardValue.value}.bestHand.secondaryCards[cardIndex]
+            Card bestCardInPosition = potentialWinners.max{GamePlayer player -> player.bestHand.secondaryCards[cardIndex].cardValue.value}.bestHand.secondaryCards[cardIndex]
             int bestCardValue = bestCardInPosition.cardValue.value
 
             //Loop through players -> disgard any which don't have max card
