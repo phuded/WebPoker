@@ -3,8 +3,6 @@ package poker.controller
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
 
-import java.security.Principal
-
 /**
  * Created by matt on 21/05/2014.
  */
@@ -35,6 +33,6 @@ interface GameController {
      * @param gameId
      * @param platerId
      */
-    Game addPlayer(String gameId, Principal principal)
+    Game addPlayer(String gameId)
 
 }

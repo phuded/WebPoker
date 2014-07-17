@@ -13,13 +13,13 @@ interface RoundController {
      * Get all of the rounds for the game
      * @param gameId
      */
-    List<Round> getRounds(String gameId)
+    //List<Round> getRounds(String gameId)
 
     /**
      * Create a game round
      * @param gameId
      */
-    Round createNewRound(String gameId)
+    def createNewRound(String gameId)
 
     /**
      * Get the round in the game

@@ -1,10 +1,13 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import poker.domain.RoundResponse
 import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
+import poker.domain.security.PokerUser
 import poker.exception.PokerException
 import poker.exception.PokerNotFoundException
 import poker.service.GameService
@@ -31,20 +34,23 @@ class RoundControllerImpl implements RoundController{
      * Get all of the rounds for the game
      * @param gameId
      */
-    @RequestMapping(method = RequestMethod.GET)
+   /* @RequestMapping(method = RequestMethod.GET)
     List<Round> getRounds(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
 
         return game.rounds
-    }
+    }*/
 
     /**
      * Create a game round
      * @param gameId
      */
     @RequestMapping(method = RequestMethod.POST)
-    Round createNewRound(@PathVariable String gameId){
+    RoundResponse createNewRound(@PathVariable String gameId){
+
+        //Get logged in user
+        PokerUser player = (PokerUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Game game = gameService.loadGame(gameId)
 
@@ -60,7 +66,8 @@ class RoundControllerImpl implements RoundController{
 
         notificationService.sendNotification(game.id, newRound.roundNumber)
 
-        return newRound
+        //Build Response TODO - sort
+        return new RoundResponse(round: newRound, player: game.getPlayerByName(player.username))
     }
 
     /**

@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service
 import poker.domain.player.Player
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
+import poker.domain.security.PokerUser
 import poker.exception.PokerNotFoundException
 import poker.repository.GameRepository
-
-import java.security.Principal
 
 /**
  * Created by matt on 21/05/2014.
@@ -70,12 +69,13 @@ class GameService {
      * @param player
      * @return
      */
-    Game addToPlayerToGame(String gameId, Principal principal){
+    Game addToPlayerToGame(String gameId, PokerUser user){
 
         Game game = gameRepository.findOne(gameId)
 
-        Player player = playerService.loadPlayerByName(principal.getName())
+        Player player = playerService.loadPlayer(user.id)
 
+        //Add to game
         game.addPlayer(player);
 
         gameRepository.save(game)

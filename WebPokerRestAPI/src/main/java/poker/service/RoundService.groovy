@@ -55,10 +55,10 @@ class RoundService {
         //Set the first player to current
         GamePlayer firstPlayer = game.players.first()
         firstPlayer.isCurrent = true
-        round.currentPlayerName = firstPlayer.playerName
+        round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
-        round.bettingRounds.first().dealCards(game,round)
+        round.bettingRounds.first().dealCards(game, round)
 
         logger.info("Saving new Round: " + round.roundNumber)
         gameRepository.save(game)
@@ -90,7 +90,7 @@ class RoundService {
         GamePlayer currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.playerName == playerName){
+        if(currentPlayer.name == playerName){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
@@ -152,7 +152,7 @@ class RoundService {
                 handDetector.detectHand(player)
 
                 // logger.info("Player: " + player.name + " - All hand-results: " + player.hands)
-                logger.info("Player: " + player.playerName + " - Best hand: " + player.bestHand)
+                logger.info("Player: " + player.name + " - Best hand: " + player.bestHand)
 
             }
 

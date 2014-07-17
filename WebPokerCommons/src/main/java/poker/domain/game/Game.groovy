@@ -43,6 +43,7 @@ class Game {
     @JsonIgnore
     List<GamePlayer> players
 
+    //List of rounds
     List<Round> rounds
 
     @JsonIgnore
@@ -65,7 +66,7 @@ class Game {
      * @return
      */
     void addPlayer(Player player){
-        players << new GamePlayer(player.id, players.size() + 1, this.playerStartingFunds)
+        players << new GamePlayer(player.name, players.size() + 1, this.playerStartingFunds)
     }
 
 
@@ -128,6 +129,17 @@ class Game {
     GamePlayer getCurrentPlayer(){
         return players.find {GamePlayer player ->
             player.isCurrent
+        }
+    }
+
+    /**
+     * Get the current player by player name
+     * @return
+     */
+    @JsonIgnore
+    GamePlayer getPlayerByName(String name){
+        return players.find {GamePlayer player ->
+            player.name = name
         }
     }
 

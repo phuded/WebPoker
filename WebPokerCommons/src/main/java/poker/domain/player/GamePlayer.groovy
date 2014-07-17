@@ -13,7 +13,7 @@ import poker.domain.hand.Hand
 
 class GamePlayer {
     //Player name
-    String playerName
+    String name
 
     // First 2 cards
     List<Card> initialCards = []
@@ -43,8 +43,8 @@ class GamePlayer {
     //Always goes to 0 at end of round
     int amountBet
 
-    GamePlayer(String playerName, Integer order, Integer funds){
-        this.playerName = playerName
+    GamePlayer(String name, Integer order, Integer funds){
+        this.name = name
 
         this.order = order
         this.funds = funds
@@ -105,12 +105,12 @@ class GamePlayer {
 
     @Override
     String toString(){
-        this.playerName + " - " + this.allCards
+        this.name + " - " + this.allCards
     }
 
     @Override
     boolean equals(Object object){
-       if(object instanceof GamePlayer && ((GamePlayer)object).playerName.equals(this.playerName)){
+       if(object instanceof GamePlayer && ((GamePlayer)object).name.equals(this.name)){
            return true
        }
 

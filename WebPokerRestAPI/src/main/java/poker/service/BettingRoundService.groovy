@@ -51,9 +51,9 @@ class BettingRoundService {
 
         //Set active
         player.isCurrent = true
-        round.currentPlayerName = player.playerName
+        round.currentPlayerName = player.name
 
-        logger.info("Setting next Player to: " + player.playerName + " - saving.")
+        logger.info("Setting next Player to: " + player.name + " - saving.")
         gameRepository.save(game)
 
     }
@@ -80,7 +80,7 @@ class BettingRoundService {
         GamePlayer firstPlayer = game.nonFoldedPlayers.first()
 
         firstPlayer.isCurrent = true
-        round.currentPlayerName = firstPlayer.playerName
+        round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
         nextBettingRound.dealCards(game,round)
@@ -125,7 +125,7 @@ class BettingRoundService {
         //Player has now bet once
         player.hasBetOnce = true
 
-        logger.info(player.playerName + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
+        logger.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
     }
 
     /**

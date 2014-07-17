@@ -81,7 +81,7 @@ class Round {
         //Close the round
         //Set Player Names and Best Hand
         this.winners.each {GamePlayer winner ->
-            this.winningPlayerNames << winner.playerName
+            this.winningPlayerNames << winner.name
         }
 
         this.winningHand = this.winners.get(0).bestHand

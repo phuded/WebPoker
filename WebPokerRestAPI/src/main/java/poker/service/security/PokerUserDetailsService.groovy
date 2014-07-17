@@ -31,7 +31,7 @@ class PokerUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Incorrect user name: " + name)
         }
 
-        PokerUser user = new PokerUser(player.id, player.name, player.password, true, true, true, true, new TreeSet<GrantedAuthority>());
+        PokerUser user = new PokerUser(player.id, player.name, player.password, new TreeSet<GrantedAuthority>());
 
         return user
     }
