@@ -56,6 +56,21 @@ class GameService {
     }
 
     /**
+     * Load Game
+     * @param gameId
+     * @return
+     */
+    Game loadGame(String gameId, PokerUser user){
+        Game game = gameRepository.findOne(gameId)
+
+        if(!game || !game.getPlayerByName(user.username)){
+            throw new PokerNotFoundException("No game found with ID: " + gameId)
+        }
+
+        return game
+    }
+
+    /**
      * List all Games
      * @return
      */

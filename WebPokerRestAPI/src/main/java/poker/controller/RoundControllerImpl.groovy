@@ -1,7 +1,6 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import poker.domain.RoundResponse
 import poker.domain.request.BetRequest
@@ -13,6 +12,7 @@ import poker.exception.PokerNotFoundException
 import poker.service.GameService
 import poker.service.NotificationService
 import poker.service.RoundService
+import poker.service.security.PokerUserDetailsService
 
 /**
  * Created by matt on 21/05/2014.
@@ -30,8 +30,10 @@ class RoundControllerImpl implements RoundController{
     @Autowired
     NotificationService notificationService
 
+
     /**
      * Get all of the rounds for the game
+     * TODO: Add back in?
      * @param gameId
      */
    /* @RequestMapping(method = RequestMethod.GET)
@@ -50,9 +52,9 @@ class RoundControllerImpl implements RoundController{
     RoundResponse createNewRound(@PathVariable String gameId){
 
         //Get logged in user
-        PokerUser player = (PokerUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PokerUser player = PokerUserDetailsService.currentUser;
 
-        Game game = gameService.loadGame(gameId)
+        Game game = gameService.loadGame(gameId, player)
 
         Round currentRound = game.currentRound
 
@@ -67,7 +69,7 @@ class RoundControllerImpl implements RoundController{
         notificationService.sendNotification(game.id, newRound.roundNumber)
 
         //Build Response TODO - sort
-        return new RoundResponse(round: newRound, player: game.getPlayerByName(player.username))
+        return new RoundResponse(newRound, game.getPlayerByName(player.username))
     }
 
     /**
@@ -75,13 +77,17 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
-    Round getRound(@PathVariable String gameId, @PathVariable Integer roundNumber){
+    RoundResponse getRound(@PathVariable String gameId, @PathVariable Integer roundNumber){
 
-        Game game = gameService.loadGame(gameId)
+        //Get logged in user
+        PokerUser player = PokerUserDetailsService.currentUser;
+
+        Game game = gameService.loadGame(gameId, player)
 
         Round round = game.getRoundByNumber(roundNumber)
 
-        return round
+        //Build Response TODO - sort
+        return new RoundResponse(round, game.getPlayerByName(player.username))
     }
 
     /**
@@ -89,9 +95,12 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      */
     @RequestMapping(value="/current",method = RequestMethod.GET)
-    Round getCurrentRound(@PathVariable String gameId){
+    RoundResponse getCurrentRound(@PathVariable String gameId){
 
-        Game game = gameService.loadGame(gameId)
+        //Get logged in user
+        PokerUser player = PokerUserDetailsService.currentUser;
+
+        Game game = gameService.loadGame(gameId, player)
 
         Round currentRound = game.currentRound
 
@@ -100,7 +109,8 @@ class RoundControllerImpl implements RoundController{
             throw new PokerNotFoundException("No Current Round.")
         }
 
-        return currentRound
+        //Build Response TODO - sort
+        return new RoundResponse(currentRound, game.getPlayerByName(player.username))
     }
 
 
@@ -110,21 +120,25 @@ class RoundControllerImpl implements RoundController{
      * @param roundId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.PUT)
-    Round updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestParam String playerId, @RequestBody BetRequest betRequest){
+    RoundResponse updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestBody BetRequest betRequest){
 
         //Validate the request
         betRequest.validate()
 
-        Game game = gameService.loadGame(gameId)
+        //Get logged in user
+        PokerUser player = PokerUserDetailsService.currentUser;
+
+        Game game = gameService.loadGame(gameId, player)
 
         Round round = game.getRoundByNumber(roundNumber)
 
         //Update the round
-        round = roundService.updateRound(game, round, betRequest, playerId)
+        round = roundService.updateRound(game, round, betRequest, player)
 
         //Issue notification
-        notificationService.sendNotification(game.id, betRequest, playerId)
+        notificationService.sendNotification(game.id, betRequest, player.username)
 
-        return round
+        //Build Response TODO - sort
+        return new RoundResponse(round, game.getPlayerByName(player.username))
     }
 }

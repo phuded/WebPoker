@@ -11,4 +11,9 @@ class RoundResponse {
     Round round
     GamePlayer player
 
+    RoundResponse (Round round, GamePlayer player){
+        this.round = round
+        this.player = player
+    }
+
 }

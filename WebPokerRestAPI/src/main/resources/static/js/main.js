@@ -202,7 +202,7 @@ function updateDetails(data){
      //Set cards and current player
      $("#cards").text(cards)
 
-     $("#currentPlayer").val(data.currentPlayerName)
+     $("#currentPlayer").val(data.round.currentPlayerName)
 
      $("#pot").val(data.pot)
 

@@ -2,6 +2,7 @@ package poker.service.security
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
@@ -34,5 +35,14 @@ class PokerUserDetailsService implements UserDetailsService {
         PokerUser user = new PokerUser(player.id, player.name, player.password, new TreeSet<GrantedAuthority>());
 
         return user
+    }
+
+    /**
+     * Get the current user
+     * @return
+     */
+    static PokerUser getCurrentUser(){
+        return (PokerUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     }
 }

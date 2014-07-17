@@ -1,7 +1,6 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,9 +10,11 @@ import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.domain.security.PokerUser
 import poker.service.GameService
+import poker.service.security.PokerUserDetailsService
 
 /**
  * Created by matt on 21/05/2014.
+ * TODO: Check Roles here
  */
 @RestController
 @RequestMapping("/games")
@@ -24,6 +25,7 @@ class GameControllerImpl implements GameController{
 
     /**
      * Create a new Game
+     * TODO: Admin only
      * @param players
      * @return
      */
@@ -42,6 +44,7 @@ class GameControllerImpl implements GameController{
 
     /**
      * List all Games
+     * TODO: Need to get a list of all games user can access
      * @return
      */
     @Override
@@ -53,6 +56,7 @@ class GameControllerImpl implements GameController{
 
     /**
      * Get a Game
+     * TODO: Security needed
      * @return
      */
     @Override
@@ -62,12 +66,17 @@ class GameControllerImpl implements GameController{
         return gameService.loadGame(gameId)
     }
 
+    /**
+     * Add a player to the game
+     * @param gameId
+     * @return
+     */
     @Override
     @RequestMapping(value="/{gameId}/players",method = RequestMethod.POST)
     Game addPlayer(@PathVariable String gameId) {
 
         //Get logged in user
-        PokerUser player = (PokerUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PokerUser player = PokerUserDetailsService.currentUser;
 
         return gameService.addToPlayerToGame(gameId, player)
 

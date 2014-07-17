@@ -11,7 +11,7 @@ class Notification {
   String gameId
   String type
 
-   String playerId
+  String playerName
   String bettingAction
   Integer bet
 

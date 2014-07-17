@@ -13,6 +13,7 @@ import poker.service.PlayerService
 
 /**
  * Created by matt on 27/06/2014.
+ * TODO: Check roles
  */
 @RestController
 @RequestMapping("/players")

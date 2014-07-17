@@ -9,6 +9,7 @@ import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
 import poker.domain.player.GamePlayer
+import poker.domain.security.PokerUser
 import poker.exception.PokerException
 import poker.repository.GameRepository
 
@@ -76,7 +77,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, String playerName){
+    Round updateRound(Game game, Round round, BetRequest betRequest, PokerUser user){
 
         //Check if round finished
         if(round.hasFinished){
@@ -90,7 +91,7 @@ class RoundService {
         GamePlayer currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.name == playerName){
+        if(currentPlayer.name == user.username){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
