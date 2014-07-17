@@ -1,5 +1,6 @@
 package poker.domain.player
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 
 /**
@@ -15,6 +16,7 @@ class Player {
 
     String lastName
 
+    @JsonIgnore
     String password
 
     Player(String name, String firstName, String lastName, String password){
