@@ -28,7 +28,7 @@ class PlayerService {
      */
     Player createNewPlayer(PlayerRequest playerRequest){
 
-        Player player = new Player(playerRequest.name, playerRequest.firstName, playerRequest.lastName, playerRequest.password)
+        Player player = new Player(playerRequest.name, playerRequest.firstName, playerRequest.lastName, playerRequest.role, playerRequest.password)
 
         playerRepository.save(player)
 

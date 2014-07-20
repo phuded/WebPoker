@@ -1,12 +1,12 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import poker.domain.game.Game
 import poker.domain.player.Player
 import poker.domain.request.PlayerRequest
 import poker.service.PlayerService
@@ -24,6 +24,7 @@ class PlayerControllerImpl implements PlayerController{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     Player createPlayer(@RequestBody PlayerRequest playerRequest) {
         //Validate it
         playerRequest.validate()

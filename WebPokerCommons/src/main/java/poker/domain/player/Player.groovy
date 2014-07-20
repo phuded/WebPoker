@@ -19,10 +19,13 @@ class Player {
     @JsonIgnore
     String password
 
-    Player(String name, String firstName, String lastName, String password){
+    String role
+
+    Player(String name, String firstName, String lastName, String role, String password){
         this.name = name
         this.firstName = firstName
         this.lastName = lastName
+        this.role = role
         this.password = password
     }
 }

@@ -3,6 +3,7 @@ package poker.controller
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import poker.domain.RoundResponse
+import poker.domain.player.GamePlayer
 import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
@@ -33,16 +34,16 @@ class RoundControllerImpl implements RoundController{
 
     /**
      * Get all of the rounds for the game
-     * TODO: Add back in?
+     * TODO: Admin only
      * @param gameId
      */
-   /* @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     List<Round> getRounds(@PathVariable String gameId){
 
         Game game = gameService.loadGame(gameId)
 
         return game.rounds
-    }*/
+    }
 
     /**
      * Create a game round
@@ -52,7 +53,7 @@ class RoundControllerImpl implements RoundController{
     RoundResponse createNewRound(@PathVariable String gameId){
 
         //Get logged in user
-        PokerUser player = PokerUserDetailsService.currentUser;
+        PokerUser player = PokerUserDetailsService.currentUser
 
         Game game = gameService.loadGame(gameId, player)
 
@@ -66,28 +67,29 @@ class RoundControllerImpl implements RoundController{
         //Create new Round
         Round newRound = roundService.createNextRound(game)
 
+        //Send new round notification
         notificationService.sendNotification(game.id, newRound.roundNumber)
 
-        //Build Response TODO - sort
-        return new RoundResponse(newRound, game.getPlayerByName(player.username))
+        //Build Response
+        return buildResponse(newRound, game.getPlayer(player.username))
     }
 
     /**
-     * Get the round in the game
+     * Get the round in the game - TODO Make Admin only
      * @param gameId
      */
     @RequestMapping(value="/{roundNumber}",method = RequestMethod.GET)
     RoundResponse getRound(@PathVariable String gameId, @PathVariable Integer roundNumber){
 
         //Get logged in user
-        PokerUser player = PokerUserDetailsService.currentUser;
+        PokerUser player = PokerUserDetailsService.currentUser
 
         Game game = gameService.loadGame(gameId, player)
 
         Round round = game.getRoundByNumber(roundNumber)
 
-        //Build Response TODO - sort
-        return new RoundResponse(round, game.getPlayerByName(player.username))
+        //Build Response
+        return buildResponse(round, game.getPlayer(player.username))
     }
 
     /**
@@ -98,7 +100,7 @@ class RoundControllerImpl implements RoundController{
     RoundResponse getCurrentRound(@PathVariable String gameId){
 
         //Get logged in user
-        PokerUser player = PokerUserDetailsService.currentUser;
+        PokerUser player = PokerUserDetailsService.currentUser
 
         Game game = gameService.loadGame(gameId, player)
 
@@ -109,8 +111,8 @@ class RoundControllerImpl implements RoundController{
             throw new PokerNotFoundException("No Current Round.")
         }
 
-        //Build Response TODO - sort
-        return new RoundResponse(currentRound, game.getPlayerByName(player.username))
+        //Build Response
+        return buildResponse(currentRound, game.getPlayer(player.username))
     }
 
 
@@ -126,7 +128,7 @@ class RoundControllerImpl implements RoundController{
         betRequest.validate()
 
         //Get logged in user
-        PokerUser player = PokerUserDetailsService.currentUser;
+        PokerUser player = PokerUserDetailsService.currentUser
 
         Game game = gameService.loadGame(gameId, player)
 
@@ -138,7 +140,18 @@ class RoundControllerImpl implements RoundController{
         //Issue notification
         notificationService.sendNotification(game.id, betRequest, player.username)
 
-        //Build Response TODO - sort
-        return new RoundResponse(round, game.getPlayerByName(player.username))
+        //Build Response
+        return buildResponse(round, game.getPlayer(player.username))
     }
+
+    /**
+     * Return a response
+     * @param round
+     * @param player
+     * @return
+     */
+    RoundResponse buildResponse(Round round, GamePlayer player){
+         return new RoundResponse(round, player)
+    }
+
 }

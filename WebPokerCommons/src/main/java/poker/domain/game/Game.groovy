@@ -137,9 +137,9 @@ class Game {
      * @return
      */
     @JsonIgnore
-    GamePlayer getPlayerByName(String name){
+    GamePlayer getPlayer(String name){
         return players.find {GamePlayer player ->
-            player.name = name
+            player.name == name
         }
     }
 

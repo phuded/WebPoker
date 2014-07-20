@@ -63,7 +63,7 @@ class GameService {
     Game loadGame(String gameId, PokerUser user){
         Game game = gameRepository.findOne(gameId)
 
-        if(!game || !game.getPlayerByName(user.username)){
+        if(!game || !game.getPlayer(user.username)){
             throw new PokerNotFoundException("No game found with ID: " + gameId)
         }
 
