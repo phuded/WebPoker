@@ -109,11 +109,12 @@ class GameService {
 
         //Check if player already a member
         if(game.getPlayer(player.name)){
-            throw new PokerException("Player: " + player.name + " is already a member of: " + gameId)
+            throw new PokerException("Player: " + player.name + " is already playing in game: " + gameId)
         }
 
+        //TODO - Change this so players can join mid-game??
         if(!game.rounds.empty){
-            throw new PokerException("Player: " + player.name + " cannot be added to: " + gameId + " as it is started.")
+            throw new PokerException("Player: " + player.name + " cannot be added to game: " + gameId + " as it is started.")
         }
 
         game.addPlayer(player);
