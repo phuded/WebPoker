@@ -20,7 +20,7 @@ import poker.service.PlayerService
 class PlayerControllerImpl implements PlayerController{
 
     @Autowired
-    private PlayerService playerService
+    PlayerService playerService
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
