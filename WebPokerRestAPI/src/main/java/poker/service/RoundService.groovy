@@ -77,7 +77,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, PokerUser user){
+    Round updateRound(Game game, Round round, BetRequest betRequest, String userName){
 
         //Check if round finished
         if(round.hasFinished){
@@ -91,7 +91,7 @@ class RoundService {
         GamePlayer currentPlayer = game.currentPlayer
 
         //Check there is a match
-        if(currentPlayer.name == user.username){
+        if(currentPlayer.name == userName){
 
             //Actually Bet
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
@@ -129,7 +129,7 @@ class RoundService {
 
         }
         else{
-            throw new PokerException("Invalid player: " + playerName + " - not the current Player.")
+            throw new PokerException("Invalid player: " + userName + " - not the current Player.")
         }
 
     }

@@ -63,4 +63,12 @@ class PokerUserDetailsService implements UserDetailsService {
         return (PokerUser)SecurityContextHolder.context.authentication.principal
 
     }
+
+    /**
+     * Get the current user's user name
+     * @return
+     */
+    static String getCurrentUserName(){
+        return getCurrentUser().username
+    }
 }

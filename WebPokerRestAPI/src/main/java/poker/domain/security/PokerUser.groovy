@@ -14,4 +14,14 @@ class PokerUser extends User{
 
         this.id = id;
     }
+
+    /**
+     * Admin check
+     * @return
+     */
+    boolean isAdmin(){
+        return authorities.find{
+            it.authority == PokerRole.ROLE_ADMINISTRATOR
+        }
+    }
 }

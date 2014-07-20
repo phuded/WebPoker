@@ -4,10 +4,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import poker.domain.player.GamePlayer
 import poker.domain.player.Player
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
 import poker.domain.security.PokerUser
+import poker.exception.PokerException
 import poker.exception.PokerNotFoundException
 import poker.repository.GameRepository
 
@@ -60,10 +62,10 @@ class GameService {
      * @param gameId
      * @return
      */
-    Game loadGame(String gameId, PokerUser user){
+    Game loadGame(String gameId, String userName){
         Game game = gameRepository.findOne(gameId)
 
-        if(!game || !game.getPlayer(user.username)){
+        if(!game || !game.getPlayer(userName)){
             throw new PokerNotFoundException("No game found with ID: " + gameId)
         }
 
@@ -79,6 +81,20 @@ class GameService {
     }
 
     /**
+     * Get all Games player is playing in
+     * @param pokerUser
+     * @return
+     */
+    List<Game> getAllCurrentGames(String playerName){
+
+       List<Game> allGames = allGames
+
+       return allGames.findAll{ Game game ->
+           game.getPlayer(playerName)
+       }
+    }
+
+    /**
      * Add a player to a game
      * @param game
      * @param player
@@ -88,9 +104,18 @@ class GameService {
 
         Game game = gameRepository.findOne(gameId)
 
+        //Load the player
         Player player = playerService.loadPlayer(user.id)
 
-        //Add to game
+        //Check if player already a member
+        if(game.getPlayer(player.name)){
+            throw new PokerException("Player: " + player.name + " is already a member of: " + gameId)
+        }
+
+        if(!game.rounds.empty){
+            throw new PokerException("Player: " + player.name + " cannot be added to: " + gameId + " as it is started.")
+        }
+
         game.addPlayer(player);
 
         gameRepository.save(game)

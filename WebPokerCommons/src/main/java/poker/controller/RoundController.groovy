@@ -1,5 +1,6 @@
 package poker.controller
 
+import poker.domain.game.round.Round
 import poker.domain.request.BetRequest
 
 /**
@@ -12,19 +13,20 @@ interface RoundController {
      * Get all of the rounds for the game
      * @param gameId
      */
-    //List<Round> getRounds(String gameId)
+    List<Round> getRounds(String gameId)
+
+    /**
+     * Get the round in the game
+     * @param gameId
+     */
+    Round getRound(String gameId, Integer roundNumber)
+
 
     /**
      * Create a game round
      * @param gameId
      */
     def createNewRound(String gameId)
-
-    /**
-     * Get the round in the game
-     * @param gameId
-     */
-    def getRound(String gameId, Integer roundNumber)
 
     /**
      * Get the current Round

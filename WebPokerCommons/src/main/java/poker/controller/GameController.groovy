@@ -20,7 +20,7 @@ interface GameController {
      * List all Games
      * @return
      */
-    List<Game> getGames()
+    List<Game> getGames(boolean showAll)
 
     /**
      * Get a Game

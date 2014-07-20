@@ -1,10 +1,12 @@
 package poker.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
@@ -14,7 +16,6 @@ import poker.service.security.PokerUserDetailsService
 
 /**
  * Created by matt on 21/05/2014.
- * TODO: Check Roles here
  */
 @RestController
 @RequestMapping("/games")
@@ -24,12 +25,12 @@ class GameControllerImpl implements GameController{
     private GameService gameService
 
     /**
-     * Create a new Game
-     * TODO: Admin only
+     * Create a new Game - Admin only
      * @param players
      * @return
      */
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @RequestMapping(method = RequestMethod.POST)
     Game createGame(@RequestBody GameRequest gameRequest) {
 
@@ -43,27 +44,29 @@ class GameControllerImpl implements GameController{
     }
 
     /**
-     * List all Games
-     * TODO: Need to get a list of all games user can access
+     * List all Games, based on game memberships
      * @return
      */
     @Override
     @RequestMapping(method = RequestMethod.GET)
-    List<Game> getGames() {
+    List<Game> getGames(@RequestParam(value = "showAll", required = false) boolean showAll) {
 
-        return gameService.getAllGames()
+        if(showAll){
+            return gameService.allGames
+        }
+
+        return gameService.getAllCurrentGames(PokerUserDetailsService.currentUserName)
     }
 
     /**
-     * Get a Game
-     * TODO: Security needed
+     * Get a Game - only return if user can access
      * @return
      */
     @Override
-    @RequestMapping(value="/{gameId}",method = RequestMethod.GET)
+    @RequestMapping(value="/{gameId}", method = RequestMethod.GET)
     Game getGame(@PathVariable String gameId) {
 
-        return gameService.loadGame(gameId)
+        return gameService.loadGame(gameId, PokerUserDetailsService.currentUserName)
     }
 
     /**
@@ -72,13 +75,10 @@ class GameControllerImpl implements GameController{
      * @return
      */
     @Override
-    @RequestMapping(value="/{gameId}/players",method = RequestMethod.POST)
+    @RequestMapping(value="/{gameId}/players", method = RequestMethod.POST)
     Game addPlayer(@PathVariable String gameId) {
 
-        //Get logged in user
-        PokerUser player = PokerUserDetailsService.currentUser;
-
-        return gameService.addToPlayerToGame(gameId, player)
+        return gameService.addToPlayerToGame(gameId, PokerUserDetailsService.currentUser)
 
     }
 }

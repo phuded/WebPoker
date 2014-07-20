@@ -21,7 +21,7 @@ import poker.util.PokerDateSerializer
  * Time: 18:10
  * To change this template use File | Settings | File Templates.
  */
-@JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","players","rounds"])
+@JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","playerNames","rounds"])
 class Game {
 
     @Id
@@ -44,10 +44,16 @@ class Game {
     List<GamePlayer> players
 
     //List of rounds
+    @JsonIgnore
     List<Round> rounds
 
     @JsonIgnore
     Integer playerStartingFunds
+
+
+    List<String> getPlayerNames(){
+       return players*.name
+    }
 
     //Default Constructor
     Game(){}
@@ -92,7 +98,7 @@ class Game {
           !player.hasBetOnce
         }
 
-        return playersYetToBet.size() > 0
+        return !playersYetToBet.empty
     }
 
     /**
