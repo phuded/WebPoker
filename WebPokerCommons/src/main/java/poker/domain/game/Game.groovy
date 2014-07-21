@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.mongodb.core.index.Indexed
 import poker.domain.card.Deck
 import poker.domain.game.round.Round
 import poker.domain.player.GamePlayer
@@ -27,6 +28,7 @@ class Game {
     @Id
     String id
 
+    @Indexed(unique=true)
     String name
 
     @CreatedDate
@@ -101,6 +103,7 @@ class Game {
     /**
      *  Check if there are any players who have not bet once
      */
+    @JsonIgnore
     boolean isAnyNonFoldedPlayerYetToBet(){
         List<GamePlayer> playersYetToBet = nonFoldedPlayers.findAll {GamePlayer player ->
             !player.hasBetOnce

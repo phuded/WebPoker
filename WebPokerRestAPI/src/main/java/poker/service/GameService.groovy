@@ -4,7 +4,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import poker.domain.player.GamePlayer
 import poker.domain.player.Player
 import poker.domain.request.GameRequest
 import poker.domain.game.Game
@@ -43,7 +42,7 @@ class GameService {
     }
 
     /**
-     * Load Game
+     * Load Game - no security check
      * @param gameId
      * @return
      */
@@ -58,7 +57,7 @@ class GameService {
     }
 
     /**
-     * Load Game
+     * Load Game which a player belongs to
      * @param gameId
      * @return
      */
@@ -101,15 +100,15 @@ class GameService {
      * @return
      */
     Game addToPlayerToGame(String gameId, PokerUser user){
-
-        Game game = gameRepository.findOne(gameId)
+        //Get the game
+        Game game = loadGame(gameId)
 
         //Load the player
         Player player = playerService.loadPlayer(user.id)
 
-        //Check if player already a member
+        //Check if player already a member, if so do nothing
         if(game.getPlayer(player.name)){
-            throw new PokerException("Player: " + player.name + " is already playing in game: " + gameId)
+            return game
         }
 
         //TODO - Change this so players can join mid-game??
@@ -117,7 +116,8 @@ class GameService {
             throw new PokerException("Player: " + player.name + " cannot be added to game: " + gameId + " as it is started.")
         }
 
-        game.addPlayer(player);
+        //Add the player to the game
+        game.addPlayer(player)
 
         gameRepository.save(game)
 

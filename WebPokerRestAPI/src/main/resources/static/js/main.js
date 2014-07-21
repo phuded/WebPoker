@@ -30,8 +30,8 @@ function createGame(){
 
             alert("Game created.")
         },
-        error: function(errMsg) {
-            alert(errMsg);
+        error: function(error) {
+            alert("Error creating game: " + error.message);
         }
     });
 }
@@ -50,8 +50,8 @@ function createRound(){
           success: function(data){
             //Do nothing
           },
-          error: function(errMsg) {
-              alert("Problem creating round: " + errMsg);
+          error: function(error) {
+              alert("Problem creating round: " + error.message);
           }
       });
 }
@@ -70,18 +70,15 @@ function joinGame(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-           // if(data.success){
-               getRoundDetails()
-           // }
+            getRoundDetails()
         },
-        error: function(errMsg) {
-            alert(errMsg);
+        error: function(error) {
+            alert("Error joining game: " + error.message);
         }
     });
 
 }
 
-//TODO: Combine with other method
 function getRoundDetails(){
 
     $.ajax({
@@ -103,29 +100,6 @@ function getRoundDetails(){
     });
 
 }
-
-function refreshGame(){
-
-    $.ajax({
-        type: "GET",
-        url: "/games/"+ gameId+"/rounds/current",
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader(headerName, token);
-        },
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(data){
-            //Update
-            updateDetails(data)
-
-        },
-        failure: function(errMsg) {
-            alert(errMsg);
-        }
-    });
-
-}
-
 
 
 function updateRound(betType){
@@ -273,8 +247,8 @@ function processNotification(notification) {
             $("#response").html("");
         }
 
-        //Refresh
-        refreshGame()
+        //Refresh game
+        getRoundDetails()
     }
 }
 
