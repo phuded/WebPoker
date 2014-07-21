@@ -38,6 +38,16 @@ class PokerUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Incorrect username: " + name)
         }
 
+        return buildPokerUser(player)
+    }
+
+    /**
+     * Build a PokerUser from the accessed player
+     * @param player
+     * @return
+     */
+    private PokerUser buildPokerUser(Player player){
+
         PokerRole pokerRole = PokerRole.getRole(player.role)
 
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>()
@@ -50,9 +60,7 @@ class PokerUserDetailsService implements UserDetailsService {
             authorities << new SimpleGrantedAuthority(roleEnum)
         }
 
-        PokerUser user = new PokerUser(player.id, player.name, player.password, authorities);
-
-        return user
+        return new PokerUser(player.id, player.name, player.password, authorities)
     }
 
     /**
@@ -69,6 +77,6 @@ class PokerUserDetailsService implements UserDetailsService {
      * @return
      */
     static String getCurrentUserName(){
-        return getCurrentUser().username
+        return currentUser.username
     }
 }

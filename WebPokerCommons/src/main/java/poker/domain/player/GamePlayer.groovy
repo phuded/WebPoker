@@ -86,14 +86,15 @@ class GamePlayer {
 
     //Reset player between Poker Rounds
     def resetBetweenRounds(){
-        this.isCurrent = false
-        this.hasBetOnce = false
+
+        //Call reset between betting rounds
+        resetBetweenBettingRounds()
+
         this.initialCards = []
         this.allCards = []
         this.hands = null
         this.bestHand = null
         this.hasFolded = false
-        this.amountBet = 0
     }
 
     //Reset player between betting rounds

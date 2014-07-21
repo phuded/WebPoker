@@ -101,9 +101,9 @@ class Game {
     /**
      *  Check if there are any players who have not bet once
      */
-    boolean anyNonFoldedPlayersYetToBet(){
+    boolean isAnyNonFoldedPlayerYetToBet(){
         List<GamePlayer> playersYetToBet = nonFoldedPlayers.findAll {GamePlayer player ->
-          !player.hasBetOnce
+            !player.hasBetOnce
         }
 
         return !playersYetToBet.empty

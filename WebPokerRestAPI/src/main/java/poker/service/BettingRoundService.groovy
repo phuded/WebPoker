@@ -144,7 +144,7 @@ class BettingRoundService {
         }
 
         //Are there any non-folded players who have yet to bet once?
-        if(game.anyNonFoldedPlayersYetToBet()){
+        if(game.anyNonFoldedPlayerYetToBet){
 
             logger.debug("There is still a non-folded player who has not bet")
 
