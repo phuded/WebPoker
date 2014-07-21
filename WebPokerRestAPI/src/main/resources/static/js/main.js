@@ -233,9 +233,10 @@ function processNotification(notification) {
 
     if(notification.gameId == gameId){
 
+        var notification = $("#notification");
+
         if(notification.type == "bet"){
-            var response = $("#response");
-            response.text(notification.playerName + " bet: " + (notification.bet?notification.bet:notification.bettingAction))
+            notification.val(notification.playerName + " bet: " + (notification.bet?notification.bet:notification.bettingAction))
         }
 
         if(notification.type == "round"){
@@ -244,7 +245,7 @@ function processNotification(notification) {
             //Clear form
             $("textarea.reset").text("");
             $("input.reset").val("");
-            $("#response").html("");
+            notification.val("");
         }
 
         //Refresh game
