@@ -8,7 +8,6 @@ import poker.domain.player.GamePlayer
 import poker.domain.request.BetRequest
 import poker.domain.game.Game
 import poker.domain.game.round.Round
-import poker.domain.security.PokerUser
 import poker.exception.PokerException
 import poker.exception.PokerNotFoundException
 import poker.service.GameService
@@ -77,7 +76,7 @@ class RoundControllerImpl implements RoundController{
 
         Round currentRound = game.currentRound
 
-        //If is a current round
+        //If there is already a current round - cannot create a new one
         if(currentRound){
             throw new PokerException("A current round already exists.")
         }
@@ -121,8 +120,8 @@ class RoundControllerImpl implements RoundController{
      * @param gameId
      * @param roundId
      */
-    @RequestMapping(value="/{roundNumber}",method = RequestMethod.PUT)
-    RoundResponse updateRound(@PathVariable String gameId, @PathVariable Integer roundNumber, @RequestBody BetRequest betRequest){
+    @RequestMapping(value="/current",method = RequestMethod.PUT)
+    RoundResponse updateRound(@PathVariable String gameId, @RequestBody BetRequest betRequest){
 
         //Validate the request
         betRequest.validate()
@@ -131,7 +130,12 @@ class RoundControllerImpl implements RoundController{
 
         Game game = gameService.loadGame(gameId, currentUserName)
 
-        Round round = game.getRoundByNumber(roundNumber)
+        Round round = game.currentRound
+
+        //If there is not a current round
+        if(!round){
+            throw new PokerNotFoundException("No Current Round.")
+        }
 
         //Update the round
         round = roundService.updateRound(game, round, betRequest, currentUserName)

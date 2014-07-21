@@ -40,7 +40,7 @@ interface RoundController {
      * @param gameId
      * @param roundId
      */
-    def updateRound(String gameId, Integer roundNumber, BetRequest betRequest)
+    def updateRound(String gameId, BetRequest betRequest)
 
 
 }

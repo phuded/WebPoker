@@ -67,6 +67,14 @@ class Game {
     }
 
     /**
+     * Check game is ready to start
+     * @return
+     */
+    boolean readyToStart(){
+        return this.players.size() > 1
+    }
+
+    /**
      * Add player to game
      * @param player
      * @return

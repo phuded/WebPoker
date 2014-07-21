@@ -36,10 +36,16 @@ class RoundService {
 
     /**
      * Create a new round and set it to current
+     * TODO: Refactor
      * @param game
      * @return
      */
     Round createNextRound(Game game){
+
+        //TODO: Refactor this check
+        if(!game.readyToStart()){
+            throw new PokerException("Cannot start round since there are less than 2 players.")
+        }
 
         int numberOfRounds = game.rounds.size()
 
