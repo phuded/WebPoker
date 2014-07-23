@@ -61,6 +61,9 @@ function joinGame(){
     //Set Game ID and Player name
     gameId = $("#gameId").val();
 
+    //Clear form
+    resetForm();
+
     $.ajax({
         type: "POST",
         url: "/games/"+ gameId+"/players",
@@ -240,16 +243,19 @@ function processNotification(notification) {
         }
 
         if(notification.type == "round"){
-            //New round - do something!
-
-            //Clear form
-            $("textarea.reset").text("");
-            $("input.reset").val("");
+            //New round
+            resetForm();
             notificationInput.val("Started next round...");
         }
 
         //Refresh game
         getRoundDetails()
     }
+}
+
+function resetForm(){
+   //Clear form
+   $("textarea.reset").text("");
+   $("input.reset").val("");
 }
 

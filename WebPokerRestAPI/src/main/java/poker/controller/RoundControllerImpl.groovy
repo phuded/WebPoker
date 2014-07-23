@@ -107,7 +107,13 @@ class RoundControllerImpl implements RoundController{
 
         //If there is not a current round
         if(!currentRound){
-            throw new PokerNotFoundException("No Current Round.")
+
+            if(game.rounds.empty){
+                throw new PokerNotFoundException("No Current Round.")
+            }
+
+            //Just get the latest round
+            currentRound = game.rounds.last()
         }
 
         //Build Response
