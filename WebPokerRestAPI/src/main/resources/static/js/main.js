@@ -31,7 +31,7 @@ function createGame(){
             alert("Game created.")
         },
         error: function(error) {
-            alert("Error creating game: " + error.message);
+            alert("Error creating game: " + $.parseJSON(error.responseText).message);
         }
     });
 }
@@ -51,7 +51,7 @@ function createRound(){
             //Do nothing
           },
           error: function(error) {
-              alert("Problem creating round: " + error.message);
+              alert("Problem creating round: " + $.parseJSON(error.responseText).message);
           }
       });
 }
@@ -73,7 +73,7 @@ function joinGame(){
             getRoundDetails()
         },
         error: function(error) {
-            alert("Error joining game: " + error.message);
+            alert("Error joining game: " + $.parseJSON(error.responseText).message);
         }
     });
 
@@ -130,8 +130,8 @@ function updateRound(betType){
              //Not doing anything...
 
           },
-          failure: function(errMsg) {
-              alert(errMsg);
+          error: function(error) {
+              alert("Could not update round:" + $.parseJSON(error.responseText).message);
           }
       });
 }
