@@ -4,14 +4,15 @@ var headerName;
 var token;
 
 $(document).ready(function() {
-    //Connect
+    //Connect to Web Socket
     connect();
 
+    //Set header token
     headerName = $("meta[name='_csrf_header']").attr("content");
     token = $("meta[name='_csrf']").attr("content");
 });
 
-//Entry Point 1
+//Create a new game
 function createGame(){
     var game = {name:$("#gameName").val(), startingPlayerFunds:$("#amount").val()};
 
@@ -36,7 +37,7 @@ function createGame(){
     });
 }
 
-//New round
+//Create a new round
 function createRound(){
 
       $.ajax({
@@ -56,7 +57,7 @@ function createRound(){
       });
 }
 
-//Entry point 2
+//Join a current game
 function joinGame(){
     //Set Game ID and Player name
     gameId = $("#gameId").val();
@@ -82,6 +83,7 @@ function joinGame(){
 
 }
 
+//Get the details of the current round
 function getRoundDetails(){
 
     $.ajax({
@@ -104,7 +106,7 @@ function getRoundDetails(){
 
 }
 
-
+//Perform and action in a round
 function updateRound(betType){
 
     var roundUpdate
@@ -139,42 +141,42 @@ function updateRound(betType){
       });
 }
 
+//Update the page
 function updateDetails(data){
-    //Always show Current Player cards
-    if($("#playerCards").text() == ""){
-        var cards = ""
-
-
-        cards += data.player.name + "\n"
-        cards += "-----------------\n"
-        $.each(data.player.initialCards, function(i, card) {
-            cards += card.cardValue + " - " + card.suit  + "\n";
-        });
-        cards += "-----------------\n\n"
-
-
-        $("#playerCards").text(cards);
-    }
-
      //Remove bet amount
      $("#betAmount").val("")
 
-     //Round cards
+     //Cards
      var cards = ""
+
+    //Always show Current Player cards
+    if($("#playerCards").html() == ""){
+
+        $.each(data.player.initialCards, function(i, card) {
+            cards += playingCards.card(cardValues[card.cardValue], suits[card.suit]).getHTML();
+        });
+
+        $("#playerCards").html(cards);
+    }
+
+     //Reset cards
+     cards = ""
 
      if(data.round.roundCards[0]){
 
-       $.each(data.round.roundCards, function(i, item) {
-           cards += item.cardValue + " - " + item.suit  + "\n";
+       $.each(data.round.roundCards, function(i, card) {
+           cards += playingCards.card(cardValues[card.cardValue], suits[card.suit]).getHTML();
        });
+
+       //Set cards and current player
+       $("#cards").html(cards)
 
      }
 
-     //Set cards and current player
-     $("#cards").text(cards)
-
+     //Current player
      $("#currentPlayer").val(data.round.currentPlayerName)
 
+     //Pot
      $("#pot").val(data.round.pot)
 
      //Current details of bet and current
@@ -231,7 +233,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-
+//On receiving a web socket notification
 function processNotification(notification) {
 
     if(notification.gameId == gameId){
@@ -253,9 +255,34 @@ function processNotification(notification) {
     }
 }
 
+//Reset form method
 function resetForm(){
    //Clear form
    $("textarea.reset").text("");
    $("input.reset").val("");
+   $("div.reset").html("");
 }
 
+ var cardValues = {
+            "TWO": "2",
+            "THREE": "3",
+            "FOUR": "4",
+            "FIVE": "5",
+            "SIX": "6",
+            "SEVEN": "7",
+            "EIGHT": "8",
+            "NINE": "9",
+            "TEN": "10",
+            "JACK": "J",
+            "QUEEN": "Q",
+            "KING": "K",
+            "ACE": "A"
+        };
+
+
+var suits = {
+    "SPADES": "S",
+    "CLUBS": "C",
+    "DIAMONDS": "D",
+    "HEARTS": "H"
+};
