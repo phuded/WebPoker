@@ -74,6 +74,7 @@ class RoundControllerImpl implements RoundController{
 
         Game game = gameService.loadGame(gameId, currentUserName)
 
+        //Check if there is a current round
         Round currentRound = game.currentRound
 
         //If there is already a current round - cannot create a new one
@@ -107,13 +108,8 @@ class RoundControllerImpl implements RoundController{
 
         //If there is not a current round
         if(!currentRound){
-
-            if(game.rounds.empty){
-                throw new PokerNotFoundException("No Current Round.")
-            }
-
-            //Just get the latest round
-            currentRound = game.rounds.last()
+            //Just get the last one as it might have just finished
+            currentRound = game.lastRound
         }
 
         //Build Response

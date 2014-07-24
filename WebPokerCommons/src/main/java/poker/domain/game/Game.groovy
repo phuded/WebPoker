@@ -124,6 +124,20 @@ class Game {
     }
 
     /**
+     * Get the last round
+     * @return
+     */
+    @JsonIgnore
+    Round getLastRound(){
+
+        if(rounds.empty){
+            throw new PokerNotFoundException("The game has no rounds.")
+        }
+
+        return rounds.last()
+    }
+
+    /**
      * Get round by number
      * @param roundNumber
      */
