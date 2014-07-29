@@ -189,14 +189,22 @@ function updateDetails(data){
 
      //If round finished
      if(data.round.hasFinished){
+
+        var handType = "";
+
+        if(data.round.winningHand){
+            handType = " - " + data.round.winningHand.handType;
+        }
+
         var winners = ""
         $.each(data.round.winningPlayerNames, function(i, winner) {
-           winners += winner + " - " + data.round.winningHand.handType + "\n"
+
+           winners += winner + handType + "\n"
         });
 
         winners += "Round Pot: " + data.round.pot
 
-        $("#winners").text(winners)
+        //$("#winners").text(winners)
 
         alert("Finished! Winner is: " + winners)
      }

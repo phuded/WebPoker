@@ -1,0 +1,42 @@
+.container{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+.centre-jumbotron {
+    padding-top:5px;
+    text-align:center;
+    padding-bottom:15px;
+    margin-bottom:10px;
+}
+
+.no-left-padding{
+   padding-left: 0px;
+}
+
+.no-right-padding{
+   padding-right: 0px;
+}
+
+.card-area{
+  height:190px;
+  display:-webkit-box;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+}
+
+
+
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    float: right;
+    color: grey;
+}
+.panel-heading a.collapsed:after {
+    content: "\e080";
+}
