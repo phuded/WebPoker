@@ -1,6 +1,9 @@
 .container{
-    padding-right: 0px;
-    padding-left: 0px;
+    width:100%;
+}
+
+.panel-body {
+    padding: 10px 12px 10px 12px;
 }
 
 .form-horizontal .control-label {

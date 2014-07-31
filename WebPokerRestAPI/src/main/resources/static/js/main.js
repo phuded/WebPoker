@@ -4,6 +4,10 @@ var headerName;
 var token;
 
 $(document).ready(function() {
+
+    //$("#cards").html(playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML() + playingCards.card(cardValues["KING"], suits["HEARTS"]).getHTML() + playingCards.card(cardValues["KING"], suits["DIAMONDS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["CLUBS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML());
+    //$("#playerCards").html(playingCards.card(cardValues["KING"], suits["CLUBS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML());
+
     //Connect to Web Socket
     connect();
 
@@ -11,6 +15,34 @@ $(document).ready(function() {
     headerName = $("meta[name='_csrf_header']").attr("content");
     token = $("meta[name='_csrf']").attr("content");
 });
+
+//List all games
+function listGames(){
+    $.ajax({
+        type: "GET",
+        url: "/games?showAll=true",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(headerName, token);
+        },
+        //data: JSON.stringify(game),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data){
+
+           var gameList = $("#gameList");
+
+           gameList.html("");
+
+           $.each(data, function(i, item) {
+               gameList.append($("<option>", { value : item.id }).text(item.name));
+           });
+
+        },
+        error: function(error) {
+            $("#newGameNotification").val("Error listing games: " + $.parseJSON(error.responseText).message);
+        }
+    });
+}
 
 //Create a new game
 function createGame(){
@@ -26,13 +58,13 @@ function createGame(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-            //Set Game ID
-            $("#gameId").val(data.id);
+            $("#newGameNotification").val("New game created: " + game.name)
 
-            alert("Game created.")
+            //List the games
+            listGames();
         },
         error: function(error) {
-            alert("Error creating game: " + $.parseJSON(error.responseText).message);
+            $("#newGameNotification").val("Error creating game: " + $.parseJSON(error.responseText).message);
         }
     });
 }
@@ -52,32 +84,41 @@ function createRound(){
             //Do nothing
           },
           error: function(error) {
-              alert("Problem creating round: " + $.parseJSON(error.responseText).message);
+              $("#notification").val("Problem creating round: " + $.parseJSON(error.responseText).message);
           }
       });
 }
 
 //Join a current game
 function joinGame(){
-    //Set Game ID and Player name
-    gameId = $("#gameId").val();
+
+    var gameList = $("#gameList");
+
+    //Get the Game ID
+    gameId = gameList.val();
 
     //Clear form
     resetForm();
 
     $.ajax({
         type: "POST",
-        url: "/games/"+ gameId+"/players",
+        url: "/games/"+ gameId+ "/players",
         beforeSend: function(xhr) {
             xhr.setRequestHeader(headerName, token);
         },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-            getRoundDetails()
+            $("#notification").val("Joined game: " + gameList.find(":selected").text());
+
+            //Collapse panel
+            $('.panel-collapse').collapse();
+
+            //Get the round state
+            getRoundDetails();
         },
         error: function(error) {
-            alert("Error joining game: " + $.parseJSON(error.responseText).message);
+            $("#newGameNotification").val("Error joining game: " + $.parseJSON(error.responseText).message);
         }
     });
 
@@ -136,13 +177,17 @@ function updateRound(betType){
 
           },
           error: function(error) {
-              alert("Could not update round:" + $.parseJSON(error.responseText).message);
+              $("#notification").val("Could not update round: " + $.parseJSON(error.responseText).message);
           }
       });
 }
 
 //Update the page
 function updateDetails(data){
+
+     //Round number
+     $("#round").val(data.round.roundNumber);
+
      //Remove bet amount
      $("#betAmount").val("")
 
@@ -190,23 +235,23 @@ function updateDetails(data){
      //If round finished
      if(data.round.hasFinished){
 
+        //Hand type
         var handType = "";
 
         if(data.round.winningHand){
-            handType = " - " + data.round.winningHand.handType;
+            handType = " (" + data.round.winningHand.handType + ")";
         }
 
+        //Winners
         var winners = ""
-        $.each(data.round.winningPlayerNames, function(i, winner) {
 
-           winners += winner + handType + "\n"
+        $.each(data.round.winningPlayerNames, function(i, winner) {
+           winners += winner + handType + ", "
         });
 
-        winners += "Round Pot: " + data.round.pot
+        winners += "pot: " + data.round.pot
 
-        //$("#winners").text(winners)
-
-        alert("Finished! Winner is: " + winners)
+        $("#notification").val("Round Finished. Winner is: " + winners)
      }
 }
 
@@ -255,7 +300,9 @@ function processNotification(notification) {
         if(notification.type == "round"){
             //New round
             resetForm();
-            notificationInput.val("Started next round...");
+
+            //Notify
+            notificationInput.val("Started new round.");
         }
 
         //Refresh game
