@@ -103,14 +103,14 @@ class RoundService {
             bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
 
             //Check if betting round finished
-            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game,currentBettingRound)
+            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game, currentBettingRound)
 
             if(bettingRoundFinished){
                 //Finish the betting round
-                bettingRoundService.finishBettingRound(game,round,currentBettingRound)
+                bettingRoundService.finishBettingRound(game, round, currentBettingRound)
 
                 //Check if only one player left
-                if(onePlayerRemaining(game)){
+                if(game.onePlayerRemaining){
                     //Finish the round
                     finishRound(game, round)
                 }
@@ -121,7 +121,7 @@ class RoundService {
                     //If last betting round
                     if(nextBettingRound == null){
                        //Finish the round
-                      finishRound(game,round)
+                      finishRound(game, round)
                     }
                 }
             }
@@ -177,48 +177,19 @@ class RoundService {
 
 
         //Pay winners
-        round.winners.each { GamePlayer winner ->
-            winner.funds += (round.pot/round.winners.size())
-        }
+        round.payWinners()
 
         //Close the round
-        round.close();
+        round.close()
 
         //Shift the players
-        shiftPlayers(game)
+        game.shiftPlayers()
 
         //Reset players cards and hands
         game.players*.resetBetweenRounds()
 
-        logger.info("Round finished: " + round.roundNumber + " - saving.")
+        logger.info("Round finished: " + round.roundNumber + ". Saving.")
         gameRepository.save(game)
-    }
-
-    /**
-     * Shift the player order
-     * @param game
-     */
-    void shiftPlayers(Game game){
-        //Shift
-        game.players = game.players[1..-1,0]
-
-        //Re-allocate order
-        game.players.eachWithIndex{ GamePlayer player, int i ->
-            player.order = i
-        }
-
-        logger.info("Saving after shift: " + game.players)
-        gameRepository.save(game)
-    }
-
-    /**
-     * Check if thee parent round has finished
-     * @param round
-     * @return
-     */
-    boolean onePlayerRemaining(Game game){
-        //Check if > 1 player left
-        return !(game.nonFoldedPlayers.size()>1)
     }
 
 }

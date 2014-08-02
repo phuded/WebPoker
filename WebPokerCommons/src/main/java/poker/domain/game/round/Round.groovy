@@ -74,6 +74,7 @@ class Round {
                          new RiverCardRound()]
     }
 
+
     /**
      * Close the round
      */
@@ -98,6 +99,15 @@ class Round {
         //Set finished
         this.hasFinished = true
 
+    }
+
+    /**
+     * Pay the winners of the round
+     */
+    void payWinners(){
+        this.winners.each { GamePlayer winner ->
+            winner.funds += (this.pot/this.winners.size())
+        }
     }
 
     /**

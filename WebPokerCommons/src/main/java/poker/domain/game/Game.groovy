@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.joda.time.DateTime
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
@@ -24,6 +26,8 @@ import poker.util.PokerDateSerializer
  */
 @JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","playerNames","rounds"])
 class Game {
+
+    static final Logger logger = LoggerFactory.getLogger(Game.class)
 
     @Id
     String id
@@ -172,6 +176,28 @@ class Game {
         return players.find {GamePlayer player ->
             player.name == name
         }
+    }
+
+    /**
+     * Shift the player order
+     */
+    void shiftPlayers(){
+        this.players = this.players[1..-1,0]
+
+        //Re-allocate order
+        this.players.eachWithIndex{ GamePlayer player, int i ->
+            player.order = i
+        }
+
+        logger.info("Players after shift: " + this.players)
+    }
+
+    /**
+     * Check if the game only has 1 non folder player left
+     * @return
+     */
+    boolean isOnePlayerRemaining(){
+        return this.nonFoldedPlayers.size() == 1
     }
 
 }

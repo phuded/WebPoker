@@ -63,7 +63,7 @@ class BettingRoundService {
      * @param game
      * @return
      */
-    BettingRound setNextBettingRound(Game game,Round round, BettingRound currentBettingRound){
+    BettingRound setNextBettingRound(Game game, Round round, BettingRound currentBettingRound){
 
         //Check if last
         if(currentBettingRound.last){
