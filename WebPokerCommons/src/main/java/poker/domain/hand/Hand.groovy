@@ -24,7 +24,7 @@ class Hand {
 
     @Override
     String toString(){
-        def result = handType.name + " - " + cards + "("+secondaryCards+")"
+        return handType.name + " - " + cards + "("+secondaryCards+")"
     }
 
     @Override

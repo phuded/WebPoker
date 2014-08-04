@@ -20,6 +20,7 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
 
     static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorImpl.class)
 
+    @Override
     public List<GamePlayer> detectWinners(List<GamePlayer> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
@@ -42,7 +43,11 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
 
     }
 
-    //Get winners based on cards in hand
+    /**
+     * Get winners based on cards in hand
+     * @param potentialWinners
+     * @return
+     */
     private List<GamePlayer> getWinnersOfBestHandType(List<GamePlayer> potentialWinners){
 
        List<GamePlayer> losers = []
@@ -77,7 +82,9 @@ class RoundWinnerDetectorImpl implements RoundWinnerDetector{
         }
     }
 
-    //Filter winners based on kicker cards
+    /**
+     * Filter winners based on kicker cards
+     */
     private List<GamePlayer> getWinnersOfBestSecondaryCards(List<GamePlayer> potentialWinners){
 
         List<GamePlayer> losers = []

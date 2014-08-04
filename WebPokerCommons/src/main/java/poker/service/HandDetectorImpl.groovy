@@ -18,8 +18,9 @@ import poker.util.PokerUtil
  */
 
 @Service
-class HandDetectorImpl implements HandDetector{
+class HandDetectorImpl implements HandDetector {
 
+    @Override
     public detectHand(GamePlayer player){
         player.hands = detect(player.allCards)
 
@@ -27,6 +28,7 @@ class HandDetectorImpl implements HandDetector{
         player.bestHand = player.hands.last()
     }
 
+    @Override
     public List<Hand> detect(List<Card> cards){
         //Sorting cards here
         PokerUtil.sortCards(cards)
@@ -36,6 +38,7 @@ class HandDetectorImpl implements HandDetector{
 
         //Look for straights
         detectStraight(cards,hands)
+
         //Look for low straights
         detectAceLowStraight(cards,hands)
 
@@ -52,12 +55,14 @@ class HandDetectorImpl implements HandDetector{
         PokerUtil.sortHandResults(hands)
 
         //Get secondary cards
-        getSecondaryCards(hands.last(),cards)
+        getSecondaryCards(hands.last(), cards)
 
         return hands
     }
 
-    public void detectSameCard(List<Card> cards,List<Hand> hands){
+    private void detectSameCard(List<Card> cards,List<Hand> hands){
+
+        //Loop through each card
         cards.each {
             CardValue currentCardValue = it.cardValue
 
@@ -66,11 +71,11 @@ class HandDetectorImpl implements HandDetector{
             }
 
             switch (foundCards.size()){
-                case 2: hands << new Hand(HandType.PAIR,foundCards)
+                case 2: hands << new Hand(HandType.PAIR, foundCards)
                         break
-                case 3: hands << new Hand(HandType.THREE_OF_A_KIND,foundCards)
+                case 3: hands << new Hand(HandType.THREE_OF_A_KIND, foundCards)
                         break
-                case 4: hands << new Hand(HandType.FOUR_OF_A_KIND,foundCards)
+                case 4: hands << new Hand(HandType.FOUR_OF_A_KIND, foundCards)
                         break
             }
         }
@@ -91,7 +96,7 @@ class HandDetectorImpl implements HandDetector{
         }
     }
 
-    public void detectStraight(List <Card> cards, List<Hand> hands){
+    private void detectStraight(List <Card> cards, List<Hand> hands){
         boolean straight = false
 
         //Number of found cards - add first card to list
@@ -127,15 +132,16 @@ class HandDetectorImpl implements HandDetector{
         }
 
        if(straight){
-           //Add straight
-           Hand straightHandResult =  new Hand(HandType.STRAIGHT,straightCards[-5..-1])
+           //Add straight using best straight cards
+           Hand straightHandResult =  new Hand(HandType.STRAIGHT, straightCards[-5..-1])
+
            //Set secondary cards as all straight cards - for use in straight flush detection
            straightHandResult.secondaryCards = straightCards
            hands << straightHandResult
        }
     }
 
-    public void detectAceLowStraight(List<Card> cards, List<Hand> hands){
+    private void detectAceLowStraight(List<Card> cards, List<Hand> hands){
         if(!hands.find{it.handType == HandType.STRAIGHT}){
             //Reorder cards
             PokerUtil.convertAce(cards,true)
@@ -146,7 +152,7 @@ class HandDetectorImpl implements HandDetector{
         }
     }
 
-    public void detectFlush(List <Card> cards,List<Hand> hands){
+    private void detectFlush(List <Card> cards,List<Hand> hands){
 
         for(Card card : cards){
             Suit currentCardSuit = card.suit
@@ -162,7 +168,7 @@ class HandDetectorImpl implements HandDetector{
         }
     }
 
-    public void detectFullHouse(List<Hand> hands){
+    private void detectFullHouse(List<Hand> hands){
         List <Hand> threes = hands.findAll{
             it.handType == HandType.THREE_OF_A_KIND
         }
@@ -194,7 +200,7 @@ class HandDetectorImpl implements HandDetector{
         }
     }
 
-    public void detectStraightFlush(List<Hand> hands){
+    private void detectStraightFlush(List<Hand> hands){
         //Check if have a straight and flush to begin with
         Hand flush = hands.find{it.handType == HandType.FLUSH}
         Hand straight = hands.find{it.handType == HandType.STRAIGHT}
@@ -237,7 +243,7 @@ class HandDetectorImpl implements HandDetector{
         }
     }
 
-    public void getSecondaryCards(Hand bestHand, List<Card> cards){
+    private void getSecondaryCards(Hand bestHand, List<Card> cards){
         int cardsToFill = 5 - bestHand.cards.size()
         if(cardsToFill > 0){
             //Get best remaining cards
