@@ -29,6 +29,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity
             .ignoring()
                 .antMatchers("/js/**", "/css/**")
+                .antMatchers("/poker/**")
     }
 
     @Override
