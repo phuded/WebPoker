@@ -155,18 +155,6 @@ class Game {
         return rounds.get(--roundNumber);
     }
 
-
-    /**
-     * Get the current player
-     * @return
-     */
-    @JsonIgnore
-    GamePlayer getCurrentPlayer(){
-        return players.find {GamePlayer player ->
-            player.isCurrent
-        }
-    }
-
     /**
      * Get the current player by player name
      * @return
@@ -189,15 +177,44 @@ class Game {
             player.order = i
         }
 
-        logger.info("Players after shift: " + this.players)
+        logger.info("Players after shifting: " + this.players)
     }
 
     /**
      * Check if the game only has 1 non folder player left
      * @return
      */
+    @JsonIgnore
     boolean isOnePlayerRemaining(){
         return this.nonFoldedPlayers.size() == 1
+    }
+
+
+
+    /**
+     * Get the next player
+     * @param game
+     * @return
+     */
+    GamePlayer getNextPlayer(GamePlayer currentPlayer){
+
+        //Check for a non-folded player who has a higher order than the current
+        currentPlayer = this.nonFoldedPlayers.find { GamePlayer pl ->
+            pl.order > currentPlayer.order
+        }
+
+        //If that does not exist -> get the first
+        if(currentPlayer == null){
+
+            logger.debug("There is no non-folded player with a higher order number")
+
+            //Must reset
+            currentPlayer = this.nonFoldedPlayers.first()
+        }
+
+        logger.info("Next Player to: " + currentPlayer.name)
+
+        return currentPlayer
     }
 
 }

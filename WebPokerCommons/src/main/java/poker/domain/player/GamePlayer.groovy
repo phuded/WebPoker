@@ -37,9 +37,6 @@ class GamePlayer {
     //Round specific
     boolean hasFolded
 
-    //Is this players turn
-    boolean isCurrent
-
     //Always goes to 0 at end of round
     int amountBet
 
@@ -50,7 +47,6 @@ class GamePlayer {
         this.funds = funds
 
         this.hasBetOnce = false
-        this.isCurrent = false
         this.hasFolded = false
         this.amountBet = 0
     }
@@ -99,7 +95,6 @@ class GamePlayer {
 
     //Reset player between betting rounds
     def resetBetweenBettingRounds(){
-        this.isCurrent = false
         this.hasBetOnce = false
         this.amountBet = 0
     }

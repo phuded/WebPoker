@@ -61,7 +61,7 @@ class RoundService {
 
         //Set the first player to current
         GamePlayer firstPlayer = game.players.first()
-        firstPlayer.isCurrent = true
+
         round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
@@ -94,11 +94,11 @@ class RoundService {
         BettingRound currentBettingRound = round.currentBettingRound
 
         //Get the current player
-        GamePlayer currentPlayer = game.currentPlayer
+        GamePlayer currentPlayer = game.getPlayer(round.currentPlayerName)
 
         //Check there is not a match
         if(currentPlayer.name != requestPlayerName) {
-            throw new PokerException("Invalid player: " + requestPlayerName + " - not the current Player.")
+            throw new PokerException("Error: " + requestPlayerName + " is not the current Player.")
         }
 
         //Actually Bet
@@ -130,7 +130,11 @@ class RoundService {
         else{
 
             //Make next person current player
-            bettingRoundService.setNextPlayer(game, round)
+            GamePlayer nextPlayer = game.getNextPlayer(currentPlayer)
+
+            round.currentPlayerName = nextPlayer.name
+
+            gameRepository.save(game)
         }
 
         return round

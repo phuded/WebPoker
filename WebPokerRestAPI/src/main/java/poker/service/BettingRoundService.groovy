@@ -23,40 +23,6 @@ class BettingRoundService {
     @Autowired
     GameRepository gameRepository
 
-    /**
-     * Set the next player
-     * @param game
-     * @return
-     */
-    void setNextPlayer(Game game, Round round){
-        //Get the player
-        GamePlayer player = game.currentPlayer
-
-        //Set inactive
-        player.isCurrent = false
-
-        //Check for a non-folded player who has a higher order than the current
-        player = game.nonFoldedPlayers.find { GamePlayer pl ->
-            pl.order > player.order
-        }
-
-        //If that does not exist -> get the first
-        if(player == null){
-
-            logger.debug("There is no non-folded player with a higher order number")
-
-            //Must reset
-            player = game.nonFoldedPlayers.first()
-        }
-
-        //Set active
-        player.isCurrent = true
-        round.currentPlayerName = player.name
-
-        logger.info("Setting next Player to: " + player.name + " - saving.")
-        gameRepository.save(game)
-
-    }
 
     /**
      * Set the next betting round
@@ -79,7 +45,6 @@ class BettingRoundService {
         //Set the first player to current
         GamePlayer firstPlayer = game.nonFoldedPlayers.first()
 
-        firstPlayer.isCurrent = true
         round.currentPlayerName = firstPlayer.name
 
         //Deal the cards
