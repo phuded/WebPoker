@@ -83,7 +83,7 @@ class RoundService {
      * @param amountBet
      * @return
      */
-    Round updateRound(Game game, Round round, BetRequest betRequest, String userName){
+    Round updateRound(Game game, Round round, BetRequest betRequest, String requestPlayerName){
 
         //Check if round finished
         if(round.hasFinished){
@@ -96,48 +96,44 @@ class RoundService {
         //Get the current player
         GamePlayer currentPlayer = game.currentPlayer
 
-        //Check there is a match
-        if(currentPlayer.name == userName){
+        //Check there is not a match
+        if(currentPlayer.name != requestPlayerName) {
+            throw new PokerException("Invalid player: " + requestPlayerName + " - not the current Player.")
+        }
 
-            //Actually Bet
-            bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
+        //Actually Bet
+        bettingRoundService.makePlayerBet(currentPlayer, currentBettingRound, betRequest)
 
-            //Check if betting round finished
-            boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game, currentBettingRound)
+        //Check if betting round finished
+        boolean bettingRoundFinished = bettingRoundService.hasBettingRoundFinished(game, currentBettingRound)
 
-            if(bettingRoundFinished){
-                //Finish the betting round
-                bettingRoundService.finishBettingRound(game, round, currentBettingRound)
+        if(bettingRoundFinished){
+            //Finish the betting round
+            bettingRoundService.finishBettingRound(game, round, currentBettingRound)
 
-                //Check if only one player left
-                if(game.onePlayerRemaining){
-                    //Finish the round
-                    finishRound(game, round)
-                }
-                else{
-                    //Set next betting round
-                    BettingRound nextBettingRound = bettingRoundService.setNextBettingRound(game,round,currentBettingRound)
-
-                    //If last betting round
-                    if(nextBettingRound == null){
-                       //Finish the round
-                      finishRound(game, round)
-                    }
-                }
+            //Check if only one player left
+            if(game.onePlayerRemaining){
+                //Just finish the round
+                finishRound(game, round)
             }
             else{
+                //Set next betting round
+                BettingRound nextBettingRound = bettingRoundService.setNextBettingRound(game,round,currentBettingRound)
 
-                //Make next person current player
-                bettingRoundService.setNextPlayer(game, round)
+                //If last betting round
+                if(nextBettingRound == null){
+                   //Finish the round
+                  finishRound(game, round)
+                }
             }
-
-            return round
-
         }
         else{
-            throw new PokerException("Invalid player: " + userName + " - not the current Player.")
+
+            //Make next person current player
+            bettingRoundService.setNextPlayer(game, round)
         }
 
+        return round
     }
 
 
