@@ -232,6 +232,8 @@ function updateDetails(data){
            }
      });
 
+     $("#funds").val(data.player.funds);
+
      //If round finished
      if(data.round.hasFinished){
 
@@ -280,6 +282,7 @@ function connect() {
     });
 }
 
+//Unused
 function disconnect() {
     stompClient.disconnect();
     setConnected(false);
@@ -318,6 +321,7 @@ function resetForm(){
    $("div.reset").html("");
 }
 
+//Card stuff
  var cardValues = {
             "TWO": "2",
             "THREE": "3",

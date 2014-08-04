@@ -38,6 +38,7 @@
         <title>Poker</title>
     </head>
     <body>
+        <!-- Header -->
         <div class="jumbotron centre-jumbotron">
             <h1>Web Poker</h1>
             <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h3>
@@ -46,7 +47,7 @@
             </form>
         </div>
 
-
+        <!-- Top section -->
         <div class="panel-group container" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -104,6 +105,7 @@
 
         <br/>
 
+        <!-- Middle section-->
         <div class="container">
             <div class="col-sm-4 no-left-padding">
                 <div class="panel panel-default">
@@ -165,10 +167,17 @@
             </div>
         </div>
 
+        <!--Bottom section-->
         <div class="container">
-
             <div class="col-sm-4">
-
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="funds" class="col-sm-4 control-label">Player Funds</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="funds" disabled="disabled"/>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="col-sm-8 no-right-padding">
                 <input type="text" id="notification" class="reset form-control" style="font-weight:bold" disabled="disabled"/>
