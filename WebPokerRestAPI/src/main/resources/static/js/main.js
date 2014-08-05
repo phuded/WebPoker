@@ -12,6 +12,9 @@ var newRoundButton;
 
 var bettingControls;
 
+//Constants
+var CHECK = "Check";
+
 $(document).ready(function() {
 
     //$("#cards").html(playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML() + playingCards.card(cardValues["KING"], suits["HEARTS"]).getHTML() + playingCards.card(cardValues["KING"], suits["DIAMONDS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["CLUBS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML());
@@ -167,16 +170,21 @@ function getRoundDetails(){
 //Perform and action in a round
 function updateRound(betType){
 
-    var roundUpdate
+    var roundUpdate;
 
     if(betType == "bet"){
         roundUpdate = {
-                        bet:$("#betAmount").val()
+                        bet: $("#betAmount").val()
+                      }
+    }
+    else if (betType == "call"){
+        roundUpdate = {
+                        bettingAction: (callButton.text() == CHECK)?"check":"call"
                       }
     }
     else{
         roundUpdate = {
-                        bettingAction:betType
+                        bettingAction: betType
                       }
     }
 
@@ -277,7 +285,7 @@ function updateDetails(data){
          }
          else{
             //Don't need to match -> So need to check or raise/bet
-            callButton.text("Check")
+            callButton.text(CHECK)
             foldButton.attr("disabled","disabled");
          }
      }

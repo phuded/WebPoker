@@ -33,7 +33,7 @@
 }
 
 
-//Collapsible
+/*Collapsible*/
 .panel-heading a:after {
     font-family: 'Glyphicons Halflings';
     content: "\e114";
@@ -43,4 +43,10 @@
 
 .panel-heading a.collapsed:after {
     content: "\e080";
+}
+
+/*Cards*/
+.playingCard {
+    margin-left:2px;
+    margin-right:2px
 }

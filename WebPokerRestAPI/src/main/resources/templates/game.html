@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <button class="btn btn-success pull-right" type="button" onclick="createGame()">Create Game</button>
+                            <button class="btn btn-success pull-right" type="button" onclick="createGame()">Create Game <span class="glyphicon glyphicon-plus"/></button>
                         </div>
                         <div class="col-sm-6">
                             <h5>Connect to Game</h5>
@@ -88,11 +88,11 @@
                                 </div>
                             </form>
                             <p style="text-align:right;">
-                                <button class="btn btn-default" type="button" onclick="listGames()">Refresh Games  <span class="glyphicon glyphicon-refresh"></span></button>
+                                <button class="btn btn-default" type="button" onclick="listGames()">Refresh Games  <span class="glyphicon glyphicon-refresh"/></button>
                             </p>
 
                             <p style="text-align:right;">
-                                <button class="btn btn-info" type="button" onclick="joinGame()">Join Game</button>
+                                <button class="btn btn-info" type="button" onclick="joinGame()">Join Game <span class="glyphicon glyphicon-arrow-right"/></button>
                             </p>
                         </div>
 
@@ -200,7 +200,7 @@
                 <br/>
 
                 <div id="bettingControls">
-                    <div class="col-sm-7">
+                    <div class="col-sm-6">
                         <form class="form-horizontal" role="form">
                             <div class="form-group form-group-lg">
                                 <label for="betAmount" class="col-sm-6 control-label">Amount to Bet</label>
@@ -210,12 +210,12 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-sm-5 no-right-padding">
-                        <button class="btn btn-success btn-lg" type="button" value="Bet" onclick="updateRound('bet')">Bet/Raise</button>
+                    <div class="col-sm-6 no-right-padding">
+                        <button class="btn btn-success btn-lg" type="button" value="Bet" onclick="updateRound('bet')">Bet/Raise <span class="glyphicon glyphicon-arrow-up"/></button>
                         <button class="btn btn-primary btn-lg" id="callButton" type="button" value="Call" onclick="updateRound('call')">Call</button>
 
                         <!--Fold button-->
-                        <button class="btn btn-danger btn-lg pull-right" id="foldButton" type="button" value="Fold" onclick="updateRound('fold')">Fold</button>
+                        <button class="btn btn-danger btn-lg pull-right" id="foldButton" type="button" value="Fold" onclick="updateRound('fold')">Fold <span class="glyphicon glyphicon-remove"/></button>
 
                     </div>
                 </div>
