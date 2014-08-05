@@ -3,6 +3,15 @@ var gameId;
 var headerName;
 var token;
 
+var loggedInPlayer;
+var currentPlayer;
+
+var callButton;
+var foldButton;
+var newRoundButton;
+
+var bettingControls;
+
 $(document).ready(function() {
 
     //$("#cards").html(playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML() + playingCards.card(cardValues["KING"], suits["HEARTS"]).getHTML() + playingCards.card(cardValues["KING"], suits["DIAMONDS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["CLUBS"]).getHTML()+ playingCards.card(cardValues["KING"], suits["SPADES"]).getHTML());
@@ -14,6 +23,12 @@ $(document).ready(function() {
     //Set header token
     headerName = $("meta[name='_csrf_header']").attr("content");
     token = $("meta[name='_csrf']").attr("content");
+
+    callButton = $("#callButton");
+    foldButton = $("#foldButton");
+    newRoundButton = $("#newRoundButton");
+
+    bettingControls = $("#bettingControls");
 });
 
 //List all games
@@ -136,9 +151,11 @@ function getRoundDetails(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data){
-            //Update
-            updateDetails(data)
+            //Set logged in player
+            loggedInPlayer = data.player.name;
 
+            //Update
+            updateDetails(data);
         },
         error: function(errMsg) {
             //Do nothing
@@ -219,22 +236,68 @@ function updateDetails(data){
      }
 
      //Current player
-     $("#currentPlayer").val(data.round.currentPlayerName)
+     currentPlayer = data.round.currentPlayerName;
+     $("#currentPlayer").val(currentPlayer);
 
      //Pot
      $("#pot").val(data.round.pot)
+
+
+     //Current bet for round
+     var currentBet;
 
      //Current details of bet and current
      $.each(data.round.bettingRounds, function(i, item) {
            if(item.isCurrent){
                $("#bettingRound").val(item.bettingRoundNumber)
-               $("#currentBet").val(item.amountBetPerPlayer)
+
+               currentBet = item.amountBetPerPlayer;
+               $("#currentBet").val(currentBet)
            }
      });
 
+     //Amount player has bet so far
+     var amountBet = data.player.amountBet;
+     $("#amountBet").val(amountBet);
+
+     //Determine buttons
+     //TODO: Split out logic
+     if(!data.round.hasFinished && loggedInPlayer == currentPlayer){
+         //Current player
+         newRoundButton.hide(200);
+         bettingControls.show(200);
+
+         //Amount needed to match bet
+         var toCall = currentBet - amountBet;
+
+         if(toCall > 0){
+            //Need to call, raise or fold
+            callButton.text("Call (" + toCall + ")");
+            foldButton.removeAttr("disabled");
+         }
+         else{
+            //Don't need to match -> So need to check or raise/bet
+            callButton.text("Check")
+            foldButton.attr("disabled","disabled");
+         }
+     }
+     else if (data.round.hasFinished){
+        //Finished round
+        bettingControls.hide(200);
+        newRoundButton.show(200);
+     }
+     else{
+        //Not current player
+        newRoundButton.hide(200);
+        bettingControls.hide(200);
+     }
+
+
+     //Funds of player...
      $("#funds").val(data.player.funds);
 
      //If round finished
+     //TODO: Tidy logic
      if(data.round.hasFinished){
 
         //Hand type
@@ -245,15 +308,15 @@ function updateDetails(data){
         }
 
         //Winners
-        var winners = ""
+        var winners = "";
 
         $.each(data.round.winningPlayerNames, function(i, winner) {
-           winners += winner + handType + ", "
+           winners += winner + handType + ", ";
         });
 
-        winners += "pot: " + data.round.pot
+        winners += "pot: " + data.round.pot;
 
-        $("#notification").val("Round Finished. Winner is: " + winners)
+        $("#notification").val("Round Finished. Winner is: " + winners);
      }
 }
 

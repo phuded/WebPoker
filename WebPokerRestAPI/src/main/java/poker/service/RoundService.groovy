@@ -9,7 +9,6 @@ import poker.domain.game.Game
 import poker.domain.game.bettinground.BettingRound
 import poker.domain.game.round.Round
 import poker.domain.player.GamePlayer
-import poker.domain.security.PokerUser
 import poker.exception.PokerException
 import poker.repository.GameRepository
 
@@ -25,10 +24,10 @@ class RoundService {
     GameRepository gameRepository
 
     @Autowired
-    HandDetector handDetector
+    HandDetectorService handDetectorService
 
     @Autowired
-    RoundWinnerDetector roundWinnerDetector
+    RoundWinnerDetectorService roundWinnerDetectorService
 
     @Autowired
     BettingRoundService bettingRoundService
@@ -156,7 +155,7 @@ class RoundService {
             game.nonFoldedPlayers.each{ GamePlayer player ->
 
                 //Get the player's hands
-                handDetector.detectHand(player)
+                handDetectorService.detectHand(player)
 
                 // logger.info("Player: " + player.name + " - All hand-results: " + player.hands)
                 logger.info("Player: " + player.name + " - Best hand: " + player.bestHand)
@@ -166,7 +165,7 @@ class RoundService {
             logger.info("================================")
 
             //Get winner
-            round.winners = roundWinnerDetector.detectWinners(game.nonFoldedPlayers)
+            round.winners = roundWinnerDetectorService.detectWinners(game.nonFoldedPlayers)
         }
         else{
             //Winner is last player

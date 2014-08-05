@@ -13,13 +13,13 @@ import poker.domain.card.Suit
 import poker.domain.hand.HandType
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = HandDetectorImpl.class)
+@ContextConfiguration(classes = HandDetectorServiceImpl.class)
 class HandDetectorTest extends GroovyTestCase {
 
     static final Logger logger = LoggerFactory.getLogger(HandDetectorTest.class)
     
     @Autowired
-    HandDetector handDetector
+    HandDetectorService handDetectorService
 
     @Test
     void testPair() {
@@ -35,7 +35,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testPair cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testPair results: " + results)
 
@@ -57,7 +57,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testThreeOfAKind cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testThreeOfAKind results: " + results)
 
@@ -77,7 +77,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testTwoPair cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testTwoPair results: " + results)
 
@@ -98,7 +98,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testBestTwoPair cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testBestTwoPair results: " + results)
 
@@ -120,7 +120,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testStraight cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testStraight results: " + results)
 
@@ -142,7 +142,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testLowStraight cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testLowStraight results: " + results)
 
@@ -164,7 +164,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testFlush cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testFlush results: " + results)
 
@@ -186,7 +186,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testFourOfAKind cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testFourOfAKind results: " + results)
 
@@ -208,7 +208,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testFullHouse cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testFullHouse results: " + results)
 
@@ -230,7 +230,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testStraightFlush cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testStraightFlush results: " + results)
 
@@ -252,7 +252,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testMismatchedStraightFlush cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testMismatchedStraightFlush results: " + results)
 
@@ -274,7 +274,7 @@ class HandDetectorTest extends GroovyTestCase {
 
         logger.info("testMismatchedLowStraightFlush cards: " + cards)
 
-        def results = handDetector.detect(cards)
+        def results = handDetectorService.detect(cards)
 
         logger.info("testMismatchedLowStraightFlush results: " + results)
 
@@ -296,7 +296,7 @@ class HandDetectorTest extends GroovyTestCase {
 
       logger.info("testRoyalFlush cards: " + cards)
 
-      def results = handDetector.detect(cards)
+      def results = handDetectorService.detect(cards)
 
       logger.info("testRoyalFlush results: " + results)
 

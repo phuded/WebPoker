@@ -18,7 +18,7 @@ import poker.util.PokerUtil
  */
 
 @Service
-class HandDetectorImpl implements HandDetector {
+class HandDetectorServiceImpl implements HandDetectorService {
 
     @Override
     public detectHand(GamePlayer player){

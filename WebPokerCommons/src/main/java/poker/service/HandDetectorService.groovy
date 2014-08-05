@@ -8,7 +8,7 @@ import poker.domain.player.GamePlayer
  * Created by matt on 20/05/2014.
  */
 
-interface HandDetector {
+interface HandDetectorService {
 
     public detectHand(GamePlayer player)
 

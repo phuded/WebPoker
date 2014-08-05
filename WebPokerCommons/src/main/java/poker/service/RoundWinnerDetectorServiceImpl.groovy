@@ -16,9 +16,9 @@ import poker.domain.hand.HandType
  */
 
 @Service
-class RoundWinnerDetectorImpl implements RoundWinnerDetector{
+class RoundWinnerDetectorServiceImpl implements RoundWinnerDetectorService{
 
-    static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorImpl.class)
+    static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorServiceImpl.class)
 
     @Override
     public List<GamePlayer> detectWinners(List<GamePlayer> players){
