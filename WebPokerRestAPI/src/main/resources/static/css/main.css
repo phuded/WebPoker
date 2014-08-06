@@ -45,8 +45,14 @@
     content: "\e080";
 }
 
-/*Cards*/
+/* Cards */
 .playingCard {
     margin-left:2px;
     margin-right:2px
+}
+
+/* Logo */
+.logo{
+    border: 1px solid grey;
+    border-radius: 8px;
 }
