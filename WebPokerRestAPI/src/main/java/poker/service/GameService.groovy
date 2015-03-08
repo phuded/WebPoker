@@ -95,6 +95,7 @@ class GameService {
 
     /**
      * Add a player to a game
+     * TODO: Need to create round automatically...
      * @param game
      * @param player
      * @return

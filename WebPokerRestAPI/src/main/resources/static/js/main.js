@@ -161,7 +161,10 @@ function getRoundDetails(){
             updateDetails(data);
         },
         error: function(errMsg) {
-            //Do nothing
+            //Do nothing - no round
+
+            //TODO: Fix this
+            newRoundButton.show(200);
         }
     });
 
