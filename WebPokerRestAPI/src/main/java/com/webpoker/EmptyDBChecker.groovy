@@ -19,7 +19,7 @@ public class EmptyDBChecker implements ApplicationListener<ContextRefreshedEvent
     PlayerService playerService;
 
     /**
-     * Add the matt user if he doesn't exist.
+     * Add the default users if none exist.
      * @param event
      */
     @Override
@@ -32,6 +32,17 @@ public class EmptyDBChecker implements ApplicationListener<ContextRefreshedEvent
             request.name = "matt"
             request.firstName = "Matthew"
             request.lastName = "Carter"
+            request.password = "Admin1"
+            request.role = PlayerRole.ROLE_ADMINISTRATOR
+
+            playerService.createNewPlayer(request);
+
+            LOGGER.info "Player " + request.name + " created."
+
+
+            request.name = "cathy"
+            request.firstName = "Catherine"
+            request.lastName = "McGrath"
             request.password = "Admin1"
             request.role = PlayerRole.ROLE_ADMINISTRATOR
 

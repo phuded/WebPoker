@@ -163,7 +163,8 @@ function getRoundDetails(){
         error: function(errMsg) {
             //Do nothing - no round
 
-            //TODO: Fix this
+            //Finished round
+            bettingControls.hide(200);
             newRoundButton.show(200);
         }
     });
