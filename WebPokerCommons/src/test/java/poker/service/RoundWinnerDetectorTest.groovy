@@ -7,11 +7,15 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import poker.domain.card.Card
-import poker.domain.card.CardValue
-import poker.domain.card.Suit
-import poker.domain.hand.HandType
-import poker.domain.player.GamePlayer
+import com.webpoker.domain.card.Card
+import com.webpoker.domain.card.CardValue
+import com.webpoker.domain.card.Suit
+import com.webpoker.domain.hand.HandType
+import com.webpoker.domain.player.GamePlayer
+import com.webpoker.service.HandDetectorService
+import com.webpoker.service.HandDetectorServiceImpl
+import com.webpoker.service.RoundWinnerDetectorService
+import com.webpoker.service.RoundWinnerDetectorServiceImpl
 
 /**
  * Created with IntelliJ IDEA.
