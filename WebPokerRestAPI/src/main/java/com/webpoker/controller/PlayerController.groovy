@@ -17,12 +17,11 @@ import com.webpoker.service.PlayerService
  */
 @RestController
 @RequestMapping("/players")
-class PlayerControllerImpl implements PlayerController{
+class PlayerController{
 
     @Autowired
     PlayerService playerService
 
-    @Override
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     Player createPlayer(@RequestBody PlayerRequest playerRequest) {
@@ -34,14 +33,12 @@ class PlayerControllerImpl implements PlayerController{
         return player
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.GET)
     List<Player> getPlayers() {
 
         return playerService.getAllPlayers()
     }
 
-    @Override
     @RequestMapping(value="/{playerId}",method = RequestMethod.GET)
     Player getPlayer(@PathVariable String playerId) {
 

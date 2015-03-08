@@ -1,15 +1,18 @@
 package com.webpoker.domain.security
 
+import com.webpoker.domain.player.PlayerRole
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
+
 /**
- * Created by matt on 17/07/2014.
+ * Spring security User
  */
 class PokerUser extends User{
 
     String id
 
     PokerUser(String id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+
         super(username, password, authorities);
 
         this.id = id;
@@ -21,7 +24,7 @@ class PokerUser extends User{
      */
     boolean isAdmin(){
         return authorities.find{
-            it.authority == PokerRole.ROLE_ADMINISTRATOR
+            it.authority == PlayerRole.ROLE_ADMINISTRATOR
         }
     }
 }

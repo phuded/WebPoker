@@ -1,9 +1,9 @@
 package com.webpoker.service
 
+import com.webpoker.domain.request.BetRequest
 import org.springframework.beans.factory.annotation.Autowired
 import com.webpoker.domain.hand.Hand
 import com.webpoker.domain.player.GamePlayer
-import com.webpoker.domain.request.BetRequest
 import com.webpoker.plugin.NormalAIPlayer
 import com.webpoker.plugin.AIPlayer
 

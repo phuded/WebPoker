@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 
 /**
- * Created by matt on 27/06/2014.
+ * Persisted Player Object
  */
 class Player {
     @Id
@@ -21,9 +21,9 @@ class Player {
     @JsonIgnore
     String password
 
-    String role
+    PlayerRole role
 
-    Player(String name, String firstName, String lastName, String role, String password){
+    Player(String name, String firstName, String lastName, PlayerRole role, String password){
         this.name = name
         this.firstName = firstName
         this.lastName = lastName

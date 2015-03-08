@@ -1,9 +1,10 @@
 package com.webpoker.domain.request
 
+import com.webpoker.domain.player.PlayerRole
 import com.webpoker.exception.PokerException
 
 /**
- * Created by matt on 03/06/2014.
+ * Request to make a new player
  */
 class PlayerRequest {
 
@@ -11,7 +12,7 @@ class PlayerRequest {
     String firstName
     String lastName
     String password
-    String role
+    PlayerRole role
 
     void validate(){
 

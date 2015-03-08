@@ -20,7 +20,7 @@ import com.webpoker.service.NotificationService
  */
 @RestController
 @RequestMapping("/games/{gameId}/rounds")
-class RoundControllerImpl implements RoundController{
+class RoundController{
 
     @Autowired
     GameService gameService

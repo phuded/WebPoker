@@ -1,5 +1,6 @@
 package com.webpoker
 
+import com.webpoker.domain.player.PlayerRole
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +33,7 @@ public class EmptyDBChecker implements ApplicationListener<ContextRefreshedEvent
             request.firstName = "Matthew"
             request.lastName = "Carter"
             request.password = "Admin1"
-            request.role = "Administrator"
+            request.role = PlayerRole.ROLE_ADMINISTRATOR
 
             playerService.createNewPlayer(request);
 

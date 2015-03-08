@@ -18,7 +18,7 @@ import com.webpoker.service.GameService
  */
 @RestController
 @RequestMapping("/games")
-class GameControllerImpl implements GameController{
+class GameController {
 
     @Autowired
     private GameService gameService
@@ -28,7 +28,6 @@ class GameControllerImpl implements GameController{
      * @param players
      * @return
      */
-    @Override
     @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @RequestMapping(method = RequestMethod.POST)
     Game createGame(@RequestBody GameRequest gameRequest) {
@@ -46,7 +45,6 @@ class GameControllerImpl implements GameController{
      * List all Games, based on game memberships
      * @return
      */
-    @Override
     @RequestMapping(method = RequestMethod.GET)
     List<Game> getGames(@RequestParam(value = "showAll", required = false) boolean showAll) {
 
@@ -61,7 +59,6 @@ class GameControllerImpl implements GameController{
      * Get a Game - only return if user can access
      * @return
      */
-    @Override
     @RequestMapping(value="/{gameId}", method = RequestMethod.GET)
     Game getGame(@PathVariable String gameId) {
 
@@ -73,7 +70,6 @@ class GameControllerImpl implements GameController{
      * @param gameId
      * @return
      */
-    @Override
     @RequestMapping(value="/{gameId}/players", method = RequestMethod.POST)
     Game addPlayer(@PathVariable String gameId) {
 

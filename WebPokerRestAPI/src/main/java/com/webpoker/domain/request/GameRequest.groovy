@@ -3,7 +3,7 @@ package com.webpoker.domain.request
 import com.webpoker.exception.PokerException
 
 /**
- * Created by matt on 03/06/2014.
+ * Request to start a new Game
  */
 class GameRequest {
 

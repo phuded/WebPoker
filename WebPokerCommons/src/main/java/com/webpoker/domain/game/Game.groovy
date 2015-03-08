@@ -27,7 +27,7 @@ import com.webpoker.exception.PokerNotFoundException
 @JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","playerNames","rounds"])
 class Game {
 
-    static final Logger logger = LoggerFactory.getLogger(Game.class)
+    static final Logger LOGGER = LoggerFactory.getLogger(Game.class)
 
     @Id
     String id
@@ -177,7 +177,7 @@ class Game {
             player.order = i
         }
 
-        logger.info("Players after shifting: " + this.players)
+        LOGGER.info("Players after shifting: " + this.players)
     }
 
     /**
@@ -206,13 +206,13 @@ class Game {
         //If that does not exist -> get the first
         if(currentPlayer == null){
 
-            logger.debug("There is no non-folded player with a higher order number")
+            LOGGER.debug("There is no non-folded player with a higher order number")
 
             //Must reset
             currentPlayer = this.nonFoldedPlayers.first()
         }
 
-        logger.info("Next Player to: " + currentPlayer.name)
+        LOGGER.info("Next Player to: " + currentPlayer.name)
 
         return currentPlayer
     }

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import com.webpoker.domain.player.Player
-import com.webpoker.domain.security.PokerRole
+import com.webpoker.domain.player.PlayerRole
 import com.webpoker.domain.security.PokerUser
 import com.webpoker.repository.PlayerRepository
 
@@ -20,7 +20,7 @@ import com.webpoker.repository.PlayerRepository
 @Service
 class PokerUserDetailsService implements UserDetailsService {
 
-    static final Logger logger = LoggerFactory.getLogger(PokerUserDetailsService.class)
+    static final Logger LOGGER = LoggerFactory.getLogger(PokerUserDetailsService.class)
 
     PlayerRepository playerRepository;
 
@@ -48,15 +48,13 @@ class PokerUserDetailsService implements UserDetailsService {
      */
     private PokerUser buildPokerUser(Player player){
 
-        PokerRole pokerRole = PokerRole.getRole(player.role)
-
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>()
 
-        if(pokerRole) {
+        if(player.role) {
 
-            String roleEnum = pokerRole.toString()
+            String roleEnum = player.role.toString()
 
-            logger.info("Player: " + player.name + " has role: " + pokerRole.name + "/" + roleEnum)
+            LOGGER.info("Player: " + player.name + " has role: " + player.role.name + "/" + roleEnum)
             authorities << new SimpleGrantedAuthority(roleEnum)
         }
 

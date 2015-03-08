@@ -4,9 +4,10 @@ import com.webpoker.domain.player.betting.BettingAction
 import com.webpoker.exception.PokerException
 
 /**
- * Created by matt on 04/06/2014.
+ * Request to make a bet
  */
 class BetRequest {
+
     String bettingAction
     Integer bet
 

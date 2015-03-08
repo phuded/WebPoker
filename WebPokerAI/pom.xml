@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>web.poker</groupId>
-            <artifactId>webpoker-commons</artifactId>
+            <artifactId>webpoker-rest-api</artifactId>
             <version>0.6.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

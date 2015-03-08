@@ -4,13 +4,8 @@ import com.webpoker.domain.card.Card
 import com.webpoker.domain.hand.Hand
 
 /**
- * Created with IntelliJ IDEA.
- * User: matthew.carter
- * Date: 13/08/13
- * Time: 18:11
- * To change this template use File | Settings | File Templates.
+ * Player associated with a game
  */
-
 class GamePlayer {
     //Player name
     String name
@@ -52,23 +47,23 @@ class GamePlayer {
     }
 
     //Get dealt card
-    def receiveCard(Card card){
+    void receiveCard(Card card){
         this.initialCards.push(card)
         //Add to all players possible cards too
         this.allCards.push(card)
     }
 
     // Reference card from the round
-    def addGameCards(Card card){
+    void addGameCards(Card card){
         this.allCards.add(card)
     }
 
-    def addGameCards(List <Card> cards){
+    void addGameCards(List <Card> cards){
         this.allCards.addAll(cards)
     }
 
     //Bet
-    def makeBet(int newCurrentBet){
+    void makeBet(int newCurrentBet){
         //TODO - Prevent -ve balance
         //Determine how much is need to meet current bet
         int amountToCall = newCurrentBet - this.amountBet
@@ -81,7 +76,7 @@ class GamePlayer {
     }
 
     //Reset player between Poker Rounds
-    def resetBetweenRounds(){
+    void resetBetweenRounds(){
 
         //Call reset between betting rounds
         resetBetweenBettingRounds()
@@ -94,7 +89,7 @@ class GamePlayer {
     }
 
     //Reset player between betting rounds
-    def resetBetweenBettingRounds(){
+    void resetBetweenBettingRounds(){
         this.hasBetOnce = false
         this.amountBet = 0
     }
