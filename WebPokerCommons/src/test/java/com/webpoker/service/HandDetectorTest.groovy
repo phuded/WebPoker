@@ -1,4 +1,4 @@
-package poker.service
+package com.webpoker.service
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -11,8 +11,6 @@ import com.webpoker.domain.card.Card
 import com.webpoker.domain.card.CardValue
 import com.webpoker.domain.card.Suit
 import com.webpoker.domain.hand.HandType
-import com.webpoker.service.HandDetectorService
-import com.webpoker.service.HandDetectorServiceImpl
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = HandDetectorServiceImpl.class)
