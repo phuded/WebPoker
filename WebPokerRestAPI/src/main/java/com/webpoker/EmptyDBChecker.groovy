@@ -36,11 +36,11 @@ public class EmptyDBChecker implements ApplicationListener<ContextRefreshedEvent
 
             playerService.createNewPlayer(request);
 
-            LOGGER.debug "Player " + request.name + " created."
+            LOGGER.info "Player " + request.name + " created."
 
         }
         else{
-            LOGGER.debug "Players already exist - not creating a default."
+            LOGGER.info "Players already exist - not creating a default."
         }
 
     }
