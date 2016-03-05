@@ -1,7 +1,6 @@
 package com.webpoker.service
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import com.webpoker.domain.request.BetRequest
@@ -15,10 +14,9 @@ import com.webpoker.repository.GameRepository
 /**
  * Created by matt on 21/05/2014.
  */
+@Slf4j
 @Service
 class BettingRoundService {
-
-    static final Logger logger = LoggerFactory.getLogger(BettingRoundService.class)
 
     @Autowired
     GameRepository gameRepository
@@ -50,7 +48,7 @@ class BettingRoundService {
         //Deal the cards
         nextBettingRound.dealCards(game,round)
 
-        logger.info("Set next betting round - saving.")
+        log.info("Set next betting round - saving.")
         gameRepository.save(game)
 
         return nextBettingRound
@@ -90,7 +88,7 @@ class BettingRoundService {
         //Player has now bet once
         player.hasBetOnce = true
 
-        logger.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
+        log.info(player.name + " bet: " + betRequest.bettingAction + "/" + betRequest.bet)
     }
 
     /**
@@ -104,14 +102,14 @@ class BettingRoundService {
         //In case after the current player folding - is only 1 player left
         if(game.nonFoldedPlayers.size() == 1){
 
-            logger.debug("There is only 1 non-folded player")
+            log.debug("There is only 1 non-folded player")
             return true
         }
 
         //Are there any non-folded players who have yet to bet once?
         if(game.anyNonFoldedPlayerYetToBet){
 
-            logger.debug("There is still a non-folded player who has not bet")
+            log.debug("There is still a non-folded player who has not bet")
 
             //Betting not finished
             return false
@@ -147,14 +145,14 @@ class BettingRoundService {
         //Add to the overall round pot
         round.pot += bettingRoundPot
 
-        logger.info("Betting round pot: " + bettingRoundPot + ". Total round pot: " + round.pot)
+        log.info("Betting round pot: " + bettingRoundPot + ". Total round pot: " + round.pot)
 
         //Reset ALL players after betting round  - including amountBet!
         game.players*.resetBetweenBettingRounds()
 
         bettingRound.close()
 
-        logger.info("Betting round finished - saving.")
+        log.info("Betting round finished - saving.")
         gameRepository.save(game)
     }
 

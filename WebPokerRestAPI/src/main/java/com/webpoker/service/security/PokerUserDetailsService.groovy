@@ -1,7 +1,6 @@
 package com.webpoker.service.security
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -10,17 +9,15 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import com.webpoker.domain.player.Player
-import com.webpoker.domain.player.PlayerRole
 import com.webpoker.domain.security.PokerUser
 import com.webpoker.repository.PlayerRepository
 
 /**
  * Created by matt on 10/07/2014.
  */
+@Slf4j
 @Service
 class PokerUserDetailsService implements UserDetailsService {
-
-    static final Logger LOGGER = LoggerFactory.getLogger(PokerUserDetailsService.class)
 
     PlayerRepository playerRepository;
 
@@ -54,7 +51,7 @@ class PokerUserDetailsService implements UserDetailsService {
 
             String roleEnum = player.role.toString()
 
-            LOGGER.info("Player: " + player.name + " has role: " + player.role.name + "/" + roleEnum)
+            log.info("Player: " + player.name + " has role: " + player.role.name + "/" + roleEnum)
             authorities << new SimpleGrantedAuthority(roleEnum)
         }
 

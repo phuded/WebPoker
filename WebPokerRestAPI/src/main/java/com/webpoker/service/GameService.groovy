@@ -1,24 +1,19 @@
 package com.webpoker.service
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
+import com.webpoker.domain.game.Game
 import com.webpoker.domain.player.Player
 import com.webpoker.domain.request.GameRequest
-import com.webpoker.domain.game.Game
 import com.webpoker.domain.security.PokerUser
 import com.webpoker.exception.PokerException
 import com.webpoker.exception.PokerNotFoundException
 import com.webpoker.repository.GameRepository
-
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 /**
  * Created by matt on 21/05/2014.
  */
 @Service
 class GameService {
-
-    static final Logger logger = LoggerFactory.getLogger(GameService.class)
 
     @Autowired
     GameRepository gameRepository

@@ -1,11 +1,10 @@
 package com.webpoker.domain.game.bettinground
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import com.webpoker.domain.card.Card
 import com.webpoker.domain.game.Game
 import com.webpoker.domain.player.GamePlayer
 import com.webpoker.domain.game.round.Round
+import groovy.util.logging.Slf4j
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,10 +13,9 @@ import com.webpoker.domain.game.round.Round
  * Time: 21:23
  * To change this template use File | Settings | File Templates.
  */
+@Slf4j
 class FlopRound extends BettingRound{
-
-    static final Logger logger = LoggerFactory.getLogger(FlopRound.class)
-
+    
     @Override
     int getBettingRoundNumber(){
         return  2
@@ -34,7 +32,7 @@ class FlopRound extends BettingRound{
             //Add flop to player hand
             player.addGameCards(flop)
 
-            logger.info(player.name + " - Hand after flop: " + player.allCards)
+            log.info(player.name + " - Hand after flop: " + player.allCards)
         }
 
         areCardsDealt = true

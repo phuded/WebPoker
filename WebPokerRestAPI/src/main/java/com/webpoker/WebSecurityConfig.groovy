@@ -1,5 +1,7 @@
 package com.webpoker
 
+import com.webpoker.repository.PlayerRepository
+import com.webpoker.service.security.PokerUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -7,17 +9,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
-import com.webpoker.service.security.PokerUserDetailsService
-import com.webpoker.repository.PlayerRepository
-
 /**
  * Created by matt on 05/07/2014.
  */
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

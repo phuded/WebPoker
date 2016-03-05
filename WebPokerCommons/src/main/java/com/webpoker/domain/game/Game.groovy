@@ -3,9 +3,8 @@ package com.webpoker.domain.game
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import groovy.util.logging.Slf4j
 import org.joda.time.DateTime
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
@@ -24,10 +23,9 @@ import com.webpoker.exception.PokerNotFoundException
  * Time: 18:10
  * To change this template use File | Settings | File Templates.
  */
+@Slf4j
 @JsonPropertyOrder(["id","name","createdDate","lastModifiedDate","playerNames","rounds"])
 class Game {
-
-    static final Logger LOGGER = LoggerFactory.getLogger(Game.class)
 
     @Id
     String id
@@ -177,7 +175,7 @@ class Game {
             player.order = i
         }
 
-        LOGGER.info("Players after shifting: " + this.players)
+        log.info("Players after shifting: " + this.players)
     }
 
     /**
@@ -206,13 +204,13 @@ class Game {
         //If that does not exist -> get the first
         if(currentPlayer == null){
 
-            LOGGER.debug("There is no non-folded player with a higher order number")
+            log.debug("There is no non-folded player with a higher order number")
 
             //Must reset
             currentPlayer = this.nonFoldedPlayers.first()
         }
 
-        LOGGER.info("Next Player to: " + currentPlayer.name)
+        log.info("Next Player to: " + currentPlayer.name)
 
         return currentPlayer
     }

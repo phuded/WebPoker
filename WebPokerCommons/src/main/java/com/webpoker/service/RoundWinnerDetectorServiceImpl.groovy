@@ -1,7 +1,6 @@
 package com.webpoker.service
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Service
 import com.webpoker.domain.card.Card
 import com.webpoker.domain.player.GamePlayer
@@ -15,22 +14,21 @@ import com.webpoker.domain.hand.HandType
  * To change this template use File | Settings | File Templates.
  */
 
+@Slf4j
 @Service
 class RoundWinnerDetectorServiceImpl implements RoundWinnerDetectorService{
-
-    static final Logger logger = LoggerFactory.getLogger(RoundWinnerDetectorServiceImpl.class)
-
+    
     @Override
     public List<GamePlayer> detectWinners(List<GamePlayer> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
-        logger.info("MAIN: Best hand type: " + bestHandType.name)
+        log.info("MAIN: Best hand type: " + bestHandType.name)
 
         //Get all players with that hand type
         List<GamePlayer> winningPlayers = players.findAll{it.bestHand.handType == bestHandType}
 
-        logger.info("MAIN: Players with winning hand type: " + winningPlayers)
+        log.info("MAIN: Players with winning hand type: " + winningPlayers)
 
         // If one player with hand-> they are the winner
         if(winningPlayers.size() == 1){

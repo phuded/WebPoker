@@ -1,7 +1,6 @@
 package com.webpoker.service
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import com.webpoker.domain.request.BetRequest
@@ -15,10 +14,9 @@ import com.webpoker.repository.GameRepository
 /**
  * Created by matt on 21/05/2014.
  */
+@Slf4j
 @Service
 class RoundService {
-
-    static final Logger logger = LoggerFactory.getLogger(RoundService.class)
 
     @Autowired
     GameRepository gameRepository
@@ -66,7 +64,7 @@ class RoundService {
         //Deal the cards
         round.bettingRounds.first().dealCards(game, round)
 
-        logger.info("Saving new Round: " + round.roundNumber)
+        log.info("Saving new Round: " + round.roundNumber)
         gameRepository.save(game)
 
         return round
@@ -149,7 +147,7 @@ class RoundService {
     def finishRound(Game game, Round round){
 
         if(game.nonFoldedPlayers.size() > 1){
-            logger.info("================================")
+            log.info("================================")
 
             //Detect hands...
             game.nonFoldedPlayers.each{ GamePlayer player ->
@@ -157,12 +155,11 @@ class RoundService {
                 //Get the player's hands
                 handDetectorService.detectHand(player)
 
-                // logger.info("Player: " + player.name + " - All hand-results: " + player.hands)
-                logger.info("Player: " + player.name + " - Best hand: " + player.bestHand)
+                log.info("Player: " + player.name + " - Best hand: " + player.bestHand)
 
             }
 
-            logger.info("================================")
+            log.info("================================")
 
             //Get winner
             round.winners = roundWinnerDetectorService.detectWinners(game.nonFoldedPlayers)
@@ -172,8 +169,7 @@ class RoundService {
             round.winners = [game.nonFoldedPlayers.first()]
         }
 
-        logger.info("Round Winners: " + round.winners)
-
+        log.info("Round Winners: " + round.winners)
 
         //Pay winners
         round.payWinners()
@@ -187,7 +183,8 @@ class RoundService {
         //Reset players cards and hands
         game.players*.resetBetweenRounds()
 
-        logger.info("Round finished: " + round.roundNumber + ". Saving.")
+        log.info("Round finished: " + round.roundNumber + ". Saving.")
+
         gameRepository.save(game)
     }
 
