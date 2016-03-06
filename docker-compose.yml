@@ -1,0 +1,12 @@
+version: '2'
+services:
+  webpoker:
+    image: phuded/webpoker
+    ports:
+     - "32770:8081"
+    depends_on:
+     - mongo
+  mongo:
+    image: mongo
+    ports:
+     - "32769:27017"
