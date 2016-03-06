@@ -85,7 +85,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.2</version>
                 <configuration>
-                    <imageName>${project.artifactId}</imageName>
+                    <imageName>phuded/webpoker</imageName>
                     <baseImage>java</baseImage>
                     <exposes>
                         <expose>8081</expose>
