@@ -87,6 +87,9 @@
                 <configuration>
                     <imageName>docker/${project.artifactId}</imageName>
                     <baseImage>java</baseImage>
+                    <exposes>
+                        <expose>8081</expose>
+                    </exposes>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
                     <resources>
                         <resource>
